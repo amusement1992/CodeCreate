@@ -56,6 +56,7 @@
     <Compile Include="CodeCreateDDD\Create_IRepository.cs" />
     <Compile Include="CodeCreateDDD\Create_Repository.cs" />
     <Compile Include="CodeCreateDDD\Model\Create_Entity.cs" />
+    <Compile Include="CodeCreateDDD\Model\Create_DomainModel.cs" />
     <Compile Include="CodeCreateDDD\Model\Create_FilterViewModel.cs" />
     <Compile Include="CodeCreateDDD\Model\Create_ViewModel.cs" />
     <Compile Include="CodeCreateDDD\Model\Create_Query.cs" />

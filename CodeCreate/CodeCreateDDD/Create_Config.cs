@@ -12,7 +12,7 @@ namespace CodeCreate
     /// </summary>
     public class Create_Config
     {
-        public void Create(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public string GetStr_CreateMap(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
         {
             string temp = tableName;
             tableName = tableName.Replace("Data_", "");
@@ -29,18 +29,31 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("            #endregion");
             sb_body.AppendLine("");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("            QueryConfig.SetObjectName(\""+ temp + "\", typeof(" + tableName + "Entity), typeof(" + tableName + "Query));");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("");
+
+            return sb_body.ToString();
+
+        }
+
+        public string GetStr_SetObjectName(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        {
+            string temp = tableName;
+            tableName = tableName.Replace("Data_", "");
+            StringBuilder sb_body = new StringBuilder();
+            sb_body.AppendLine("            QueryConfig.SetObjectName(\"" + temp + "\", typeof(" + tableName + "Entity), typeof(" + tableName + "Query));");
+
+            return sb_body.ToString();
+
+        }
+        public string GetStr_SetPrimaryKey(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        {
+            string temp = tableName;
+            tableName = tableName.Replace("Data_", "");
+            StringBuilder sb_body = new StringBuilder();
+
             sb_body.AppendLine("            QueryConfig.SetPrimaryKey<" + tableName + "Entity>(u => u.SysNo);");
 
-            file_Model = "C:\\Code\\BigDataAnalysis.Mapper";
-            if (!Directory.Exists(file_Model))
-            {
-                Directory.CreateDirectory(file_Model);
-            }
-            CommonCode.Save(file_Model + "/" + tableName + "Mapper.cs", sb_body.ToString());
+            return sb_body.ToString();
+
         }
 
     }

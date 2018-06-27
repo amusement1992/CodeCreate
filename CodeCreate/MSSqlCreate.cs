@@ -183,6 +183,10 @@ namespace CodeCreate
 
             #endregion 生成文件夹
 
+            string str_CreateMap = "";
+            string str_SetObjectName = "";
+            string str_SetPrimaryKey = "";
+
             //遍历每个表
             for (int i = 0; i < listBox2.Items.Count; i++)
             {
@@ -290,17 +294,30 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
                     new Create_Business().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
                     new Create_IDataAccess().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
                     new Create_DataAccess().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_Config().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
                     new Create_IService().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
                     new Create_Service().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
                     new Create_IBusiness().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_DomainModel().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
 
-                    //BigDataAnalysis.Domain.Data.Model
-                    //BigDataAnalysis.ServiceInterface.Data
-                    //BigDataAnalysis.BusinessInterface.Data
+                    str_CreateMap += new Create_Config().GetStr_CreateMap(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+
+                    str_SetObjectName += new Create_Config().GetStr_SetObjectName(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+
+                    str_SetPrimaryKey += new Create_Config().GetStr_SetPrimaryKey(file_Model, configModel.str_nameSpace, dt_tables, str_table);
                 }
                 label4.Text = "提示信息：" + (i + 1) + "个文件，全部生成成功！";
             }
+
+
+            file_Model = "C:\\Code\\BigDataAnalysis.Config";
+            if (!Directory.Exists(file_Model))
+            {
+                Directory.CreateDirectory(file_Model);
+            }
+            CommonCode.Save(file_Model + "/CreateMap.txt", str_CreateMap);
+            CommonCode.Save(file_Model + "/SetObjectName.txt", str_SetObjectName);
+            CommonCode.Save(file_Model + "/SetPrimaryKey.txt", str_SetPrimaryKey);
+
             //OpenFolder();
         }
 

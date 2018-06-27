@@ -48,7 +48,10 @@ namespace CodeCreate
             sb_body.AppendLine("        /// <returns></returns>");
             sb_body.AppendLine("        public static Result<" + tableName + "> Save" + tableName + "(" + tableName + " " + tableName + ")");
             sb_body.AppendLine("        {");
-            sb_body.AppendLine("            return null;");
+            sb_body.AppendLine("            " + tableName + ".Save();");
+            sb_body.AppendLine("            var result = Result<" + tableName + ">.SuccessResult(\"保存成功\");");
+            sb_body.AppendLine("            result.Data = " + tableName + ";");
+            sb_body.AppendLine("            return result;");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion");

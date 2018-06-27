@@ -47,14 +47,16 @@ namespace CodeCreate
 
                 CommonCode.GetColumnType(ref columnType, ref data_default);
 
-                if (nullable.ToUpper().Trim() == "N" && (columnType.ToLower() == "decimal" || columnType.ToLower() == "int"))
-                {
-                    nullable = "?";
-                }
-                else
-                {
-                    nullable = "";
-                }
+                //if (nullable.ToUpper().Trim() == "N" && (columnType.ToLower() == "decimal" || columnType.ToLower() == "int"))
+                //{
+                //    nullable = "?";
+                //}
+                //else
+                //{
+                //    nullable = "";
+                //}
+
+                nullable = columnType == "string" ? "" : "?";
 
                 sb.AppendLine("");
 
@@ -108,6 +110,6 @@ namespace CodeCreate
             }
             CommonCode.Save(file_Model + "/" + tableName + "FilterDto" + ".cs", sb_body.ToString());
         }
- 
+
     }
 }

@@ -43,7 +43,7 @@ namespace CodeCreate
             {
                 Directory.CreateDirectory(file_Model);
             }
-            CommonCode.Save(file_Model + "/" + tableName + "Repository.cs", sb_body.ToString());
+            CommonCode.Save(file_Model + "/I" + tableName + "Repository.cs", sb_body.ToString());
         }
 
     }

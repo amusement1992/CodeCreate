@@ -15,11 +15,70 @@ namespace CodeCreate
         public void Create(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
         {
             tableName = tableName.Replace("Data_", "");
+
+
+            bool isPrimeKey = false;
+            string primaryKey = "";
+
+            StringBuilder sb = new StringBuilder();
+
+            #region Model
+
+            //遍历每个字段
+            foreach (DataRow dr in dt_tables.Rows)
+            {
+                string columnName = dr["columnName"].ToString().Trim();//字段名
+                string columnType = dr["columnType"].ToString().Trim();//字段类型
+                string columnComment = dr["columnComment"].ToString().Trim();//字段注释
+                string nullable = dr["nullable"].ToString().Trim();//是否可空（Y是不为空，N是为空）
+                string data_default = dr["data_default"].ToString().Trim();//默認值
+                string data_maxLength = dr["char_col_decl_length"].ToString().Trim();//最大長度
+                string bool_primaryKey = dr["primaryKey"].ToString().Trim();//主键 值为Y或N
+
+                if (bool_primaryKey.ToUpper() == "Y")//存在主键
+                {
+                    isPrimeKey = true;
+                    primaryKey = columnName.ToUpper();
+                }
+                if (string.IsNullOrEmpty(columnComment))
+                {
+                    columnComment = columnName;
+                }
+
+                CommonCode.GetColumnType(ref columnType, ref data_default);
+
+                //if (nullable.ToUpper().Trim() == "N" && (columnType.ToLower() == "decimal" || columnType.ToLower() == "int"))
+                //{
+                //    nullable = "?";
+                //}
+                //else
+                //{
+                //    nullable = "";
+                //}
+
+                if (columnType == "string")
+                {
+                    sb.AppendLine("            if (!filter."+ columnName + ".IsNullOrEmpty())");
+                }
+                else
+                {
+                    sb.AppendLine("            if (!filter." + columnName + ".HasValue)");
+
+                }
+                sb.AppendLine("            {");
+                sb.AppendLine("                query.Equal<" + tableName + "Query>(c => c." + columnName + ", filter." + columnName + ");");
+                sb.AppendLine("            }");
+            }
+
+            #endregion Model
+
+
             StringBuilder sb_body = new StringBuilder();
 
             sb_body.AppendLine("using BigDataAnalysis.BusinessInterface.Data;");
             sb_body.AppendLine("using BigDataAnalysis.Domain.Data.Model;");
             sb_body.AppendLine("using BigDataAnalysis.Domain.Data.Service;");
+            sb_body.AppendLine("using BigDataAnalysis.DTO.Data.Query.Filter;");
             sb_body.AppendLine("using BigDataAnalysis.DTO.Data.Cmd;");
             sb_body.AppendLine("using BigDataAnalysis.DTO.Data.Query;");
             sb_body.AppendLine("using BigDataAnalysis.DTO.Query;");
@@ -27,7 +86,6 @@ namespace CodeCreate
             sb_body.AppendLine("using Lee.Command.UnitOfWork;");
             sb_body.AppendLine("using Lee.CQuery;");
             sb_body.AppendLine("using Lee.CQuery.Paging;");
-            sb_body.AppendLine("using Lee.DTO.Data.Query.Filter;");
             sb_body.AppendLine("using Lee.Utility;");
             sb_body.AppendLine("using Lee.Utility.Extension;");
             sb_body.AppendLine("using System;");
@@ -178,14 +236,21 @@ namespace CodeCreate
             sb_body.AppendLine("            {");
             sb_body.AppendLine("                query.In<" + tableName + "Query>(c => c.SysNo, filter.SysNos);");
             sb_body.AppendLine("            }");
+
+
+            sb_body.AppendLine(sb.ToString());
+
+
             sb_body.AppendLine("            return query;");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion 根据查询条件生成查询对象");
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
+            sb_body.AppendLine("");
 
-            
+
+
             file_Model = "C:\\Code\\BigDataAnalysis.Business\\Data";
             if (!Directory.Exists(file_Model))
             {

@@ -23,8 +23,6 @@ namespace CodeCreate
             sb_body.AppendLine("using BigDataAnalysis.DTO.Data.Query.Filter;");
             sb_body.AppendLine("using Lee.CQuery;");
             sb_body.AppendLine("using Lee.CQuery.Paging;");
-            sb_body.AppendLine("using Lee.DTO.Data.Query;");
-            sb_body.AppendLine("using Lee.DTO.Data.Query.Filter;");
             sb_body.AppendLine("using Lee.Utility;");
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("using System.Collections.Generic;");

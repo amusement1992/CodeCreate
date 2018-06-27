@@ -47,14 +47,15 @@ namespace CodeCreate
 
                 CommonCode.GetColumnType(ref columnType, ref data_default);
 
-                if (nullable.ToUpper().Trim() == "N" && (columnType.ToLower() == "decimal" || columnType.ToLower() == "int"))
-                {
-                    nullable = "?";
-                }
-                else
-                {
-                    nullable = "";
-                }
+                //if (nullable.ToUpper().Trim() == "N" && (columnType.ToLower() == "decimal" || columnType.ToLower() == "int"))
+                //{
+                //    nullable = "?";
+                //}
+                //else
+                //{
+                //    nullable = "";
+                //}
+                nullable = columnType == "string" ? "" : "?";
 
                 sb.AppendLine("");
 

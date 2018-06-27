@@ -17,7 +17,7 @@ namespace CodeCreate
         public static void Save(string fileName, string fileContent)
         {
             FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
-
+            fs.SetLength(0);
             byte[] buffer = Encoding.Default.GetBytes(fileContent);
 
             fs.Write(buffer, 0, buffer.Length);
