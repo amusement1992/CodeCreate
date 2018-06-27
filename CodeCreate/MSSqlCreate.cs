@@ -279,6 +279,8 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
                     new Create_Dto().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
                     new Create_FilterDto().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
                     new Create_Query().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_ViewModel().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_FilterViewModel().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
 
                     new Create_Repository().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
                     new Create_IRepository().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
@@ -288,6 +290,9 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
                     new Create_IDataAccess().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
                     new Create_DataAccess().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
                     new Create_Config().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_IService().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Service().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_IBusiness().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
 
                     //BigDataAnalysis.Domain.Data.Model
                     //BigDataAnalysis.ServiceInterface.Data

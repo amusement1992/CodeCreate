@@ -48,11 +48,16 @@
     <Compile Include="CodeCreateDDD\Create_Business.cs" />
     <Compile Include="CodeCreateDDD\Create_DomainService.cs" />
     <Compile Include="CodeCreateDDD\Create_DataAccess.cs" />
+    <Compile Include="CodeCreateDDD\Create_Service.cs" />
+    <Compile Include="CodeCreateDDD\Create_IBusiness.cs" />
+    <Compile Include="CodeCreateDDD\Create_IService.cs" />
     <Compile Include="CodeCreateDDD\Create_IDataAccess.cs" />
     <Compile Include="CodeCreateDDD\Create_Config.cs" />
     <Compile Include="CodeCreateDDD\Create_IRepository.cs" />
     <Compile Include="CodeCreateDDD\Create_Repository.cs" />
     <Compile Include="CodeCreateDDD\Model\Create_Entity.cs" />
+    <Compile Include="CodeCreateDDD\Model\Create_FilterViewModel.cs" />
+    <Compile Include="CodeCreateDDD\Model\Create_ViewModel.cs" />
     <Compile Include="CodeCreateDDD\Model\Create_Query.cs" />
     <Compile Include="CodeCreateDDD\Model\Create_FilterDto.cs" />
     <Compile Include="CodeCreateDDD\Model\Create_Dto.cs" />
