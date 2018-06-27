@@ -1,4 +1,5 @@
-﻿using Prime.DBUtility;
+﻿using CodeCreate.Model;
+using Prime.DBUtility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -270,10 +271,31 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
 
                     //生成DAL
                     new CreateDAL().Create(file_DAL, str_table, str_DALName, str_IDALName, str_ModelName, sb_column1, sb_column2, sb_column3, sb_column4, sb_column5, configModel);
+
+
+                    new Create_DeleteCmdDto().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_SaveCmdDto().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_CmdDto().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Dto().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_FilterDto().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Query().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+
+                    new Create_Repository().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_IRepository().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+
+                    new Create_DomainService().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Business().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_IDataAccess().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_DataAccess().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Config().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+
+                    //BigDataAnalysis.Domain.Data.Model
+                    //BigDataAnalysis.ServiceInterface.Data
+                    //BigDataAnalysis.BusinessInterface.Data
                 }
                 label4.Text = "提示信息：" + (i + 1) + "个文件，全部生成成功！";
             }
-            OpenFolder();
+            //OpenFolder();
         }
 
         #region 生成路径

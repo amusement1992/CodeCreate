@@ -45,11 +45,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeCreateDDD\Create_Business.cs" />
+    <Compile Include="CodeCreateDDD\Create_DomainService.cs" />
+    <Compile Include="CodeCreateDDD\Create_DataAccess.cs" />
+    <Compile Include="CodeCreateDDD\Create_IDataAccess.cs" />
+    <Compile Include="CodeCreateDDD\Create_Config.cs" />
+    <Compile Include="CodeCreateDDD\Create_IRepository.cs" />
+    <Compile Include="CodeCreateDDD\Create_Repository.cs" />
+    <Compile Include="CodeCreateDDD\Model\Create_Entity.cs" />
+    <Compile Include="CodeCreateDDD\Model\Create_Query.cs" />
+    <Compile Include="CodeCreateDDD\Model\Create_FilterDto.cs" />
+    <Compile Include="CodeCreateDDD\Model\Create_Dto.cs" />
+    <Compile Include="CodeCreateDDD\Model\Create_CmdDto.cs" />
+    <Compile Include="CodeCreateDDD\Model\Create_SaveCmdDto.cs" />
+    <Compile Include="CodeCreateDDD\Model\Create_DeleteCmdDto.cs" />
     <Compile Include="CommonCode.cs" />
-    <Compile Include="ConfigModel.cs" />
-    <Compile Include="CreateBLL.cs" />
-    <Compile Include="CreateDAL.cs" />
-    <Compile Include="CreateIDAL.cs" />
+    <Compile Include="Model\ConfigModel.cs" />
+    <Compile Include="CodeCreate\CreateBLL.cs" />
+    <Compile Include="CodeCreate\CreateDAL.cs" />
+    <Compile Include="CodeCreate\CreateIDAL.cs" />
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,11 +76,11 @@
     <Compile Include="OracleCreate.Designer.cs">
       <DependentUpon>OracleCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="CreateModel.cs" />
-    <Compile Include="OracleHelper.cs" />
+    <Compile Include="CodeCreate\CreateModel.cs" />
+    <Compile Include="Helper\OracleHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SqlHelper.cs" />
+    <Compile Include="Helper\SqlHelper.cs" />
     <Compile Include="MSSqlCreate.cs">
       <SubType>Form</SubType>
     </Compile>

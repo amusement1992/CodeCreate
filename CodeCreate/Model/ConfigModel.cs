@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CodeCreate
+namespace CodeCreate.Model
 {
     /// <summary>
     /// 设置

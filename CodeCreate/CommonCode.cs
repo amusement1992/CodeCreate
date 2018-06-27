@@ -26,6 +26,82 @@ namespace CodeCreate
             fs.Close();
         }
 
+
+        public static void GetColumnType(ref string columnType, ref string data_default)
+        {
+
+            #region 数据类型判断
+
+            switch (columnType.ToLower())
+            {
+                case "bit":
+                    columnType = "bool";
+                    if (!string.IsNullOrEmpty(data_default))
+                    {
+                        data_default = " = " + data_default.TrimStart('(').TrimEnd(')');
+                    }
+                    break;
+                case "uniqueidentifier":
+                    columnType = "Guid";
+                    if (!string.IsNullOrEmpty(data_default))
+                    {
+                        data_default = " = " + data_default.TrimStart('(').TrimEnd(')');
+                    }
+                    break;
+
+                case "int":
+                case "tinyint":
+                case "bigint":
+                    columnType = "int";
+                    if (!string.IsNullOrEmpty(data_default))
+                    {
+                        data_default = " = " + data_default.TrimStart('(').TrimEnd(')');
+                    }
+                    break;
+
+                case "binary":
+                case "decimal":
+                case "float":
+                case "money":
+                case "numeric":
+                case "smallint":
+                case "smallmoney":
+                case "varbinary":
+                    columnType = "decimal";
+                    if (!string.IsNullOrEmpty(data_default))
+                    {
+                        data_default = " = " + data_default.TrimStart('(').TrimEnd(')');
+                    }
+                    break;
+
+                case "date":
+                case "datetime":
+                case "datetime2":
+                case "smalldatetime":
+                case "time":
+                    columnType = "DateTime";
+                    if (!string.IsNullOrEmpty(data_default))
+                    {
+                        if (data_default.ToLower() == "(getdate())")
+                        {
+                            data_default = " = DateTime.Now";
+                        }
+                    }
+                    break;
+
+                default:
+                    columnType = "string";
+                    if (!string.IsNullOrEmpty(data_default))
+                    {
+                        data_default = " = \"" + data_default.Trim('(', ')').Trim('\'') + "\"";
+                    }
+                    break;
+            }
+
+            #endregion 数据类型判断
+        }
+
+
         /// <summary>
         /// 获取字段的数据类型
         /// </summary>
