@@ -21,7 +21,7 @@ namespace CodeCreate
             sb_body.AppendLine("using Lee.DTO.Data.Query;");
             sb_body.AppendLine("using Lee.DTO.Data.Query.Filter;");
             sb_body.AppendLine("using Lee.CQuery.Paging;");
-            sb_body.AppendLine("using Lee.ServiceInterface.Data;");
+            sb_body.AppendLine("using BigDataAnalysis.ServiceInterface.Data;");
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("using System.Collections.Generic;");
             sb_body.AppendLine("using System.Linq;");

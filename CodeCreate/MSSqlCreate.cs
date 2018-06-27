@@ -281,6 +281,7 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
                     new Create_Query().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
                     new Create_ViewModel().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
                     new Create_FilterViewModel().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Entity().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
 
                     new Create_Repository().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
                     new Create_IRepository().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
