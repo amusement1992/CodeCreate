@@ -81,7 +81,7 @@ namespace CodeCreate
             sb_body.AppendLine("            " + tableName + ".SetDefaultValue();");
             sb_body.AppendLine("            " + tableName + ".Save();");
             sb_body.AppendLine("            var result = Result<" + tableName + ">.SuccessResult(\"保存成功\");");
-            sb_body.AppendLine("            result." + tablePrefix + " = " + tableName + ";");
+            sb_body.AppendLine("            result.Data = " + tableName + ";");
             sb_body.AppendLine("            return result;");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("        #endregion");
@@ -105,7 +105,7 @@ namespace CodeCreate
             sb_body.AppendLine("            this" + tableName + ".ModifyFromOther" + tableName + "(" + tableName + ", excludeModifyPropertys);//更新");
             sb_body.AppendLine("            this" + tableName + ".Save();");
             sb_body.AppendLine("            var result = Result<" + tableName + ">.SuccessResult(\"更新成功\");");
-            sb_body.AppendLine("            result." + tablePrefix + " = this" + tableName + ";");
+            sb_body.AppendLine("            result.Data = this" + tableName + ";");
             sb_body.AppendLine("            return result;");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("        #endregion");

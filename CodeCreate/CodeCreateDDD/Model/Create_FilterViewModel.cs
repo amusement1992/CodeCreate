@@ -86,6 +86,7 @@ namespace CodeCreate
             sb_body.Append(sb.ToString());
 
             sb_body.AppendLine("");
+            sb_body.AppendLine("        public int rows { get; set; }");
             sb_body.AppendLine("");
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");

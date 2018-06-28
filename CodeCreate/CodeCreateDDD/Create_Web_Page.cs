@@ -83,7 +83,7 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("        $(\"#searchList\").on(\"click\", function () {");
             sb_body.AppendLine("            $('#dtGrid').datagrid('load', {");
-            sb_body.AppendLine("                " + tableDesc + "Name: $('#" + tableDesc + "Name').val()");
+            sb_body.AppendLine("                " + tableName + "Name: $('#" + tableName + "Name').val()");
             sb_body.AppendLine("            });");
             sb_body.AppendLine("        });");
             sb_body.AppendLine("");

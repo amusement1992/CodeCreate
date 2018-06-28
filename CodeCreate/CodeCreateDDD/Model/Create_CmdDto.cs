@@ -64,6 +64,7 @@ namespace CodeCreate
             StringBuilder sb_body = new StringBuilder();
 
             sb_body.AppendLine("using System;");
+            sb_body.AppendLine("using BigDataAnalysis.DTO.Sys.Cmd;");
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".DTO." + tablePrefix + ".Cmd");
             sb_body.AppendLine("{");

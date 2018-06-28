@@ -18,6 +18,18 @@ namespace CodeCreate
             string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
             StringBuilder sb_body = new StringBuilder();
 
+            sb_body.AppendLine("using " + str_nameSpace + ".Entity." + tablePrefix + ";");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Model;");
+            sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Query;");
+            sb_body.AppendLine("using " + str_nameSpace + ".ViewModel." + tablePrefix + ".Filter;");
+            sb_body.AppendLine("using " + str_nameSpace + ".ViewModel." + tablePrefix + ";");
+            sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Cmd;");
+            sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Query.Filter;");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("");
+
+
             sb_body.AppendLine("            #region " + tableName + "");
             sb_body.AppendLine("");
             sb_body.AppendLine("            cfg.CreateMap<" + tableName + "Entity, " + tableName + ">();");

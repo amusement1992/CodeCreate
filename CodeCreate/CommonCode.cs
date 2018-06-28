@@ -202,6 +202,9 @@ namespace CodeCreate
                 case "Shop":
                     tableDesc = "店铺";
                     break;
+                case "Department":
+                    tableDesc = "部门";
+                    break;
                 default:
                     tableDesc = "【名称】";
                     break;

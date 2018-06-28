@@ -121,7 +121,7 @@ namespace CodeCreate
             sb_body.AppendLine("                if (commitResult.ExecutedSuccess)");
             sb_body.AppendLine("                {");
             sb_body.AppendLine("                    result = Result<" + tableName + "Dto>.SuccessResult(\"保存成功\");");
-            sb_body.AppendLine("                    result." + tablePrefix + " = saveResult." + tablePrefix + ".MapTo<" + tableName + "Dto>();");
+            sb_body.AppendLine("                    result.Data = saveResult.Data.MapTo<" + tableName + "Dto>();");
             sb_body.AppendLine("                }");
             sb_body.AppendLine("                else");
             sb_body.AppendLine("                {");
