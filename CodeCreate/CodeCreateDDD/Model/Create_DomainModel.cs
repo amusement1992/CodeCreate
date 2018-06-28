@@ -12,15 +12,16 @@ namespace CodeCreate
     /// </summary>
     public class Create_DomainModel
     {
-        public void Create(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            tableName = tableName.Replace("Data_", "");
+            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
 
             bool isPrimeKey = false;
             string primaryKey = "";
 
             StringBuilder sb = new StringBuilder();
             StringBuilder sb2 = new StringBuilder();
+            StringBuilder sb3 = new StringBuilder();
 
             #region Model
 
@@ -61,16 +62,15 @@ namespace CodeCreate
                 sb2.AppendLine("        /// </summary>");
                 sb2.AppendLine("        public " + columnType + nullable + " " + columnName);
                 sb2.AppendLine("        {");
-                sb2.AppendLine("            get");
-                sb2.AppendLine("            {");
-                sb2.AppendLine("                return _" + columnName + ";");
-                sb2.AppendLine("            }");
-                sb2.AppendLine("            protected set");
-                sb2.AppendLine("            {");
-                sb2.AppendLine("                _" + columnName + " = value;");
-                sb2.AppendLine("            }");
+                sb2.AppendLine("            get { return _" + columnName + "; }");
+                sb2.AppendLine("            protected set { _" + columnName + " = value; }");
                 sb2.AppendLine("        }");
-                sb2.AppendLine("        ");
+                sb2.AppendLine("");
+                
+                sb3.AppendLine("            if (!excludePropertys.Contains(\"" + columnName + "\"))");
+                sb3.AppendLine("            {");
+                sb3.AppendLine("                " + columnName + " = similarObject." + columnName + ";");
+                sb3.AppendLine("            }");
 
             }
 
@@ -81,10 +81,12 @@ namespace CodeCreate
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("using Lee.Domain.Aggregation;");
             sb_body.AppendLine("using Lee.Utility;");
-            sb_body.AppendLine("using BigDataAnalysis.Domain.Data.Repository;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Repository;");
             sb_body.AppendLine("using Lee.Utility.Extension;");
+            sb_body.AppendLine("using System.Collections.Generic;");
+            sb_body.AppendLine("using System.Linq;");
             sb_body.AppendLine("");
-            sb_body.AppendLine("namespace BigDataAnalysis.Domain.Data.Model");
+            sb_body.AppendLine("namespace " + str_nameSpace + ".Domain." + tablePrefix + ".Model");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    /// <summary>");
             sb_body.AppendLine("    /// ");
@@ -94,8 +96,9 @@ namespace CodeCreate
             sb_body.AppendLine("        I" + tableName + "Repository " + tableName + "Repository = null;");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #region	字段");
+            sb_body.AppendLine("");
 
-            sb_body.Append(sb.ToString());
+            sb_body.AppendLine(sb.ToString());
 
             sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion");
@@ -117,8 +120,9 @@ namespace CodeCreate
             sb_body.AppendLine("        #region	属性");
             sb_body.AppendLine("");
 
-            sb_body.Append(sb2.ToString());
+            sb_body.AppendLine(sb2.ToString());
 
+            sb_body.AppendLine("");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion");
             sb_body.AppendLine("");
@@ -215,13 +219,69 @@ namespace CodeCreate
             sb_body.AppendLine("        #endregion");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        #region 根据给定的对象更新当前信息");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 根据给定的对象更新当前信息");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        /// <param name=\"" + tableName + "\">信息</param>");
+            sb_body.AppendLine("        /// <param name=\"excludePropertys\">排除更新的属性</param>");
+            sb_body.AppendLine("        public virtual void ModifyFromOther" + tableName + "(" + tableName + " " + tableName + ", IEnumerable<string> excludePropertys = null)");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            if (" + tableName + " == null)");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                return;");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            CopyDataFromSimilarObject(" + tableName + ", excludePropertys);");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        #endregion");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        #region 从指定对象复制值");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 从指定对象复制值");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        /// <typeparam name=\"DT\">数据类型</typeparam>");
+            sb_body.AppendLine("        /// <param name=\"similarObject\">数据对象</param>");
+            sb_body.AppendLine("        /// <param name=\"excludePropertys\">排除不复制的属性</param>");
+            sb_body.AppendLine("        protected override void CopyDataFromSimilarObject<DT>(DT similarObject, IEnumerable<string> excludePropertys = null)");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            base.CopyDataFromSimilarObject<DT>(similarObject, excludePropertys);");
+            sb_body.AppendLine("            if (similarObject == null)");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                return;");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("            excludePropertys = excludePropertys ?? new List<string>(0);");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            #region 复制值");
+            sb_body.AppendLine("");
+
+            sb_body.AppendLine(sb3.ToString());
+
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            #endregion");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("        #endregion");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 设置默认值");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        public void SetDefaultValue()");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            CreateDate = DateTime.Now;");
+            sb_body.AppendLine("        }");
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
+            sb_body.AppendLine("");
 
 
 
 
-            file_Model = "C:\\Code\\BigDataAnalysis.Domain\\Data\\Model";
+
+            string file_Model = "C:\\Code\\" + str_nameSpace + ".Domain\\" + tablePrefix + "\\Model";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);

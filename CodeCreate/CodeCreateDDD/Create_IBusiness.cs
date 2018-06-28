@@ -12,15 +12,15 @@ namespace CodeCreate
     /// </summary>
     public class Create_IBusiness
     {
-        public void Create(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            tableName = tableName.Replace("Data_", "");
+            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
             StringBuilder sb_body = new StringBuilder();
 
 
-            sb_body.AppendLine("using BigDataAnalysis.DTO.Data.Cmd;");
-            sb_body.AppendLine("using BigDataAnalysis.DTO.Data.Query;");
-            sb_body.AppendLine("using BigDataAnalysis.DTO.Data.Query.Filter;");
+            sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Cmd;");
+            sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Query;");
+            sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Query.Filter;");
             sb_body.AppendLine("using Lee.CQuery;");
             sb_body.AppendLine("using Lee.CQuery.Paging;");
             sb_body.AppendLine("using Lee.Utility;");
@@ -30,7 +30,7 @@ namespace CodeCreate
             sb_body.AppendLine("using System.Text;");
             sb_body.AppendLine("using System.Threading.Tasks;");
             sb_body.AppendLine("");
-            sb_body.AppendLine("namespace BigDataAnalysis.BusinessInterface.Data");
+            sb_body.AppendLine("namespace " + str_nameSpace + ".BusinessInterface." + tablePrefix + "");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    /// <summary>");
             sb_body.AppendLine("    /// 业务接口");
@@ -97,7 +97,7 @@ namespace CodeCreate
 
 
                         
-            file_Model = "C:\\Code\\BigDataAnalysis.BusinessInterface\\Data";
+            string file_Model = "C:\\Code\\" + str_nameSpace + ".BusinessInterface\\" + tablePrefix + "";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);

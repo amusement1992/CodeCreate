@@ -12,9 +12,9 @@ namespace CodeCreate
     /// </summary>
     public class Create_Dto
     {
-        public void Create(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            tableName = tableName.Replace("Data_", "");
+            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
 
             bool isPrimeKey = false;
             string primaryKey = "";
@@ -73,7 +73,7 @@ namespace CodeCreate
 
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("");
-            sb_body.AppendLine("namespace BigDataAnalysis.DTO.Data.Query");
+            sb_body.AppendLine("namespace " + str_nameSpace + ".DTO." + tablePrefix + ".Query");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    public class " + tableName + "Dto");
             sb_body.AppendLine("    {");
@@ -86,7 +86,7 @@ namespace CodeCreate
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
 
-            file_Model = "C:\\Code\\BigDataAnalysis.DTO\\Data\\Query";
+            string file_Model = "C:\\Code\\" + str_nameSpace + ".DTO\\" + tablePrefix + "\\Query";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);

@@ -12,9 +12,9 @@ namespace CodeCreate
     /// </summary>
     public class Create_CmdDto
     {
-        public void Create(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            tableName = tableName.Replace("Data_", "");
+            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
 
             bool isPrimeKey = false;
             string primaryKey = "";
@@ -54,14 +54,6 @@ namespace CodeCreate
                 sb.AppendLine(@"        /// <summary>");
                 sb.AppendLine(@"        /// " + columnComment);
                 sb.AppendLine(@"        /// </summary>");
-                //if (dr["nullable"].ToString().ToUpper().Trim() == "Y")//不為空
-                //{
-                //    sb.AppendLine(@"        [Required]");
-                //}
-                //if (!string.IsNullOrEmpty(data_maxLength))//最大長度
-                //{
-                //    sb.AppendLine(@"        [StringLength(" + data_maxLength + ")]");
-                //}
                 sb.AppendLine("        public " + columnType + nullable + " " + columnName + " { get; set; }");
                 sb.AppendLine("");
             }
@@ -73,7 +65,7 @@ namespace CodeCreate
 
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("");
-            sb_body.AppendLine("namespace BigDataAnalysis.DTO.Data.Cmd");
+            sb_body.AppendLine("namespace " + str_nameSpace + ".DTO." + tablePrefix + ".Cmd");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    public class " + tableName + "CmdDto");
             sb_body.AppendLine("    {");
@@ -86,13 +78,13 @@ namespace CodeCreate
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
 
-            file_Model = "C:\\Code\\BigDataAnalysis.DTO\\Data\\Cmd";
+            string file_Model = "C:\\Code\\" + str_nameSpace + ".DTO\\" + tablePrefix + "\\Cmd";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);
             }
             CommonCode.Save(file_Model + "/" + tableName + "CmdDto" + ".cs", sb_body.ToString());
         }
-         
+
     }
 }

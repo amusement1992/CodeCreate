@@ -12,9 +12,9 @@ namespace CodeCreate
     /// </summary>
     public class Create_DataAccess
     {
-        public void Create(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            tableName = tableName.Replace("Data_", "");
+            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
 
             bool isPrimeKey = false;
             string primaryKey = "";
@@ -59,8 +59,8 @@ namespace CodeCreate
 
             sb_body.AppendLine("using Lee.Command;");
             sb_body.AppendLine("using Lee.Command.RDB;");
-            sb_body.AppendLine("using BigDataAnalysis.DataAccessInterface.Data;");
-            sb_body.AppendLine("using BigDataAnalysis.Entity.Data;");
+            sb_body.AppendLine("using " + str_nameSpace + ".DataAccessInterface." + tablePrefix + ";");
+            sb_body.AppendLine("using " + str_nameSpace + ".Entity." + tablePrefix + ";");
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("using System.Collections.Generic;");
             sb_body.AppendLine("using System.Linq;");
@@ -68,9 +68,9 @@ namespace CodeCreate
             sb_body.AppendLine("using System.Threading.Tasks;");
             sb_body.AppendLine("using Lee.Utility.Extension;");
             sb_body.AppendLine("using Lee.Command.UnitOfWork;");
-            sb_body.AppendLine("using BigDataAnalysis.Entity;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Entity;");
             sb_body.AppendLine("");
-            sb_body.AppendLine("namespace BigDataAnalysis.DataAccess.Data");
+            sb_body.AppendLine("namespace " + str_nameSpace + ".DataAccess." + tablePrefix + "");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    /// <summary>");
             sb_body.AppendLine("    /// 数据访问");
@@ -109,7 +109,7 @@ namespace CodeCreate
             sb_body.AppendLine("}");
 
 
-            file_Model = "C:\\Code\\BigDataAnalysis.DataAccess\\Data";
+            string file_Model = "C:\\Code\\" + str_nameSpace + ".DataAccess\\" + tablePrefix + "";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);

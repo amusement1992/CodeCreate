@@ -12,9 +12,9 @@ namespace CodeCreate
     /// </summary>
     public class Create_Business
     {
-        public void Create(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            tableName = tableName.Replace("Data_", "");
+            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
 
 
             bool isPrimeKey = false;
@@ -68,14 +68,14 @@ namespace CodeCreate
 
             StringBuilder sb_body = new StringBuilder();
 
-            sb_body.AppendLine("using BigDataAnalysis.BusinessInterface.Data;");
-            sb_body.AppendLine("using BigDataAnalysis.Domain.Data.Model;");
-            sb_body.AppendLine("using BigDataAnalysis.Domain.Data.Service;");
-            sb_body.AppendLine("using BigDataAnalysis.DTO.Data.Query.Filter;");
-            sb_body.AppendLine("using BigDataAnalysis.DTO.Data.Cmd;");
-            sb_body.AppendLine("using BigDataAnalysis.DTO.Data.Query;");
-            sb_body.AppendLine("using BigDataAnalysis.DTO.Query;");
-            sb_body.AppendLine("using BigDataAnalysis.Query.Data;");
+            sb_body.AppendLine("using " + str_nameSpace + ".BusinessInterface." + tablePrefix + ";");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Model;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Service;");
+            sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Query.Filter;");
+            sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Cmd;");
+            sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Query;");
+            sb_body.AppendLine("using " + str_nameSpace + ".DTO.Query;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Query." + tablePrefix + ";");
             sb_body.AppendLine("using Lee.Command.UnitOfWork;");
             sb_body.AppendLine("using Lee.CQuery;");
             sb_body.AppendLine("using Lee.CQuery.Paging;");
@@ -85,7 +85,7 @@ namespace CodeCreate
             sb_body.AppendLine("using System.Collections.Generic;");
             sb_body.AppendLine("using System.Linq;");
             sb_body.AppendLine("");
-            sb_body.AppendLine("namespace BigDataAnalysis.Business.Data");
+            sb_body.AppendLine("namespace " + str_nameSpace + ".Business." + tablePrefix + "");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    /// <summary>");
             sb_body.AppendLine("    /// 业务");
@@ -121,7 +121,7 @@ namespace CodeCreate
             sb_body.AppendLine("                if (commitResult.ExecutedSuccess)");
             sb_body.AppendLine("                {");
             sb_body.AppendLine("                    result = Result<" + tableName + "Dto>.SuccessResult(\"保存成功\");");
-            sb_body.AppendLine("                    result.Data = saveResult.Data.MapTo<" + tableName + "Dto>();");
+            sb_body.AppendLine("                    result." + tablePrefix + " = saveResult." + tablePrefix + ".MapTo<" + tableName + "Dto>();");
             sb_body.AppendLine("                }");
             sb_body.AppendLine("                else");
             sb_body.AppendLine("                {");
@@ -244,7 +244,7 @@ namespace CodeCreate
 
 
 
-            file_Model = "C:\\Code\\BigDataAnalysis.Business\\Data";
+            string file_Model = "C:\\Code\\" + str_nameSpace + ".Business\\" + tablePrefix + "";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);

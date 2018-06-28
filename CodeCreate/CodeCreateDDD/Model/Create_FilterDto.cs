@@ -12,9 +12,9 @@ namespace CodeCreate
     /// </summary>
     public class Create_FilterDto
     {
-        public void Create(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            tableName = tableName.Replace("Data_", "");
+            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
 
             bool isPrimeKey = false;
             string primaryKey = "";
@@ -77,7 +77,7 @@ namespace CodeCreate
             sb_body.AppendLine("using System.Collections.Generic;");
             sb_body.AppendLine("using Lee.CQuery.Paging;");
             sb_body.AppendLine("");
-            sb_body.AppendLine("namespace BigDataAnalysis.DTO.Data.Query.Filter");
+            sb_body.AppendLine("namespace " + str_nameSpace + ".DTO." + tablePrefix + ".Query.Filter");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    public class " + tableName + "FilterDto : PagingFilter");
             sb_body.AppendLine("    {");
@@ -96,7 +96,7 @@ namespace CodeCreate
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
 
-            file_Model = "C:\\Code\\BigDataAnalysis.DTO\\Data\\Query\\Filter";
+            string file_Model = "C:\\Code\\" + str_nameSpace + ".DTO\\" + tablePrefix + "\\Query\\Filter";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);

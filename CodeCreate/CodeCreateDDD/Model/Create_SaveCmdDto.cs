@@ -12,19 +12,19 @@ namespace CodeCreate
     /// </summary>
     public class Create_SaveCmdDto
     {
-        public void Create(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            tableName = tableName.Replace("Data_", "");
+            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
                StringBuilder sb_body = new StringBuilder();
 
-            sb_body.AppendLine("using BigDataAnalysis.DTO.Cmd;");
+            sb_body.AppendLine("using " + str_nameSpace + ".DTO.Cmd;");
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("using System.Collections.Generic;");
             sb_body.AppendLine("using System.Linq;");
             sb_body.AppendLine("using System.Text;");
             sb_body.AppendLine("using System.Threading.Tasks;");
             sb_body.AppendLine("");
-            sb_body.AppendLine("namespace BigDataAnalysis.DTO.Data.Cmd");
+            sb_body.AppendLine("namespace " + str_nameSpace + ".DTO." + tablePrefix + ".Cmd");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    /// <summary>");
             sb_body.AppendLine("    /// 保存信息");
@@ -41,7 +41,7 @@ namespace CodeCreate
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
             
-            file_Model = "C:\\Code\\BigDataAnalysis.DTO\\Data\\Cmd\\Save";
+            string file_Model = "C:\\Code\\" + str_nameSpace + ".DTO\\" + tablePrefix + "\\Cmd\\Save";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);

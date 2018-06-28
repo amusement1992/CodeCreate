@@ -12,23 +12,23 @@ namespace CodeCreate
     /// </summary>
     public class Create_IRepository
     {
-        public void Create(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            tableName = tableName.Replace("Data_", "");
+            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
             StringBuilder sb_body = new StringBuilder();
 
             sb_body.AppendLine("using Lee.Command;");
             sb_body.AppendLine("using Lee.CQuery;");
             sb_body.AppendLine("using Lee.CQuery.Paging;");
             sb_body.AppendLine("using Lee.Domain.Repository;");
-            sb_body.AppendLine("using BigDataAnalysis.Domain.Data.Model;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Model;");
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("using System.Collections.Generic;");
             sb_body.AppendLine("using System.Linq;");
             sb_body.AppendLine("using System.Text;");
             sb_body.AppendLine("using System.Threading.Tasks;");
             sb_body.AppendLine("");
-            sb_body.AppendLine("namespace BigDataAnalysis.Domain.Data.Repository");
+            sb_body.AppendLine("namespace " + str_nameSpace + ".Domain." + tablePrefix + ".Repository");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    /// <summary>");
             sb_body.AppendLine("    /// 存储");
@@ -38,7 +38,7 @@ namespace CodeCreate
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
             
-            file_Model = "C:\\Code\\BigDataAnalysis.Domain\\Data\\Repository";
+            string file_Model = "C:\\Code\\" + str_nameSpace + ".Domain\\" + tablePrefix + "\\Repository";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);

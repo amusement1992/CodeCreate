@@ -12,10 +12,10 @@ namespace CodeCreate
     /// </summary>
     public class Create_DeleteCmdDto
     {
-        public void Create(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            tableName = tableName.Replace("Data_", "");
-               StringBuilder sb_body = new StringBuilder();
+            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
+            StringBuilder sb_body = new StringBuilder();
 
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("using System.Collections.Generic;");
@@ -23,12 +23,12 @@ namespace CodeCreate
             sb_body.AppendLine("using System.Text;");
             sb_body.AppendLine("using System.Threading.Tasks;");
             sb_body.AppendLine("");
-            sb_body.AppendLine("namespace BigDataAnalysis.DTO.Data.Cmd");
+            sb_body.AppendLine("namespace " + str_nameSpace + ".DTO." + tablePrefix + ".Cmd");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    /// <summary>");
             sb_body.AppendLine("    /// 删除");
             sb_body.AppendLine("    /// </summary>");
-            sb_body.AppendLine("    public class Delete"+ tableName + "CmdDto" );
+            sb_body.AppendLine("    public class Delete" + tableName + "CmdDto");
             sb_body.AppendLine("    {");
             sb_body.AppendLine("        /// <summary>");
             sb_body.AppendLine("        /// 编号");
@@ -40,7 +40,7 @@ namespace CodeCreate
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
 
-            file_Model = "C:\\Code\\BigDataAnalysis.DTO\\Data\\Cmd\\Delete";
+            string file_Model = "C:\\Code\\" + str_nameSpace + ".DTO\\" + tablePrefix + "\\Cmd\\Delete";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);

@@ -12,10 +12,10 @@ namespace CodeCreate
     /// </summary>
     public class Create_Config
     {
-        public string GetStr_CreateMap(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public string GetStr_CreateMap(string str_nameSpace, DataTable dt_tables, string tableName)
         {
             string temp = tableName;
-            tableName = tableName.Replace("Data_", "");
+            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
             StringBuilder sb_body = new StringBuilder();
 
             sb_body.AppendLine("            #region " + tableName + "");
@@ -42,20 +42,20 @@ namespace CodeCreate
 
         }
 
-        public string GetStr_SetObjectName(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public string GetStr_SetObjectName(string str_nameSpace, DataTable dt_tables, string tableName)
         {
             string temp = tableName;
-            tableName = tableName.Replace("Data_", "");
+            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
             StringBuilder sb_body = new StringBuilder();
             sb_body.AppendLine("            QueryConfig.SetObjectName(\"" + temp + "\", typeof(" + tableName + "Entity), typeof(" + tableName + "Query));");
 
             return sb_body.ToString();
 
         }
-        public string GetStr_SetPrimaryKey(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public string GetStr_SetPrimaryKey(string str_nameSpace, DataTable dt_tables, string tableName)
         {
             string temp = tableName;
-            tableName = tableName.Replace("Data_", "");
+            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
             StringBuilder sb_body = new StringBuilder();
 
             sb_body.AppendLine("            QueryConfig.SetPrimaryKey<" + tableName + "Entity>(u => u.SysNo);");

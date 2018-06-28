@@ -12,9 +12,9 @@ namespace CodeCreate
     /// </summary>
     public class Create_Entity
     {
-        public void Create(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            tableName = tableName.Replace("Data_", "");
+            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
 
             bool isPrimeKey = false;
             string primaryKey = "";
@@ -62,7 +62,12 @@ namespace CodeCreate
                 //{
                 //    sb.AppendLine(@"        [StringLength(" + data_maxLength + ")]");
                 //}
-                sb.AppendLine("        public " + columnType + nullable + " " + columnName + " { get; set; }");
+                sb.AppendLine("        public " + columnType + nullable + " " + columnName);
+                sb.AppendLine("        {");
+                sb.AppendLine("            get { return valueDic.GetValue<" + columnType + nullable + ">(\"" + columnName + "\"); }");
+                sb.AppendLine("            set { valueDic.SetValue(\"" + columnName + "\", value); }");
+                sb.AppendLine("        }");
+
                 sb.AppendLine("");
             }
             sb.AppendLine("        #endregion Model");
@@ -75,7 +80,7 @@ namespace CodeCreate
             sb_body.AppendLine("using Lee.Command;");
             sb_body.AppendLine("using Lee.Utility.Extension;");
             sb_body.AppendLine("");
-            sb_body.AppendLine("namespace BigDataAnalysis.Entity.Data");
+            sb_body.AppendLine("namespace " + str_nameSpace + ".Entity." + tablePrefix + "");
             sb_body.AppendLine("{");
             sb_body.AppendLine("	/// <summary>");
             sb_body.AppendLine("	/// ");
@@ -91,7 +96,7 @@ namespace CodeCreate
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
 
-            file_Model = "C:\\Code\\BigDataAnalysis.Entity\\Data";
+            string file_Model = "C:\\Code\\" + str_nameSpace + ".Entity\\" + tablePrefix + "";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);

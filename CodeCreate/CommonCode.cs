@@ -166,5 +166,47 @@ namespace CodeCreate
             return colType;
         }
 
+        public static string GetTablePrefix(string tableName)
+        {
+            string[] arrTemp = tableName.Split('_');
+            return arrTemp[0];
+        }
+        public static string GetTableName(string tableName)
+        {
+            string[] arrTemp = tableName.Split('_');
+            return arrTemp[1];
+        }
+
+        /// <summary>
+        /// 获取表的描述
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        public static string GetTableDesc(string tableName)
+        {
+            string tableDesc = "";
+            switch (tableName)
+            {
+                case "Brand":
+                    tableDesc = "品牌";
+                    break;
+                case "Category":
+                    tableDesc = "品类";
+                    break;
+                case "Platform":
+                    tableDesc = "平台";
+                    break;
+                case "Company":
+                    tableDesc = "公司";
+                    break;
+                case "Shop":
+                    tableDesc = "店铺";
+                    break;
+                default:
+                    tableDesc = "【名称】";
+                    break;
+            }
+            return tableDesc;
+        }
     }
 }

@@ -22,7 +22,6 @@ namespace CodeCreate
 
         private void Form3_Load(object sender, EventArgs e)
         {
-            comboBox1.SelectedIndex = 0;
             DataTable dt = SqlHelper.GetDataTable(" select * from dbo.sysobjects where xtype = 'U' order by name");
 
             List<string> list = new List<string>();
@@ -139,47 +138,47 @@ namespace CodeCreate
 
             #region 生成文件夹
 
-            string file_BLL = textBox3.Text.Trim();
-            string file_DAL = textBox11.Text.Trim();
-            string file_IDAL = textBox12.Text.Trim();
-            string file_Model = textBox13.Text.Trim();
+            //string file_BLL = textBox3.Text.Trim();
+            //string file_DAL = textBox11.Text.Trim();
+            //string file_IDAL = textBox12.Text.Trim();
+            //string file_Model = textBox13.Text.Trim();
 
-            if (!Directory.Exists(file_Model))
-            {
-                Directory.CreateDirectory(file_Model);
-            }
-            if (!Directory.Exists(file_IDAL))
-            {
-                Directory.CreateDirectory(file_IDAL);
-            }
-            if (!Directory.Exists(file_BLL))
-            {
-                Directory.CreateDirectory(file_BLL);
-            }
-            if (!Directory.Exists(file_DAL))
-            {
-                Directory.CreateDirectory(file_DAL);
-            }
+            //if (!Directory.Exists(file_Model))
+            //{
+            //    Directory.CreateDirectory(file_Model);
+            //}
+            //if (!Directory.Exists(file_IDAL))
+            //{
+            //    Directory.CreateDirectory(file_IDAL);
+            //}
+            //if (!Directory.Exists(file_BLL))
+            //{
+            //    Directory.CreateDirectory(file_BLL);
+            //}
+            //if (!Directory.Exists(file_DAL))
+            //{
+            //    Directory.CreateDirectory(file_DAL);
+            //}
 
-            if (comboBox1.SelectedIndex == 1)
-            {
-                string path = textBox3.Text.Trim();
-                if (!string.IsNullOrEmpty(path))
-                {
-                    if (path.Contains("\\BLL"))
-                    {
-                        path = path.Replace("\\BLL", "");
+            //if (comboBox1.SelectedIndex == 1)
+            //{
+            //    string path = textBox3.Text.Trim();
+            //    if (!string.IsNullOrEmpty(path))
+            //    {
+            //        if (path.Contains("\\BLL"))
+            //        {
+            //            path = path.Replace("\\BLL", "");
 
-                        string BaseBLLSrc = Directory.GetCurrentDirectory() + "/BaseBll.cs";
-                        string BaseDALSrc = Directory.GetCurrentDirectory() + "/BaseDAL.cs";
-                        string BaseIDALSrc = Directory.GetCurrentDirectory() + "/BaseIDAL.cs";
+            //            string BaseBLLSrc = Directory.GetCurrentDirectory() + "/BaseBll.cs";
+            //            string BaseDALSrc = Directory.GetCurrentDirectory() + "/BaseDAL.cs";
+            //            string BaseIDALSrc = Directory.GetCurrentDirectory() + "/BaseIDAL.cs";
 
-                        File.Copy(BaseBLLSrc, path + "\\BaseBll.cs");
-                        File.Copy(BaseDALSrc, path + "\\BaseDAL.cs");
-                        File.Copy(BaseIDALSrc, path + "\\BaseIDAL.cs");
-                    }
-                }
-            }
+            //            File.Copy(BaseBLLSrc, path + "\\BaseBll.cs");
+            //            File.Copy(BaseDALSrc, path + "\\BaseDAL.cs");
+            //            File.Copy(BaseIDALSrc, path + "\\BaseIDAL.cs");
+            //        }
+            //    }
+            //}
 
             #endregion 生成文件夹
 
@@ -192,10 +191,10 @@ namespace CodeCreate
             {
                 string str_table = listBox2.Items[i].ToString();//表名
 
-                string str_BLLName = str_table + textBox17.Text.Trim();
-                string str_DALName = str_table + textBox16.Text.Trim();
-                string str_IDALName = str_table + textBox15.Text.Trim();
-                string str_ModelName = str_table + textBox14.Text.Trim();
+                //string str_BLLName = str_table + textBox17.Text.Trim();
+                //string str_DALName = str_table + textBox16.Text.Trim();
+                //string str_IDALName = str_table + textBox15.Text.Trim();
+                //string str_ModelName = str_table + textBox14.Text.Trim();
 
                 string sql = @"
 SELECT
@@ -277,95 +276,54 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
                     //new CreateDAL().Create(file_DAL, str_table, str_DALName, str_IDALName, str_ModelName, sb_column1, sb_column2, sb_column3, sb_column4, sb_column5, configModel);
 
 
-                    new Create_DeleteCmdDto().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_SaveCmdDto().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_CmdDto().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_Dto().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_FilterDto().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_Query().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_ViewModel().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_FilterViewModel().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_Entity().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_DeleteCmdDto().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_SaveCmdDto().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_CmdDto().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Dto().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_FilterDto().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Query().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_ViewModel().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_FilterViewModel().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Entity().Create(configModel.str_nameSpace, dt_tables, str_table);
 
-                    new Create_Repository().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_IRepository().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Repository().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_IRepository().Create(configModel.str_nameSpace, dt_tables, str_table);
 
-                    new Create_DomainService().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_Business().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_IDataAccess().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_DataAccess().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_IService().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_Service().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_IBusiness().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_DomainModel().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_DomainService().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Business().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_IDataAccess().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_DataAccess().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_IService().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Service().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_IBusiness().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_DomainModel().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Web_Page().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Web_Controller().Create(configModel.str_nameSpace, dt_tables, str_table);
 
-                    str_CreateMap += new Create_Config().GetStr_CreateMap(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    str_CreateMap += new Create_Config().GetStr_CreateMap(configModel.str_nameSpace, dt_tables, str_table);
 
-                    str_SetObjectName += new Create_Config().GetStr_SetObjectName(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    str_SetObjectName += new Create_Config().GetStr_SetObjectName(configModel.str_nameSpace, dt_tables, str_table);
 
-                    str_SetPrimaryKey += new Create_Config().GetStr_SetPrimaryKey(file_Model, configModel.str_nameSpace, dt_tables, str_table);
+                    str_SetPrimaryKey += new Create_Config().GetStr_SetPrimaryKey(configModel.str_nameSpace, dt_tables, str_table);
                 }
                 label4.Text = "提示信息：" + (i + 1) + "个文件，全部生成成功！";
             }
 
 
-            file_Model = "C:\\Code\\Config";
-            if (!Directory.Exists(file_Model))
+            string filePath = "C:\\Code\\Config";
+            if (!Directory.Exists(filePath))
             {
-                Directory.CreateDirectory(file_Model);
+                Directory.CreateDirectory(filePath);
             }
-            CommonCode.Save(file_Model + "/CreateMap.txt", str_CreateMap);
-            CommonCode.Save(file_Model + "/SetObjectName.txt", str_SetObjectName);
-            CommonCode.Save(file_Model + "/SetPrimaryKey.txt", str_SetPrimaryKey);
+            CommonCode.Save(filePath + "/CreateMap.txt", str_CreateMap);
+            CommonCode.Save(filePath + "/SetObjectName.txt", str_SetObjectName);
+            CommonCode.Save(filePath + "/SetPrimaryKey.txt", str_SetPrimaryKey);
 
             //OpenFolder();
         }
 
         #region 生成路径
 
-        //BLL生成路径——选择
-        private void button6_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            DialogResult dr = fbd.ShowDialog();
-            if (dr == DialogResult.OK)
-            {
-                textBox3.Text = fbd.SelectedPath;
-            }
-        }
-
-        //DAL生成路径——选择
-        private void button7_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            DialogResult dr = fbd.ShowDialog();
-            if (dr == DialogResult.OK)
-            {
-                textBox11.Text = fbd.SelectedPath;
-            }
-        }
-
-        //IDAL生成路径——选择
-        private void button8_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            DialogResult dr = fbd.ShowDialog();
-            if (dr == DialogResult.OK)
-            {
-                textBox12.Text = fbd.SelectedPath;
-            }
-        }
-
-        //Model生成路径——选择
-        private void button9_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            DialogResult dr = fbd.ShowDialog();
-            if (dr == DialogResult.OK)
-            {
-                textBox13.Text = fbd.SelectedPath;
-            }
-        }
 
         #endregion 生成路径
 
@@ -385,15 +343,7 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
         /// </summary>
         private void OpenFolder()
         {
-            string path = textBox3.Text.Trim();
-            if (!string.IsNullOrEmpty(path))
-            {
-                if (path.Contains("\\BLL"))
-                {
-                    path = path.Replace("\\BLL", "");
-                }
-                System.Diagnostics.Process.Start("explorer.exe", path);
-            }
+            System.Diagnostics.Process.Start("explorer.exe", "C:\\Code");
         }
     }
 }

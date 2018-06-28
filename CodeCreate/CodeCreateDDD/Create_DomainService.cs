@@ -12,11 +12,11 @@ namespace CodeCreate
     /// </summary>
     public class Create_DomainService
     {
-        public void Create(string file_Model, string str_nameSpace, DataTable dt_tables, string tableName)
+        public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            tableName = tableName.Replace("Data_", "");
+            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
             StringBuilder sb_body = new StringBuilder();
-            
+
             sb_body.AppendLine("using Lee.CQuery;");
             sb_body.AppendLine("using Lee.CQuery.Paging;");
             sb_body.AppendLine("using Lee.Utility;");
@@ -27,10 +27,12 @@ namespace CodeCreate
             sb_body.AppendLine("using System.Text;");
             sb_body.AppendLine("using System.Threading.Tasks;");
             sb_body.AppendLine("using Lee.Utility.Extension;");
-            sb_body.AppendLine("using BigDataAnalysis.Domain.Data.Repository;");
-            sb_body.AppendLine("using BigDataAnalysis.Domain.Data.Model;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Repository;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Model;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Query." + tablePrefix + ";");
+            sb_body.AppendLine("using Lee.Utility.ExpressionUtil;");
             sb_body.AppendLine("");
-            sb_body.AppendLine("namespace BigDataAnalysis.Domain.Data.Service");
+            sb_body.AppendLine("namespace " + str_nameSpace + ".Domain." + tablePrefix + ".Service");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    /// <summary>");
             sb_body.AppendLine("    /// 服务");
@@ -38,7 +40,7 @@ namespace CodeCreate
             sb_body.AppendLine("    public static class " + tableName + "Service");
             sb_body.AppendLine("    {");
             sb_body.AppendLine("        static I" + tableName + "Repository " + tableName + "Repository = ContainerManager.Container.Resolve<I" + tableName + "Repository>();");
-            sb_body.AppendLine("        ");
+            sb_body.AppendLine("");
             sb_body.AppendLine("        #region 保存");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
@@ -48,12 +50,64 @@ namespace CodeCreate
             sb_body.AppendLine("        /// <returns></returns>");
             sb_body.AppendLine("        public static Result<" + tableName + "> Save" + tableName + "(" + tableName + " " + tableName + ")");
             sb_body.AppendLine("        {");
-            sb_body.AppendLine("            " + tableName + ".Save();");
-            sb_body.AppendLine("            var result = Result<" + tableName + ">.SuccessResult(\"保存成功\");");
-            sb_body.AppendLine("            result.Data = " + tableName + ";");
+            sb_body.AppendLine("            if (" + tableName + " == null)");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                return Result<" + tableName + ">.ErrorResult(\"信息为空\");");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("            Result<" + tableName + "> result = null;");
+            sb_body.AppendLine("            if (" + tableName + ".SysNo == Guid.Empty)");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                result = Add" + tableName + "(" + tableName + ");");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("            else");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                result = Update" + tableName + "(" + tableName + ");");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("");
             sb_body.AppendLine("            return result;");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
+            sb_body.AppendLine("        #endregion");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        #region 添加");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 添加信息");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        /// <param name=\"" + tableName + "\">信息</param>");
+            sb_body.AppendLine("        /// <returns></returns>");
+            sb_body.AppendLine("        static Result<" + tableName + "> Add" + tableName + "(" + tableName + " " + tableName + ")");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            " + tableName + ".SetDefaultValue();");
+            sb_body.AppendLine("            " + tableName + ".Save();");
+            sb_body.AppendLine("            var result = Result<" + tableName + ">.SuccessResult(\"保存成功\");");
+            sb_body.AppendLine("            result." + tablePrefix + " = " + tableName + ";");
+            sb_body.AppendLine("            return result;");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("        #endregion");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        #region 修改");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 修改信息");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        /// <param name=\"" + tableName + "\">信息</param>");
+            sb_body.AppendLine("        /// <returns></returns>");
+            sb_body.AppendLine("        static Result<" + tableName + "> Update" + tableName + "(" + tableName + " " + tableName + ")");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            var this" + tableName + " = Get" + tableName + "(" + tableName + ".SysNo);");
+            sb_body.AppendLine("            if (this" + tableName + " == null)");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                return Result<" + tableName + ">.ErrorResult(\"请指定要编辑的数据\");");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("            var excludeModifyPropertys = ExpressionHelper.GetExpressionPropertyNames<" + tableName + ">(u => u.CreateDate);");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            this" + tableName + ".ModifyFromOther" + tableName + "(" + tableName + ", excludeModifyPropertys);//更新");
+            sb_body.AppendLine("            this" + tableName + ".Save();");
+            sb_body.AppendLine("            var result = Result<" + tableName + ">.SuccessResult(\"更新成功\");");
+            sb_body.AppendLine("            result." + tablePrefix + " = this" + tableName + ";");
+            sb_body.AppendLine("            return result;");
+            sb_body.AppendLine("        }");
             sb_body.AppendLine("        #endregion");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #region 获取");
@@ -69,6 +123,20 @@ namespace CodeCreate
             sb_body.AppendLine("            return " + tableName + ";");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 获取");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        /// <param name=\"SysNo\">编号</param>");
+            sb_body.AppendLine("        /// <returns></returns>");
+            sb_body.AppendLine("        public static " + tableName + " Get" + tableName + "(Guid SysNo)");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            if (SysNo == Guid.Empty)");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                return null;");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("            IQuery query = QueryFactory.Create<" + tableName + "Query>(c => c.SysNo == SysNo);");
+            sb_body.AppendLine("            return Get" + tableName + "(query);");
+            sb_body.AppendLine("        }");
             sb_body.AppendLine("        #endregion");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #region 获取列表");
@@ -104,30 +172,44 @@ namespace CodeCreate
             sb_body.AppendLine("        #region 删除");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 删除");
+            sb_body.AppendLine("        /// 删除数据");
             sb_body.AppendLine("        /// </summary>");
-            sb_body.AppendLine("        /// <param name=\"" + tableName + "s\">要删出的信息</param>");
-            sb_body.AppendLine("        /// <returns>执行结果</returns>");
+            sb_body.AppendLine("        /// <param name=\"" + tableName + "s\">要删除的信息</param>");
+            sb_body.AppendLine("        /// <returns></returns>");
             sb_body.AppendLine("        public static Result Delete" + tableName + "(IEnumerable<" + tableName + "> " + tableName + "s)");
             sb_body.AppendLine("        {");
-            sb_body.AppendLine("            #region 参数判断");
-            sb_body.AppendLine("");
             sb_body.AppendLine("            if (" + tableName + "s.IsNullOrEmpty())");
             sb_body.AppendLine("            {");
-            sb_body.AppendLine("                return Result.ErrorResult(\"没有指定要删除的\");");
+            sb_body.AppendLine("                return Result.ErrorResult(\"没有指定任何要删除的数据\");");
             sb_body.AppendLine("            }");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("            #endregion");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("            //删除逻辑");
+            sb_body.AppendLine("            " + tableName + "Repository.Remove(" + tableName + "s.ToArray());");
             sb_body.AppendLine("            return Result.SuccessResult(\"删除成功\");");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 删除数据");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        /// <param name=\"" + tableName + "Ids\">编号</param>");
+            sb_body.AppendLine("        /// <returns></returns>");
+            sb_body.AppendLine("        public static Result Delete" + tableName + "(IEnumerable<Guid> " + tableName + "Ids)");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            if (" + tableName + "Ids.IsNullOrEmpty())");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                return Result.ErrorResult(\"没有指定要删除的数据\");");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("            IEnumerable<" + tableName + "> " + tableName + "s = " + tableName + "Ids.Select(c => " + tableName + ".Create" + tableName + "(c)).ToList();");
+            sb_body.AppendLine("            return Delete" + tableName + "(" + tableName + "s);");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("        ");
             sb_body.AppendLine("        #endregion");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("");
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
-            
-            file_Model = "C:\\Code\\BigDataAnalysis.Domain\\Data\\Service";
+            sb_body.AppendLine("");
+
+
+            string file_Model = "C:\\Code\\" + str_nameSpace + ".Domain\\" + tablePrefix + "\\Service";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);
