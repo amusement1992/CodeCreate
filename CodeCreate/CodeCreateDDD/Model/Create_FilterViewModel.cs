@@ -47,14 +47,8 @@ namespace CodeCreate
 
                 CommonCode.GetColumnType(ref columnType, ref data_default);
 
-                //if (nullable.ToUpper().Trim() == "N" && (columnType.ToLower() == "decimal" || columnType.ToLower() == "int"))
-                //{
-                //    nullable = "?";
-                //}
-                //else
-                //{
-                //    nullable = "";
-                //}
+                nullable = CommonCode.GetNullable(columnType, nullable);
+
                 nullable = columnType == "string" ? "" : "?";
 
                 sb.AppendLine("");
@@ -85,7 +79,7 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace BigDataAnalysis.ViewModel.Data.Filter");
             sb_body.AppendLine("{");
-            sb_body.AppendLine("    public class " + tableName + "FilterViewModel");
+            sb_body.AppendLine("    public class " + tableName + "FilterViewModel: PagingFilter");
             sb_body.AppendLine("    {");
             sb_body.AppendLine("");
 

@@ -18,7 +18,6 @@ namespace CodeCreate
             StringBuilder sb_body = new StringBuilder();
 
             sb_body.AppendLine("using Lee.CQuery;");
-            sb_body.AppendLine("using Lee.DTO.Data.Query.Filter;");
             sb_body.AppendLine("using Lee.CQuery.Paging;");
             sb_body.AppendLine("using BigDataAnalysis.ServiceInterface.Data;");
             sb_body.AppendLine("using System;");

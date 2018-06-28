@@ -20,14 +20,22 @@ namespace CodeCreate
 
             sb_body.AppendLine("            #region " + tableName + "");
             sb_body.AppendLine("");
-            sb_body.AppendLine("            cfg.CreateMap<" + tableName + ", " + tableName + "Entity>();");
             sb_body.AppendLine("            cfg.CreateMap<" + tableName + "Entity, " + tableName + ">();");
+            sb_body.AppendLine("            cfg.CreateMap<" + tableName + ", " + tableName + "Entity>();");
+            sb_body.AppendLine("");
             sb_body.AppendLine("            cfg.CreateMap<" + tableName + ", " + tableName + "Dto>();");
-            sb_body.AppendLine("            cfg.CreateMap<" + tableName + "CmdDto, " + tableName + ">();");
+            sb_body.AppendLine("            cfg.CreateMap<" + tableName + "Dto, " + tableName + ">();");
+            sb_body.AppendLine("");
             sb_body.AppendLine("            cfg.CreateMap<" + tableName + "Dto, " + tableName + "ViewModel>();");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            cfg.CreateMap<" + tableName + "FilterViewModel, " + tableName + "FilterDto>();");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            cfg.CreateMap<" + tableName + "CmdDto, " + tableName + ">();");
             sb_body.AppendLine("            cfg.CreateMap<" + tableName + "ViewModel, " + tableName + "CmdDto>();");
             sb_body.AppendLine("");
+            sb_body.AppendLine("");
             sb_body.AppendLine("            #endregion");
+
             sb_body.AppendLine("");
 
             return sb_body.ToString();

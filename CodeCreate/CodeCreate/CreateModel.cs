@@ -105,14 +105,8 @@ namespace CodeCreate
 
                 #endregion 数据类型判断
 
-                if (nullable.ToUpper().Trim() == "N" && (columnType.ToLower() == "decimal" || columnType.ToLower() == "int"))
-                {
-                    nullable = "?";
-                }
-                else
-                {
-                    nullable = "";
-                }
+
+                nullable = CommonCode.GetNullable(columnType, nullable);
 
                 sb.AppendLine("");
 

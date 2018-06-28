@@ -45,15 +45,8 @@ namespace CodeCreate
                 }
 
                 CommonCode.GetColumnType(ref columnType, ref data_default);
-
-                if (nullable.ToUpper().Trim() == "N" && (columnType.ToLower() == "decimal" || columnType.ToLower() == "int"))
-                {
-                    nullable = "?";
-                }
-                else
-                {
-                    nullable = "";
-                }
+                
+                nullable = CommonCode.GetNullable(columnType, nullable);
 
                 sb.Append("\"" + columnName + "\", ");
             }

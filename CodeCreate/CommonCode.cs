@@ -101,6 +101,25 @@ namespace CodeCreate
             #endregion 数据类型判断
         }
 
+        /// <summary>
+        /// 是否可空
+        /// </summary>
+        /// <param name="nullable"></param>
+        /// <param name="columnType"></param>
+        /// <returns></returns>
+        public static string GetNullable(string columnType, string nullable)
+        {
+            bool isNullable = false;
+            if (nullable.ToUpper().Trim() == "N")
+            {
+                var temp = columnType.ToLower();
+                if (temp != "string")
+                {
+                    isNullable = true;
+                }
+            }
+            return isNullable ? "?" : "";
+        }
 
         /// <summary>
         /// 获取字段的数据类型

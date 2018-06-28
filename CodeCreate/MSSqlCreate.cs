@@ -264,17 +264,17 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
 
                     #endregion 生成内容
 
-                    //生成model
-                    new CreateModel().Create(file_Model, configModel.str_nameSpace, dt_tables, str_ModelName);
+                    ////生成model
+                    //new CreateModel().Create(file_Model, configModel.str_nameSpace, dt_tables, str_ModelName);
 
-                    //生成IDAL
-                    new CreateIDAL().Create(file_IDAL, configModel.str_nameSpace, str_IDALName, str_ModelName);
+                    ////生成IDAL
+                    //new CreateIDAL().Create(file_IDAL, configModel.str_nameSpace, str_IDALName, str_ModelName);
 
-                    //生成BLL
-                    new CreateBLL().Create(file_BLL, configModel.str_nameSpace, str_table, str_BLLName, str_IDALName, str_ModelName);
+                    ////生成BLL
+                    //new CreateBLL().Create(file_BLL, configModel.str_nameSpace, str_table, str_BLLName, str_IDALName, str_ModelName);
 
-                    //生成DAL
-                    new CreateDAL().Create(file_DAL, str_table, str_DALName, str_IDALName, str_ModelName, sb_column1, sb_column2, sb_column3, sb_column4, sb_column5, configModel);
+                    ////生成DAL
+                    //new CreateDAL().Create(file_DAL, str_table, str_DALName, str_IDALName, str_ModelName, sb_column1, sb_column2, sb_column3, sb_column4, sb_column5, configModel);
 
 
                     new Create_DeleteCmdDto().Create(file_Model, configModel.str_nameSpace, dt_tables, str_table);
@@ -309,7 +309,7 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
             }
 
 
-            file_Model = "C:\\Code\\BigDataAnalysis.Config";
+            file_Model = "C:\\Code\\Config";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);
