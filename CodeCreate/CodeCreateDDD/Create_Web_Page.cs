@@ -21,6 +21,9 @@ namespace CodeCreate
             string primaryKey = "";
 
             StringBuilder sb = new StringBuilder();
+            StringBuilder sb2 = new StringBuilder();
+            StringBuilder sb3 = new StringBuilder();
+            StringBuilder sb4 = new StringBuilder();
 
             #region Model
 
@@ -49,18 +52,19 @@ namespace CodeCreate
 
                 nullable = CommonCode.GetNullable(columnType, nullable);
 
-                if (columnType == "string")
+                sb.AppendLine("                                " + columnName + ": $(\"." + columnName + "\").textbox(\"getText\"),");
+
+                sb2.AppendLine("                    $(\"." + columnName + "\").textbox(\"setText\", row." + columnName + ");");
+
+                if (columnName != "SysNo" && columnName != "CreateDate" && columnName != "UpdateDate")
                 {
-                    sb.AppendLine("            if (!filter."+ columnName + ".IsNullOrEmpty())");
-                }
-                else
-                {
-                    sb.AppendLine("            if (!filter." + columnName + ".HasValue)");
+                    sb3.AppendLine("                <th data-options=\"field:'" + columnName + "',width:100,align:'center'\">" + columnComment + "</th>");
 
                 }
-                sb.AppendLine("            {");
-                sb.AppendLine("                query.Equal<" + tableName + "Query>(c => c." + columnName + ", filter." + columnName + ");");
-                sb.AppendLine("            }");
+                sb4.AppendLine("            <div style=\"margin-top: 10px;\">");
+                sb4.AppendLine("                <input class=\"easyui-textbox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:true,missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
+                sb4.AppendLine("            </div>");
+
             }
 
             #endregion Model
@@ -212,8 +216,10 @@ namespace CodeCreate
             sb_body.AppendLine("                        if ($(this).form(\"validate\")) {");
             sb_body.AppendLine("");
             sb_body.AppendLine("                            var parm = {");
-            sb_body.AppendLine("                                " + tableName + "Name: $(\"." + tableName + "Name\").textbox(\"getText\"),");
-            sb_body.AppendLine("                                SysNo: type == \"updateRow\" ? $(\".SysNo\").textbox(\"getText\") : \"00000000-0000-0000-0000-000000000000\"");
+            sb_body.AppendLine("                                SysNo: type == \"updateRow\" ? $(\".SysNo\").textbox(\"getText\") : \"00000000-0000-0000-0000-000000000000\",");
+
+            sb_body.AppendLine(sb.ToString());
+
             sb_body.AppendLine("                            }");
             sb_body.AppendLine("                            $.ajax({");
             sb_body.AppendLine("                                url: \"Edit" + tableName + "\",");
@@ -245,7 +251,9 @@ namespace CodeCreate
             sb_body.AppendLine("                } else {");
             sb_body.AppendLine("                    var row = $(\"#dtGrid\").datagrid(\"getSelected\");");
             sb_body.AppendLine("                    $(\".SysNo\").textbox(\"setText\", row.SysNo);");
-            sb_body.AppendLine("                    $(\"." + tableName + "Name\").textbox(\"setText\", row." + tableName + "Name);");
+
+            sb_body.AppendLine(sb2.ToString());
+
             sb_body.AppendLine("                }");
             sb_body.AppendLine("            }");
             sb_body.AppendLine("        });");
@@ -258,7 +266,9 @@ namespace CodeCreate
             sb_body.AppendLine("            <tr>");
             sb_body.AppendLine("                <th data-options=\"field:'ck',checkbox:true,fixed:true\"></th>");
             sb_body.AppendLine("                <th data-options=\"field:'SysNo',width:100,align:'center'\">编号</th>");
-            sb_body.AppendLine("                <th data-options=\"field:'" + tableName + "Name',width:100,align:'center'\">" + tableDesc + "名称</th>");
+
+            sb_body.AppendLine(sb3.ToString());
+
             sb_body.AppendLine("                <th data-options=\"field:'CreateDate',width:160,align:'center',fixed:true,formatter:fmDate\">添加时间</th>");
             sb_body.AppendLine("                <th data-options=\"field:'UpdateDate',width:160,align:'center',fixed:true,formatter:fmDate\">更新时间</th>");
             sb_body.AppendLine("                <th data-options=\"field:'color',title:'操作',width:200,align:'center',fixed:true,formatter:function(){return '<a class=menuBtn>操作</a>'}\"></th>");
@@ -279,13 +289,15 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("    </div>");
             sb_body.AppendLine("");
-            sb_body.AppendLine("    <div id=\"Add" + tableName + "\" style=\"width: 600px;height: 150px;display: none;\">");
+            sb_body.AppendLine("    <div id=\"Add" + tableName + "\" style=\"width: 600px;height: 400px;display: none;\">");
             sb_body.AppendLine("        <form class=\"easyui-form\" id=\"Add" + tableName + "Temp\" style=\"width: 80%;margin: 20px auto;\">");
             sb_body.AppendLine("            <div style=\"margin-top: 10px;display:none\">");
             sb_body.AppendLine("                <input class=\"easyui-textbox SysNo\" name=\"SysNo\" data-options=\"label:'编号'\" />");
             sb_body.AppendLine("            </div>");
             sb_body.AppendLine("            <div style=\"margin-top: 10px;\">");
-            sb_body.AppendLine("                <input class=\"easyui-textbox " + tableName + "Name\" name=\"" + tableName + "Name\" data-options=\"label:'" + tableDesc + "名称',prompt:'请输入" + tableDesc + "名称',required:true,missingMessage:'请输入" + tableDesc + "名称'\" style=\"width: 300px;\" />");
+
+            sb_body.AppendLine(sb4.ToString());
+
             sb_body.AppendLine("            </div>");
             sb_body.AppendLine("");
             sb_body.AppendLine("        </form>");
