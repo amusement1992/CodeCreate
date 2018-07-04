@@ -15,28 +15,7 @@ namespace CodeCreate
         public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
             string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
-            string tableDesc = "";
-            switch (tableName)
-            {
-                case "Brand":
-                    tableDesc = "品牌";
-                    break;
-                case "Category":
-                    tableDesc = "品类";
-                    break;
-                case "Platform":
-                    tableDesc = "" + tableDesc + "";
-                    break;
-                case "Company":
-                    tableDesc = "公司";
-                    break;
-                case "Shop":
-                    tableDesc = "店铺";
-                    break;
-                default:
-                    tableDesc = "【名称】";
-                    break;
-            }
+            string tableDesc = CommonCode.GetTableDesc(tableName);
 
             bool isPrimeKey = false;
             string primaryKey = "";
@@ -117,6 +96,7 @@ namespace CodeCreate
             sb_body.AppendLine("        [HttpPost]");
             sb_body.AppendLine("        public ActionResult Edit" + tableName + "(" + tableName + "ViewModel vm)");
             sb_body.AppendLine("        {");
+            sb_body.AppendLine("            vm.UpdateDate = DateTime.Now;");
             sb_body.AppendLine("            var saveInfo = new Save" + tableName + "CmdDto()");
             sb_body.AppendLine("            {");
             sb_body.AppendLine("                " + tableName + " = vm.MapTo<" + tableName + "CmdDto>()");

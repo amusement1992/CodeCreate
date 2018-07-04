@@ -18,7 +18,9 @@ namespace CodeCreate
         {
             FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
             fs.SetLength(0);
-            byte[] buffer = Encoding.Default.GetBytes(fileContent);
+            var gb2312 = Encoding.GetEncoding("GB2312");
+
+            byte[] buffer = gb2312.GetBytes(fileContent);
 
             fs.Write(buffer, 0, buffer.Length);
 
@@ -204,6 +206,12 @@ namespace CodeCreate
                     break;
                 case "Department":
                     tableDesc = "部门";
+                    break;
+                case "IPConfig":
+                    tableDesc = "IP授权";
+                    break;
+                case "SystemConfig":
+                    tableDesc = "系统配置";
                     break;
                 default:
                     tableDesc = "【名称】";

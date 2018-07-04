@@ -40,6 +40,8 @@
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.button5 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.label10 = new System.Windows.Forms.Label();
             this.textBox9 = new System.Windows.Forms.TextBox();
@@ -58,8 +60,7 @@
             this.button10 = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.button6 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -162,7 +163,7 @@
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(516, 381);
+            this.button5.Location = new System.Drawing.Point(491, 380);
             this.button5.Name = "button5";
             this.button5.Size = new System.Drawing.Size(77, 38);
             this.button5.TabIndex = 9;
@@ -198,6 +199,23 @@
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "参数设定";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 29);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "命名空间：";
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(150, 29);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(120, 21);
+            this.textBox1.TabIndex = 5;
+            this.textBox1.Text = "BigDataAnalysis";
             // 
             // label11
             // 
@@ -331,9 +349,9 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(599, 382);
+            this.button10.Location = new System.Drawing.Point(632, 382);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(77, 36);
+            this.button10.Size = new System.Drawing.Size(44, 37);
             this.button10.TabIndex = 15;
             this.button10.Text = "查看";
             this.button10.UseVisualStyleBackColor = true;
@@ -361,22 +379,15 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "参数设定";
             // 
-            // label2
+            // button6
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 29);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 12);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "命名空间：";
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(150, 29);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(120, 21);
-            this.textBox1.TabIndex = 5;
-            this.textBox1.Text = "BigDataAnalysis";
+            this.button6.Location = new System.Drawing.Point(574, 382);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(52, 37);
+            this.button6.TabIndex = 15;
+            this.button6.Text = "删除";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // MSSqlCreate
             // 
@@ -386,6 +397,7 @@
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(897, 441);
             this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.button6);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.button5);
@@ -444,5 +456,6 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button button6;
     }
 }

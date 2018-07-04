@@ -345,5 +345,18 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
         {
             System.Diagnostics.Process.Start("explorer.exe", "C:\\Code");
         }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Directory.Delete("C:\\Code", true);
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }

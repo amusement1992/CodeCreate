@@ -52,18 +52,22 @@ namespace CodeCreate
 
                 nullable = CommonCode.GetNullable(columnType, nullable);
 
-                sb.AppendLine("                                " + columnName + ": $(\"." + columnName + "\").textbox(\"getText\"),");
-
-                sb2.AppendLine("                    $(\"." + columnName + "\").textbox(\"setText\", row." + columnName + ");");
-
-                if (columnName != "SysNo" && columnName != "CreateDate" && columnName != "UpdateDate")
+                if (columnName != "SysNo" && columnName != "CreateDate" && columnName != "UpdateDate" && columnName != "Enable")
                 {
+                    sb.AppendLine("                                " + columnName + ": $(\"." + columnName + "\").textbox(\"getText\"),");
+
+
+                    sb2.AppendLine("                    $(\"." + columnName + "\").textbox(\"setText\", row." + columnName + ");");
+
+
                     sb3.AppendLine("                <th data-options=\"field:'" + columnName + "',width:100,align:'center'\">" + columnComment + "</th>");
 
+
+                    sb4.AppendLine("            <div style=\"margin-top: 10px;\">");
+                    sb4.AppendLine("                <input class=\"easyui-textbox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:true,missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
+                    sb4.AppendLine("            </div>");
                 }
-                sb4.AppendLine("            <div style=\"margin-top: 10px;\">");
-                sb4.AppendLine("                <input class=\"easyui-textbox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:true,missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
-                sb4.AppendLine("            </div>");
+
 
             }
 
@@ -155,7 +159,7 @@ namespace CodeCreate
             sb_body.AppendLine("            pageSize: 10,");
             sb_body.AppendLine("            striped: true,");
             sb_body.AppendLine("            loading: true,");
-            sb_body.AppendLine("            singleSelect: true,");
+            sb_body.AppendLine("            singleSelect: false,");
             sb_body.AppendLine("            //nowrap:true,");
             sb_body.AppendLine("            scrollbarSize: 0,");
             sb_body.AppendLine("            toolbar: toolbar,");
@@ -313,7 +317,7 @@ namespace CodeCreate
             sb_body.AppendLine("");
 
 
-            string file_Model = "C:\\Code\\" + str_nameSpace + ".Web\\Views\\" + tableName + "";
+            string file_Model = "C:\\Code\\" + str_nameSpace + ".Web\\Views\\tablePrefix";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);

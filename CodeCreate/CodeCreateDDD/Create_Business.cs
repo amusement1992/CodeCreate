@@ -55,7 +55,7 @@ namespace CodeCreate
                 }
                 else
                 {
-                    sb.AppendLine("            if (!filter." + columnName + ".HasValue)");
+                    sb.AppendLine("            if (filter." + columnName + ".HasValue)");
 
                 }
                 sb.AppendLine("            {");
