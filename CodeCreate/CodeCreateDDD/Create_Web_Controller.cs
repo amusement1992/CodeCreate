@@ -124,7 +124,8 @@ namespace CodeCreate
             sb_body.AppendLine("}");
 
 
-            string file_Model = "C:\\Code\\" + str_nameSpace + ".Web\\Controllers";
+            //string file_Model = "C:\\Code\\" + str_nameSpace + ".Web\\Controllers";
+            string file_Model = "C:\\Code\\Controllers";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);

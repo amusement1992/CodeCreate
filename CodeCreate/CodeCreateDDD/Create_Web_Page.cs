@@ -317,7 +317,7 @@ namespace CodeCreate
             sb_body.AppendLine("");
 
 
-            string file_Model = "C:\\Code\\" + str_nameSpace + ".Web\\Views\\tablePrefix";
+            string file_Model = "C:\\Code\\" + str_nameSpace + ".Web\\Views\\" + tablePrefix+"\\";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);
