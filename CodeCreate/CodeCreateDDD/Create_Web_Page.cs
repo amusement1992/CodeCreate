@@ -20,10 +20,11 @@ namespace CodeCreate
             bool isPrimeKey = false;
             string primaryKey = "";
 
-            StringBuilder sb = new StringBuilder();
-            StringBuilder sb2 = new StringBuilder();
-            StringBuilder sb3 = new StringBuilder();
-            StringBuilder sb4 = new StringBuilder();
+            StringBuilder sb_GetEditData = new StringBuilder();
+            StringBuilder sb_SetEditData = new StringBuilder();
+            StringBuilder sb_Table_Th = new StringBuilder();
+            StringBuilder sb_EditDiv = new StringBuilder();
+            StringBuilder sb_Formatter = new StringBuilder();
 
             #region Model
 
@@ -52,20 +53,63 @@ namespace CodeCreate
 
                 nullable = CommonCode.GetNullable(columnType, nullable);
 
-                if (columnName != "SysNo" && columnName != "CreateDate" && columnName != "UpdateDate" && columnName != "Enable")
+                string required = "true";
+                if (columnName == "Remark")
                 {
-                    sb.AppendLine("                                " + columnName + ": $(\"." + columnName + "\").textbox(\"getText\"),");
+                    required = "false";
+                }
+
+                var arr = new List<string> {
+                    "SysNo",
+                    "CreateDate",
+                    "UpdateDate",
+                    "Status",
+                    "Enable",
+                };
+                if (!arr.Contains(columnName))
+                {
+                    if (columnType == "bool")
+                    {
+                        sb_GetEditData.AppendLine("            " + columnName + ": $(\"." + columnName + "\").combobox(\"getValue\"),");
 
 
-                    sb2.AppendLine("                    $(\"." + columnName + "\").textbox(\"setText\", row." + columnName + ");");
+                        sb_SetEditData.AppendLine("        $(\"." + columnName + "\").combobox(\"select\", row." + columnName + ");");
 
 
-                    sb3.AppendLine("                <th data-options=\"field:'" + columnName + "',width:100,align:'center'\">" + columnComment + "</th>");
+                        sb_Formatter.AppendLine("    function formatter" + columnName + "(value, row, index) {");
+                        sb_Formatter.AppendLine("        if (value == true) {");
+                        sb_Formatter.AppendLine("            return \"是\";");
+                        sb_Formatter.AppendLine("        } else {");
+                        sb_Formatter.AppendLine("            return \"否\";");
+                        sb_Formatter.AppendLine("        }");
+                        sb_Formatter.AppendLine("        return value;");
+                        sb_Formatter.AppendLine("    }");
 
 
-                    sb4.AppendLine("            <div style=\"margin-top: 10px;\">");
-                    sb4.AppendLine("                <input class=\"easyui-textbox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:true,missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
-                    sb4.AppendLine("            </div>");
+                        sb_Table_Th.AppendLine("                <th data-options=\"field:'" + columnName + "',width:100,align:'center',formatter:formatter" + columnName + "\">" + columnComment + "</th>");
+
+
+                        sb_EditDiv.AppendLine("                <div style=\"margin-top: 10px;\">");
+                        sb_EditDiv.AppendLine("                    <input class=\"easyui-combobox " + columnName + "\" name=\"" + columnName + "\" style=\"width: 300px;\" data-options=\"label:'" + columnComment + "',required:" + required + ",editable:false,valueField:'value',textField:'label',data:[{'value':true,label:'是',selected:true},{'value':false,label:'否'}],panelHeight:true\" />");
+                        sb_EditDiv.AppendLine("                </div>");
+
+                    }
+                    else
+                    {
+                        sb_GetEditData.AppendLine("            " + columnName + ": $(\"." + columnName + "\").textbox(\"getText\"),");
+
+
+                        sb_SetEditData.AppendLine("        $(\"." + columnName + "\").textbox(\"setText\", row." + columnName + ");");
+
+
+                        sb_Table_Th.AppendLine("                <th data-options=\"field:'" + columnName + "',width:100,align:'center'\">" + columnComment + "</th>");
+
+
+                        sb_EditDiv.AppendLine("            <div style=\"margin-top: 10px;\">");
+                        sb_EditDiv.AppendLine("                <input class=\"easyui-textbox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:" + required + ",missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
+                        sb_EditDiv.AppendLine("            </div>");
+                    }
+
                 }
 
 
@@ -218,18 +262,11 @@ namespace CodeCreate
             sb_body.AppendLine("                $(\"#Add" + tableName + "Temp\").form(\"submit\", {");
             sb_body.AppendLine("                    onSubmit: function () {");
             sb_body.AppendLine("                        if ($(this).form(\"validate\")) {");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("                            var parm = {");
-            sb_body.AppendLine("                                SysNo: type == \"updateRow\" ? $(\".SysNo\").textbox(\"getText\") : \"00000000-0000-0000-0000-000000000000\",");
-
-            sb_body.AppendLine(sb.ToString());
-
-            sb_body.AppendLine("                            }");
             sb_body.AppendLine("                            $.ajax({");
             sb_body.AppendLine("                                url: \"Edit" + tableName + "\",");
             sb_body.AppendLine("                                type: 'post',");
             sb_body.AppendLine("                                contentType: \"application/json\",");
-            sb_body.AppendLine("                                data: JSON.stringify(parm),");
+            sb_body.AppendLine("                                data: JSON.stringify(GetEditData(type)),");
             sb_body.AppendLine("                                success: function (data) {");
             sb_body.AppendLine("                                    var rows = $(\"#dtGrid\").datagrid(\"getRows\");");
             sb_body.AppendLine("                                    $(\"#dtGrid\").datagrid('loadData', rows);");
@@ -254,14 +291,34 @@ namespace CodeCreate
             sb_body.AppendLine("                    $(\"#Add" + tableName + "Temp\").form(\"reset\");");
             sb_body.AppendLine("                } else {");
             sb_body.AppendLine("                    var row = $(\"#dtGrid\").datagrid(\"getSelected\");");
-            sb_body.AppendLine("                    $(\".SysNo\").textbox(\"setText\", row.SysNo);");
-
-            sb_body.AppendLine(sb2.ToString());
-
+            sb_body.AppendLine("                    SetEditData(row);");
             sb_body.AppendLine("                }");
             sb_body.AppendLine("            }");
             sb_body.AppendLine("        });");
             sb_body.AppendLine("    }");
+
+
+            sb_body.AppendLine("");
+            sb_body.AppendLine("    function GetEditData(type) {");
+            sb_body.AppendLine("        var parm = {");
+            sb_body.AppendLine("            SysNo: type == \"updateRow\" ? $(\".SysNo\").textbox(\"getText\") : \"00000000-0000-0000-0000-000000000000\",");
+
+            sb_body.AppendLine(sb_GetEditData.ToString());
+
+            sb_body.AppendLine("        };");
+            sb_body.AppendLine("        return parm;");
+            sb_body.AppendLine("    }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("    function SetEditData(row) {");
+            sb_body.AppendLine("        $(\".SysNo\").textbox(\"setText\", row.SysNo);");
+
+            sb_body.AppendLine(sb_SetEditData.ToString());
+
+            sb_body.AppendLine("    }");
+            sb_body.AppendLine("");
+
+            sb_body.AppendLine(sb_Formatter.ToString());
+
             sb_body.AppendLine("</script>");
             sb_body.AppendLine("");
             sb_body.AppendLine("<body class=\"easyui-layout\">");
@@ -271,7 +328,7 @@ namespace CodeCreate
             sb_body.AppendLine("                <th data-options=\"field:'ck',checkbox:true,fixed:true\"></th>");
             sb_body.AppendLine("                <th data-options=\"field:'SysNo',width:100,align:'center'\">编号</th>");
 
-            sb_body.AppendLine(sb3.ToString());
+            sb_body.AppendLine(sb_Table_Th.ToString());
 
             sb_body.AppendLine("                <th data-options=\"field:'CreateDate',width:160,align:'center',fixed:true,formatter:fmDate\">添加时间</th>");
             sb_body.AppendLine("                <th data-options=\"field:'UpdateDate',width:160,align:'center',fixed:true,formatter:fmDate\">更新时间</th>");
@@ -300,7 +357,7 @@ namespace CodeCreate
             sb_body.AppendLine("            </div>");
             sb_body.AppendLine("            <div style=\"margin-top: 10px;\">");
 
-            sb_body.AppendLine(sb4.ToString());
+            sb_body.AppendLine(sb_EditDiv.ToString());
 
             sb_body.AppendLine("            </div>");
             sb_body.AppendLine("");
@@ -317,7 +374,7 @@ namespace CodeCreate
             sb_body.AppendLine("");
 
 
-            string file_Model = "C:\\Code\\" + str_nameSpace + ".Web\\Views\\" + tablePrefix+"\\";
+            string file_Model = "C:\\Code\\" + str_nameSpace + ".Web\\Views\\" + tablePrefix + "\\";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);
