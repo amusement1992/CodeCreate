@@ -355,11 +355,7 @@ namespace CodeCreate
             sb_body.AppendLine("            <div style=\"margin-top: 10px;display:none\">");
             sb_body.AppendLine("                <input class=\"easyui-textbox SysNo\" name=\"SysNo\" data-options=\"label:'编号'\" />");
             sb_body.AppendLine("            </div>");
-            sb_body.AppendLine("            <div style=\"margin-top: 10px;\">");
-
             sb_body.AppendLine(sb_EditDiv.ToString());
-
-            sb_body.AppendLine("            </div>");
             sb_body.AppendLine("");
             sb_body.AppendLine("        </form>");
             sb_body.AppendLine("");
