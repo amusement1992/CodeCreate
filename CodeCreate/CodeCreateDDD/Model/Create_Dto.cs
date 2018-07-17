@@ -72,6 +72,7 @@ namespace CodeCreate
             StringBuilder sb_body = new StringBuilder();
 
             sb_body.AppendLine("using System;");
+            sb_body.AppendLine("using System.Collections.Generic;");
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".DTO." + tablePrefix + ".Query");
             sb_body.AppendLine("{");

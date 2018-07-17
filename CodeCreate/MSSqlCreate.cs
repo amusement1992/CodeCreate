@@ -317,9 +317,9 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
             {
                 Directory.CreateDirectory(filePath);
             }
-            CommonCode.Save(filePath + "/CreateMap.txt", str_CreateMap);
-            CommonCode.Save(filePath + "/SetObjectName.txt", str_SetObjectName);
-            CommonCode.Save(filePath + "/SetPrimaryKey.txt", str_SetPrimaryKey);
+            CommonCode.Save(filePath + "/AutoMapMapper CreateMap.txt", str_CreateMap);
+            CommonCode.Save(filePath + "/DbConfig SetObjectName.txt", str_SetObjectName);
+            CommonCode.Save(filePath + "/DbConfig SetPrimaryKey.txt", str_SetPrimaryKey);
 
             //OpenFolder();
         }

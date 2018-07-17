@@ -77,6 +77,7 @@ namespace CodeCreate
             StringBuilder sb_body = new StringBuilder();
 
             sb_body.AppendLine("using System;");
+            sb_body.AppendLine("using System.Collections.Generic;");
             sb_body.AppendLine("using Lee.Command;");
             sb_body.AppendLine("using Lee.Utility.Extension;");
             sb_body.AppendLine("");

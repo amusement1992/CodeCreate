@@ -193,7 +193,7 @@ namespace CodeCreate
                     tableDesc = "品牌";
                     break;
                 case "Category":
-                    tableDesc = "品类";
+                    tableDesc = "类目";
                     break;
                 case "Platform":
                     tableDesc = "平台";
@@ -212,6 +212,9 @@ namespace CodeCreate
                     break;
                 case "SystemConfig":
                     tableDesc = "系统配置";
+                    break;
+                case "DataSource":
+                    tableDesc = "数据来源";
                     break;
                 default:
                     tableDesc = "【名称】";
