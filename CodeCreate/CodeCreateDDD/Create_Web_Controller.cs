@@ -52,12 +52,14 @@ namespace CodeCreate
             sb_body.AppendLine("using " + str_nameSpace + ".ViewModel." + tablePrefix + ";");
             sb_body.AppendLine("using " + str_nameSpace + ".ViewModel." + tablePrefix + ".Filter;");
             sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Cmd;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Web.Helper;");
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".Web.Controllers");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    public class " + tableName + "Controller : WebBaseController");
             sb_body.AppendLine("    {");
             sb_body.AppendLine("        I" + tableName + "Service " + tableName + "Service = ContainerManager.Container.Resolve<I" + tableName + "Service>();");
+            sb_body.AppendLine("        Guid LoginUserId = UserHelper.GetLoginUserId();");
             sb_body.AppendLine("");
             sb_body.AppendLine("        public " + tableName + "Controller() { }");
             sb_body.AppendLine("");
@@ -97,6 +99,11 @@ namespace CodeCreate
             sb_body.AppendLine("        public ActionResult Edit" + tableName + "(" + tableName + "ViewModel vm)");
             sb_body.AppendLine("        {");
             sb_body.AppendLine("            vm.UpdateDate = DateTime.Now;");
+            sb_body.AppendLine("            vm.UpdateUserID = LoginUserId;");
+            sb_body.AppendLine("            if (vm.SysNo == Guid.Empty)");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                vm.CreateUserID = LoginUserId;");
+            sb_body.AppendLine("            }");
             sb_body.AppendLine("            var saveInfo = new Save" + tableName + "CmdDto()");
             sb_body.AppendLine("            {");
             sb_body.AppendLine("                " + tableName + " = vm.MapTo<" + tableName + "CmdDto>()");
@@ -114,6 +121,7 @@ namespace CodeCreate
             sb_body.AppendLine("        [HttpPost]");
             sb_body.AppendLine("        public ActionResult Delete" + tableName + "(Delete" + tableName + "CmdDto vm)");
             sb_body.AppendLine("        {");
+            sb_body.AppendLine("            vm.UpdateUserID = LoginUserId;");
             sb_body.AppendLine("            var result = " + tableName + "Service.Delete" + tableName + "(vm);");
             sb_body.AppendLine("            return Content(JsonSerialize.ObjectToJson(result));");
             sb_body.AppendLine("        }");

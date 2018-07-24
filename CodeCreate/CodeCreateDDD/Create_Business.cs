@@ -84,6 +84,11 @@ namespace CodeCreate
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("using System.Collections.Generic;");
             sb_body.AppendLine("using System.Linq;");
+            sb_body.AppendLine("using BigDataAnalysis.DTO.Bcl.Cmd;");
+            sb_body.AppendLine("using BigDataAnalysis.Enum;");
+            sb_body.AppendLine("using BigDataAnalysis.Domain.Bcl.Service;");
+            sb_body.AppendLine("using BigDataAnalysis.Tools;");
+            sb_body.AppendLine("using BigDataAnalysis.Tools.Helper;");
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".Business." + tablePrefix + "");
             sb_body.AppendLine("{");
@@ -116,7 +121,27 @@ namespace CodeCreate
             sb_body.AppendLine("                {");
             sb_body.AppendLine("                    return Result<" + tableName + "Dto>.ErrorResult(saveResult.Message);");
             sb_body.AppendLine("                }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                #region 历史记录");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                SaveHistoryCmdDto saveHistoryCmdDto = new SaveHistoryCmdDto()");
+            sb_body.AppendLine("                {");
+            sb_body.AppendLine("                    History = new HistoryCmdDto()");
+            sb_body.AppendLine("                    {");
+            sb_body.AppendLine("                        OperationID = saveResult.Data.SysNo,");
+            sb_body.AppendLine("                        OperationType = OperationTypeEnum." + tableName + ".ToString(),");
+            sb_body.AppendLine("                        OperationName = saveInfo." + tableName + ".SysNo == Guid.Empty ? OperationNameEnum.Add.ToString() : OperationNameEnum.Edit.ToString(),");
+            sb_body.AppendLine("                        CreateUserID = saveInfo." + tableName + ".UpdateUserID ?? Guid.Empty,");
+            sb_body.AppendLine("                    }");
+            sb_body.AppendLine("                };");
+            sb_body.AppendLine("                HistoryService.SaveHistory(saveHistoryCmdDto.History.MapTo<Domain.Bcl.Model.History>());");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                #endregion");
+
             sb_body.AppendLine("                var commitResult = businessWork.Commit();");
+
+            sb_body.AppendLine("                LogHelper.WriteLog(\"【Save" + tableName + "】操作对象：\" + JsonConvertHelper.SerializeObject(saveInfo) + \"。IP地址：\" + CommonCode.GetIP());");
+
             sb_body.AppendLine("                Result<" + tableName + "Dto> result = null;");
             sb_body.AppendLine("                if (commitResult.ExecutedSuccess)");
             sb_body.AppendLine("                {");
@@ -204,7 +229,29 @@ namespace CodeCreate
             sb_body.AppendLine("                {");
             sb_body.AppendLine("                    return deleteResult;");
             sb_body.AppendLine("                }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                #region 历史记录");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                foreach (var item in deleteInfo." + tableName + "Ids)");
+            sb_body.AppendLine("                {");
+            sb_body.AppendLine("                    SaveHistoryCmdDto saveHistoryCmdDto = new SaveHistoryCmdDto()");
+            sb_body.AppendLine("                    {");
+            sb_body.AppendLine("                        History = new HistoryCmdDto()");
+            sb_body.AppendLine("                        {");
+            sb_body.AppendLine("                            OperationID = item,");
+            sb_body.AppendLine("                            OperationType = OperationTypeEnum." + tableName + ".ToString(),");
+            sb_body.AppendLine("                            OperationName = OperationNameEnum.Delete.ToString(),");
+            sb_body.AppendLine("                            CreateUserID = deleteInfo.UpdateUserID,");
+            sb_body.AppendLine("                        }");
+            sb_body.AppendLine("                    };");
+            sb_body.AppendLine("                    HistoryService.SaveHistory(saveHistoryCmdDto.History.MapTo<Domain.Bcl.Model.History>());");
+            sb_body.AppendLine("                }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                #endregion");
+            sb_body.AppendLine("");
             sb_body.AppendLine("                var commitResult = businessWork.Commit();");
+            sb_body.AppendLine("                LogHelper.WriteLog(\"【Delete" + tableName + "】操作对象：\" + JsonConvertHelper.SerializeObject(deleteInfo) + \"。IP地址：\" + CommonCode.GetIP());");
+
             sb_body.AppendLine("                return commitResult.ExecutedSuccess ? Result.SuccessResult(\"删除成功\") : Result.ErrorResult(\"删除失败\");");
             sb_body.AppendLine("            }");
             sb_body.AppendLine("        }");
@@ -233,6 +280,7 @@ namespace CodeCreate
 
             sb_body.AppendLine(sb.ToString());
 
+            sb_body.AppendLine("            query.Desc<" + tableName + "Query>(c => c.CreateDate);");
 
             sb_body.AppendLine("            return query;");
             sb_body.AppendLine("        }");

@@ -37,6 +37,11 @@ namespace CodeCreate
             sb_body.AppendLine("        {");
             sb_body.AppendLine("            get; set;");
             sb_body.AppendLine("        }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 修改人");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        public Guid UpdateUserID { get; set; }");
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
 

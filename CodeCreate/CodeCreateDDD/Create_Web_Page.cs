@@ -65,6 +65,9 @@ namespace CodeCreate
                     "UpdateDate",
                     "Status",
                     "Enable",
+                    "IsDeleted",
+                    "CreateUserID",
+                    "UpdateUserID",
                 };
                 if (!arr.Contains(columnName))
                 {

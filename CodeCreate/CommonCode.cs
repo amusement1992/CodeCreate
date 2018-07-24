@@ -189,6 +189,18 @@ namespace CodeCreate
             string tableDesc = "";
             switch (tableName)
             {
+                case "History":
+                    tableDesc = "历史记录";
+                    break;
+                case "IPConfig":
+                    tableDesc = "IP授权";
+                    break;
+                case "SystemConfig":
+                    tableDesc = "系统配置";
+                    break;
+
+
+
                 case "Brand":
                     tableDesc = "品牌";
                     break;
@@ -207,14 +219,29 @@ namespace CodeCreate
                 case "Department":
                     tableDesc = "部门";
                     break;
-                case "IPConfig":
-                    tableDesc = "IP授权";
-                    break;
-                case "SystemConfig":
-                    tableDesc = "系统配置";
-                    break;
                 case "DataSource":
                     tableDesc = "数据来源";
+                    break;
+
+
+
+                case "Contracts":
+                    tableDesc = "合同";
+                    break;
+                case "ContractsValue":
+                    tableDesc = "合同值";
+                    break;
+                case "Template":
+                    tableDesc = "模板";
+                    break;
+                case "TemplateValue":
+                    tableDesc = "模板值";
+                    break;
+                case "TemplateType":
+                    tableDesc = "模板类型";
+                    break;
+                case "ContractsType":
+                    tableDesc = "合同类型";
                     break;
                 default:
                     tableDesc = "【名称】";
