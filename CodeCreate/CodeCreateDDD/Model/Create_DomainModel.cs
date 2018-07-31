@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeCreate.Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -7,6 +8,8 @@ using System.Text;
 
 namespace CodeCreate
 {
+
+
     /// <summary>
     /// 创建Model文件
     /// </summary>
@@ -22,6 +25,9 @@ namespace CodeCreate
             StringBuilder sb = new StringBuilder();
             StringBuilder sb2 = new StringBuilder();
             StringBuilder sb3 = new StringBuilder();
+
+
+            var domainModels = CommonCode.GetData();
 
             #region Model
 
@@ -56,7 +62,6 @@ namespace CodeCreate
                 sb.AppendLine(@"        /// </summary>");
                 sb.AppendLine("        protected " + columnType + nullable + " _" + columnName + ";");
 
-
                 sb2.AppendLine("        /// <summary>");
                 sb2.AppendLine("        /// " + columnComment);
                 sb2.AppendLine("        /// </summary>");
@@ -66,13 +71,26 @@ namespace CodeCreate
                 sb2.AppendLine("            protected set { _" + columnName + " = value; }");
                 sb2.AppendLine("        }");
                 sb2.AppendLine("");
-                
-                sb3.AppendLine("            if (!excludePropertys.Contains(\"" + columnName + "\"))");
-                sb3.AppendLine("            {");
-                sb3.AppendLine("                " + columnName + " = similarObject." + columnName + ";");
-                sb3.AppendLine("            }");
+                SetExcludePropertys(tableName, sb3, domainModels, columnName);
 
             }
+
+            StringBuilder sb_instance = new StringBuilder();
+            StringBuilder sb_instanceMethod = new StringBuilder();
+            StringBuilder sb_attribute = new StringBuilder();
+
+            var listModel = CommonCode.GetTableModel(domainModels, tableName);
+            if (listModel != null)
+            {
+                foreach (var item in listModel)
+                {
+                    SetSB(sb, item);
+                    SetInstance(tableName, sb_instance, sb_instanceMethod, item);
+                    SetAttribute(sb_attribute, item);
+                }
+            }
+
+
 
             #endregion Model
 
@@ -85,6 +103,16 @@ namespace CodeCreate
             sb_body.AppendLine("using Lee.Utility.Extension;");
             sb_body.AppendLine("using System.Collections.Generic;");
             sb_body.AppendLine("using System.Linq;");
+            sb_body.AppendLine("using Lee.Utility.ValueType;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Model;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Service;");
+
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Contract.Service;");
+            sb_body.AppendLine("using Lee.CQuery;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Query.Contract;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Model;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Service;");
+
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".Domain." + tablePrefix + ".Model");
             sb_body.AppendLine("{");
@@ -113,7 +141,11 @@ namespace CodeCreate
             sb_body.AppendLine("        {");
             sb_body.AppendLine("            _SysNo = SysNo ?? Guid.Empty;");
             sb_body.AppendLine("            " + tableName + "Repository = this.Instance<I" + tableName + "Repository>();");
+            sb_body.AppendLine("");
+            sb_body.AppendLine(sb_instance.ToString());
             sb_body.AppendLine("        }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine(sb_instanceMethod.ToString());
             sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion");
             sb_body.AppendLine("");
@@ -123,6 +155,7 @@ namespace CodeCreate
             sb_body.AppendLine(sb2.ToString());
 
             sb_body.AppendLine("");
+            sb_body.AppendLine(sb_attribute.ToString());
             sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion");
             sb_body.AppendLine("");
@@ -289,5 +322,104 @@ namespace CodeCreate
             CommonCode.Save(file_Model + "/" + tableName + "" + ".cs", sb_body.ToString());
         }
 
+        private static void SetExcludePropertys(string tableName, StringBuilder sb3, List<TableModel> domainModels, string columnName)
+        {
+            var tableModel2 = CommonCode.GetTableModel(domainModels, tableName);
+            List<string> ExcludePropertys = new List<string>();
+            foreach (var item in tableModel2)
+            {
+                ExcludePropertys.AddRange(item.ExcludePropertys);
+            }
+
+            if (ExcludePropertys.Contains(columnName))
+            {
+                sb3.AppendLine("            //if (!excludePropertys.Contains(\"" + columnName + "\"))");
+                sb3.AppendLine("            //{");
+                sb3.AppendLine("            //    " + columnName + " = similarObject." + columnName + ";");
+                sb3.AppendLine("            //}");
+            }
+            else
+            {
+                sb3.AppendLine("            if (!excludePropertys.Contains(\"" + columnName + "\"))");
+                sb3.AppendLine("            {");
+                sb3.AppendLine("                " + columnName + " = similarObject." + columnName + ";");
+                sb3.AppendLine("            }");
+            }
+        }
+
+        private static void SetAttribute(StringBuilder sb_attribute, TableModel tableModel)
+        {
+            foreach (var thisModel in tableModel.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName)))
+            {
+                sb_attribute.AppendLine("        /// <summary>");
+                sb_attribute.AppendLine("        /// 扩展：" + thisModel.NewColumnComment + "");
+                sb_attribute.AppendLine("        /// </summary>");
+                sb_attribute.AppendLine("        public " + thisModel.NewColumnType + " " + thisModel.NewColumnName + "");
+                sb_attribute.AppendLine("        {");
+                sb_attribute.AppendLine("");
+                sb_attribute.AppendLine("            get { return _" + thisModel.NewColumnName + ".Value; }");
+                sb_attribute.AppendLine("            protected set { _" + thisModel.NewColumnName + ".SetValue(value, false); }");
+                sb_attribute.AppendLine("        }");
+                sb_attribute.AppendLine(" ");
+
+            }
+        }
+
+        private static void SetInstance(string tableName, StringBuilder sb_instance, StringBuilder sb_instanceMethod, TableModel tableModel)
+        {
+            foreach (var thisModel in tableModel.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName)))
+            {
+                sb_instance.AppendLine("            _" + thisModel.NewColumnName + " = new LazyMember<" + thisModel.NewColumnType + ">(Load" + thisModel.NewColumnName + ");");
+
+                sb_instanceMethod.AppendLine("        /// <summary>");
+                sb_instanceMethod.AppendLine("        /// 加载：" + thisModel.NewColumnComment);
+                sb_instanceMethod.AppendLine("        /// </summary>");
+                sb_instanceMethod.AppendLine("        /// <returns></returns>");
+
+                if (thisModel.ColumnType == "Guid?")
+                {
+                    sb_instanceMethod.AppendLine("        " + thisModel.NewColumnType + " Load" + thisModel.NewColumnName + "()");
+                    sb_instanceMethod.AppendLine("        {");
+                    sb_instanceMethod.AppendLine("            if (!" + thisModel.ColumnName + ".HasValue || " + thisModel.ColumnName + " == Guid.Empty)");
+                    sb_instanceMethod.AppendLine("            {");
+                    sb_instanceMethod.AppendLine("                return null;");
+                    sb_instanceMethod.AppendLine("            }");
+                    sb_instanceMethod.AppendLine("            return " + thisModel.NewColumnType + "Service.Get" + thisModel.NewColumnType + "(" + thisModel.ColumnName + " ?? Guid.Empty);");
+                    sb_instanceMethod.AppendLine("        }");
+                }
+                else if (thisModel.ColumnType == "Guid")
+                {
+                    sb_instanceMethod.AppendLine("        " + thisModel.NewColumnType + " Load" + thisModel.NewColumnName + "()");
+                    sb_instanceMethod.AppendLine("        {");
+                    sb_instanceMethod.AppendLine("            return " + thisModel.NewColumnType + "Service.Get" + thisModel.NewColumnType + "(" + thisModel.ColumnName + ");");
+                    sb_instanceMethod.AppendLine("        }");
+                }
+                else
+                {
+                    sb_instanceMethod.AppendLine("        " + thisModel.NewColumnType + " Load" + thisModel.NewColumnName + "()");
+                    sb_instanceMethod.AppendLine("        {");
+                    sb_instanceMethod.AppendLine("            return " + tableName + "Service.Get" + thisModel.NewColumnName + "(SysNo);");
+                    sb_instanceMethod.AppendLine("        }");
+                }
+
+            }
+        }
+
+        private static void SetSB(StringBuilder sb, TableModel tableModel)
+        {
+            foreach (var thisModel in tableModel.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName)))
+            {
+                //if (string.IsNullOrEmpty(thisModel.NewColumnType))
+                //{
+                //    thisModel.NewColumnType = thisModel.NewColumnName;
+                //}
+
+                sb.AppendLine("");
+                sb.AppendLine(@"        /// <summary>");
+                sb.AppendLine(@"        /// 扩展：" + thisModel.NewColumnComment);
+                sb.AppendLine(@"        /// </summary>");
+                sb.AppendLine("        protected LazyMember<" + thisModel.NewColumnType + "> _" + thisModel.NewColumnName + ";");
+            }
+        }
     }
 }

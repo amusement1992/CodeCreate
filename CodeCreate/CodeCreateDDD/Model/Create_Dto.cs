@@ -21,6 +21,7 @@ namespace CodeCreate
 
             StringBuilder sb = new StringBuilder();
 
+
             #region Model
 
             sb.AppendLine("        #region Model");
@@ -50,22 +51,15 @@ namespace CodeCreate
                 nullable = CommonCode.GetNullable(columnType, nullable);
 
                 sb.AppendLine("");
-
                 sb.AppendLine(@"        /// <summary>");
                 sb.AppendLine(@"        /// " + columnComment);
                 sb.AppendLine(@"        /// </summary>");
-                //if (dr["nullable"].ToString().ToUpper().Trim() == "Y")//不為空
-                //{
-                //    sb.AppendLine(@"        [Required]");
-                //}
-                //if (!string.IsNullOrEmpty(data_maxLength))//最大長度
-                //{
-                //    sb.AppendLine(@"        [StringLength(" + data_maxLength + ")]");
-                //}
                 sb.AppendLine("        public " + columnType + nullable + " " + columnName + " { get; set; }");
                 sb.AppendLine("");
             }
+
             sb.AppendLine("        #endregion Model");
+            SetData(tableName, sb);
 
             #endregion Model
 
@@ -73,6 +67,8 @@ namespace CodeCreate
 
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("using System.Collections.Generic;");
+            sb_body.AppendLine("using BigDataAnalysis.DTO.Data.Query;");
+            sb_body.AppendLine("using BigDataAnalysis.DTO.Query;");
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".DTO." + tablePrefix + ".Query");
             sb_body.AppendLine("{");
@@ -83,7 +79,6 @@ namespace CodeCreate
             sb_body.Append(sb.ToString());
 
             sb_body.AppendLine("");
-            sb_body.AppendLine("");
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
 
@@ -93,6 +88,31 @@ namespace CodeCreate
                 Directory.CreateDirectory(file_Model);
             }
             CommonCode.Save(file_Model + "/" + tableName + "Dto" + ".cs", sb_body.ToString());
-        } 
+        }
+
+        private static void SetData(string tableName, StringBuilder sb)
+        {
+            var domainModels = CommonCode.GetData();
+            var listModel = CommonCode.GetTableModel(domainModels, tableName);
+            if (listModel != null)
+            {
+                foreach (var item in listModel)
+                {
+                    foreach (var thisModel in item.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName)))
+                    {
+                        if (string.IsNullOrEmpty(thisModel.NewColumnType_Dto))
+                        {
+                            thisModel.NewColumnType_Dto = thisModel.NewColumnType;
+                        }
+                        sb.AppendLine("");
+                        sb.AppendLine(@"        /// <summary>");
+                        sb.AppendLine(@"        /// 扩展：" + thisModel.NewColumnComment);
+                        sb.AppendLine(@"        /// </summary>");
+                        sb.AppendLine("        public " + thisModel.NewColumnType_Dto + " " + thisModel.NewColumnName + " { get; set; }");
+
+                    }
+                }
+            }
+        }
     }
 }

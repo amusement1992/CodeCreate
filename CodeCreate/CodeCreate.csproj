@@ -68,6 +68,7 @@
     <Compile Include="CodeCreateDDD\Model\Create_SaveCmdDto.cs" />
     <Compile Include="CodeCreateDDD\Model\Create_DeleteCmdDto.cs" />
     <Compile Include="CommonCode.cs" />
+    <Compile Include="Model\TableModel.cs" />
     <Compile Include="Model\ConfigModel.cs" />
     <Compile Include="CodeCreate\CreateBLL.cs" />
     <Compile Include="CodeCreate\CreateDAL.cs" />

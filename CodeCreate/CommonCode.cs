@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using CodeCreate.Model;
 
 namespace CodeCreate
 {
@@ -222,6 +223,9 @@ namespace CodeCreate
                 case "DataSource":
                     tableDesc = "数据来源";
                     break;
+                case "Customer":
+                    tableDesc = "客户";
+                    break;
 
 
 
@@ -248,6 +252,260 @@ namespace CodeCreate
                     break;
             }
             return tableDesc;
+        }
+
+        public static List<TableModel> GetTableModel(List<TableModel> domainModels, string TableName)
+        {
+            var list = domainModels.Where(d => d.TableName == TableName || d.TableName == "All").ToList();
+            return list;
+
+        }
+
+        public static List<TableModel> GetData()
+        {
+
+
+            List<TableModel> domainModels = new List<TableModel>();
+
+            TableModel domainModel = new TableModel()
+            {
+                TableName = "All",
+                ExcludePropertys = new List<string>()
+                {
+                    "CreateDate",
+                    "CreateUserID",
+                },
+                List = new List<ColumnModel>
+                {
+                    new ColumnModel()
+                    {
+                        ColumnName="CreateUserID",
+                        ColumnType="Guid",
+
+                        NewColumnName="CreateUser",
+                        NewColumnType="User",
+                        NewColumnComment="用户",
+
+                        NewColumnType_Dto="UserDto",
+
+                        NewColumnName_VM ="CreateUserName",
+                        NewColumnType_VM ="string",
+
+                        IsMapper=true,
+                        MapperName="UserName",
+                    },
+                }
+            };
+            domainModels.Add(domainModel);
+            
+            domainModel = new TableModel()
+            {
+                TableName = "Template",
+                ExcludePropertys = new List<string>()
+                {
+                    "ParentID",
+                },
+                List = new List<ColumnModel>
+                {
+                    new ColumnModel()
+                    {
+                        ColumnName="PartyA_CompanyID",
+                        ColumnType="Guid?",
+
+                        NewColumnName="PartyA_Company",
+                        NewColumnType="Company",
+                        NewColumnComment="甲方公司",
+
+                        NewColumnType_Dto="CompanyDto",
+
+                        NewColumnName_VM ="PartyA_CompanyName",
+                        NewColumnType_VM ="string",
+
+                        IsMapper=true,
+                        MapperName="CompanyName",
+                    },
+                    new ColumnModel()
+                    {
+                        ColumnName="PartyB_CompanyID",
+                        ColumnType="Guid?",
+
+                        NewColumnType="Company",
+                        NewColumnName="PartyB_Company",
+                        NewColumnComment="乙方公司",
+
+                        NewColumnType_Dto="CompanyDto",
+
+                        NewColumnName_VM ="PartyB_CompanyName",
+                        NewColumnType_VM ="string",
+
+                        IsMapper=true,
+                        MapperName="CompanyName",
+                    },
+                    new ColumnModel()
+                    {
+                        ColumnName="New",
+                        ColumnType="int",
+
+                        NewColumnType="int",
+                        NewColumnName="AttachmentCount",
+                        NewColumnComment="附件个数",
+
+                        NewColumnName_VM ="AttachmentCount",
+                    },
+                    new ColumnModel()
+                    {
+                        NewColumnComment ="生效日期",
+
+                        NewColumnName_VM ="StartTimeFormatter",
+                        NewColumnType_VM ="string",
+                    },
+                    new ColumnModel()
+                    {
+                        NewColumnComment ="失效日期",
+
+                        NewColumnName_VM ="EndTimeFormatter",
+                        NewColumnType_VM ="string",
+                    },
+                }
+            };
+            domainModels.Add(domainModel);
+            
+            domainModel = new TableModel()
+            {
+                TableName = "Contract",
+                ExcludePropertys = new List<string>()
+                {
+                    "ParentID",
+                },
+                List = new List<ColumnModel>
+                {
+                    new ColumnModel()
+                    {
+                        ColumnName="PartyA_CompanyID",
+                        ColumnType="Guid?",
+
+                        NewColumnName="PartyA_Company",
+                        NewColumnType="Company",
+                        NewColumnComment="甲方公司",
+
+                        NewColumnType_Dto="CompanyDto",
+
+                        NewColumnName_VM ="PartyA_CompanyName",
+                        NewColumnType_VM ="string",
+
+                        IsMapper=true,
+                        MapperName="CompanyName",
+                    },
+                    new ColumnModel()
+                    {
+                        ColumnName="PartyB_CompanyID",
+                        ColumnType="Guid?",
+
+                        NewColumnType="Company",
+                        NewColumnName="PartyB_Company",
+                        NewColumnComment="乙方公司",
+
+                        NewColumnType_Dto="CompanyDto",
+
+                        NewColumnName_VM ="PartyB_CompanyName",
+                        NewColumnType_VM ="string",
+
+                        IsMapper=true,
+                        MapperName="CompanyName",
+                    },
+                    new ColumnModel()
+                    {
+                        ColumnName="New",
+                        ColumnType="int",
+
+                        NewColumnType="int",
+                        NewColumnName="AttachmentCount",
+                        NewColumnComment="附件个数",
+
+                        NewColumnName_VM ="AttachmentCount",
+                    },
+                    new ColumnModel()
+                    {
+                        NewColumnComment ="生效日期",
+
+                        NewColumnName_VM ="StartTimeFormatter",
+                        NewColumnType_VM ="string",
+                    },
+                    new ColumnModel()
+                    {
+                        NewColumnComment ="失效日期",
+
+                        NewColumnName_VM ="EndTimeFormatter",
+                        NewColumnType_VM ="string",
+                    },
+                }
+            };
+            domainModels.Add(domainModel);
+
+
+            domainModel = new TableModel()
+            {
+                TableName = "Company",
+                ExcludePropertys = new List<string>()
+                {
+                },
+                List = new List<ColumnModel>
+                {
+                    new ColumnModel()
+                    {
+                        ColumnName="BrandID",
+                        ColumnType="Guid?",
+
+                        NewColumnName="Brand",
+                        NewColumnType="Brand",
+                        NewColumnComment="品牌",
+
+                        NewColumnType_Dto="BrandDto",
+
+                        NewColumnName_VM ="BrandName",
+                        NewColumnType_VM ="string",
+
+                        IsMapper=true,
+                        MapperName="BrandName",
+                    },
+                    new ColumnModel()
+                    {
+                        ColumnName="Legal_CustomerID",
+                        ColumnType="Guid?",
+
+                        NewColumnName="Legal_Customer",
+                        NewColumnType="Customer",
+                        NewColumnComment="法定代表人",
+
+                        NewColumnType_Dto="CustomerDto",
+
+                        NewColumnName_VM ="Legal_CustomerName",
+                        NewColumnType_VM ="string",
+
+                        IsMapper=true,
+                        MapperName="CustomerName",
+                    },
+                    new ColumnModel()
+                    {
+                        ColumnName="Actual_CustomerID",
+                        ColumnType="Guid?",
+
+                        NewColumnName="Actual_Customer",
+                        NewColumnType="Customer",
+                        NewColumnComment="实际负责人",
+
+                        NewColumnType_Dto="CustomerDto",
+
+                        NewColumnName_VM ="Actual_CustomerName",
+                        NewColumnType_VM ="string",
+
+                        IsMapper=true,
+                        MapperName="CustomerName",
+                    },
+                }
+            };
+            domainModels.Add(domainModel);
+            return domainModels;
         }
     }
 }

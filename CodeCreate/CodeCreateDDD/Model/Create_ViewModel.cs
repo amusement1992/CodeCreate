@@ -69,6 +69,8 @@ namespace CodeCreate
 
             #endregion Model
 
+            SetData(tableName, sb);
+
             StringBuilder sb_body = new StringBuilder();
 
             sb_body.AppendLine("using System;");
@@ -84,7 +86,6 @@ namespace CodeCreate
             sb_body.Append(sb.ToString());
 
             sb_body.AppendLine("");
-            sb_body.AppendLine("");
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
 
@@ -94,6 +95,32 @@ namespace CodeCreate
                 Directory.CreateDirectory(file_Model);
             }
             CommonCode.Save(file_Model + "/" + tableName + "ViewModel" + ".cs", sb_body.ToString());
+        }
+
+        private static void SetData(string tableName, StringBuilder sb)
+        {
+            var domainModels = CommonCode.GetData();
+            var listModel = CommonCode.GetTableModel(domainModels, tableName);
+            if (listModel != null)
+            {
+                foreach (var item in listModel)
+                {
+                    foreach (var thisModel in item.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName_VM)))
+                    {
+
+                        if (string.IsNullOrEmpty(thisModel.NewColumnType_VM))
+                        {
+                            thisModel.NewColumnType_VM = thisModel.NewColumnType;
+                        }
+                        sb.AppendLine("");
+                        sb.AppendLine(@"        /// <summary>");
+                        sb.AppendLine(@"        /// 扩展：" + thisModel.NewColumnComment);
+                        sb.AppendLine(@"        /// </summary>");
+                        sb.AppendLine("        public " + thisModel.NewColumnType_VM + " " + thisModel.NewColumnName_VM + " { get; set; }");
+
+                    }
+                }
+            }
         }
 
     }

@@ -17,6 +17,7 @@ namespace CodeCreate
             string temp = tableName;
             string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
             StringBuilder sb_body = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
             sb_body.AppendLine("using " + str_nameSpace + ".Entity." + tablePrefix + ";");
             sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Model;");
@@ -38,7 +39,12 @@ namespace CodeCreate
             sb_body.AppendLine("            cfg.CreateMap<" + tableName + ", " + tableName + "Dto>();");
             sb_body.AppendLine("            cfg.CreateMap<" + tableName + "Dto, " + tableName + ">();");
             sb_body.AppendLine("");
-            sb_body.AppendLine("            cfg.CreateMap<" + tableName + "Dto, " + tableName + "ViewModel>();");
+
+            SetData(tableName, sb);
+
+            sb_body.AppendLine(sb.ToString());
+
+
             sb_body.AppendLine("");
             sb_body.AppendLine("            cfg.CreateMap<" + tableName + "FilterViewModel, " + tableName + "FilterDto>();");
             sb_body.AppendLine("");
@@ -74,6 +80,33 @@ namespace CodeCreate
 
             return sb_body.ToString();
 
+        }
+
+
+        private static void SetData(string tableName, StringBuilder sb)
+        {
+
+            var domainModels = CommonCode.GetData();
+            var listModel = CommonCode.GetTableModel(domainModels, tableName);
+            if (listModel != null)
+            {
+                sb.AppendLine("            cfg.CreateMap<" + tableName + "Dto, " + tableName + "ViewModel>()");
+                foreach (var item in listModel)
+                {
+                    foreach (var thisModel in item.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName) && d.IsMapper))
+                    {
+                        if (string.IsNullOrEmpty(thisModel.NewColumnType_Dto))
+                        {
+                            thisModel.NewColumnType_Dto = thisModel.NewColumnType;
+                        }
+
+                        sb.AppendLine("                .ForMember(r => r." + thisModel.NewColumnName_VM + ", re => re.MapFrom(rs => rs." + thisModel.NewColumnName + "." + thisModel.MapperName + "))");
+
+                    }
+
+                }
+                sb.Append(";");
+            }
         }
 
     }
