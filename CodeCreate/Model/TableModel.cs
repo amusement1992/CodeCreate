@@ -38,7 +38,7 @@ namespace CodeCreate.Model
         public string NewColumnComment { get; set; }
 
         public string NewColumnType_Dto { get; set; }
-        //public string NewColumnName_Dto { get; set; }
+        public string NewColumnName_Dto { get; set; }
 
         public string NewColumnType_VM { get; set; }
         public string NewColumnName_VM { get; set; }

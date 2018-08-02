@@ -78,7 +78,13 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("");
             sb_body.AppendLine("    }");
+
+            SetDeleteCmdDto(tableName, sb_body);
+
+            SetSaveCmdDto(tableName, sb_body);
+
             sb_body.AppendLine("}");
+
 
             string file_Model = "C:\\Code\\" + str_nameSpace + ".DTO\\" + tablePrefix + "\\Cmd";
             if (!Directory.Exists(file_Model))
@@ -88,5 +94,47 @@ namespace CodeCreate
             CommonCode.Save(file_Model + "/" + tableName + "CmdDto" + ".cs", sb_body.ToString());
         }
 
+        private static void SetDeleteCmdDto(string tableName, StringBuilder sb_body)
+        {
+            sb_body.AppendLine("");
+            sb_body.AppendLine("    /// <summary>");
+            sb_body.AppendLine("    /// 删除");
+            sb_body.AppendLine("    /// </summary>");
+            sb_body.AppendLine("    public class Delete" + tableName + "CmdDto");
+            sb_body.AppendLine("    {");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 编号");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        public IEnumerable<Guid> " + tableName + "Ids");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            get; set;");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 修改人");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        public Guid UpdateUserID { get; set; }");
+            sb_body.AppendLine("    }");
+            sb_body.AppendLine("");
+        }
+
+        private static void SetSaveCmdDto(string tableName, StringBuilder sb_body)
+        {
+            sb_body.AppendLine("");
+            sb_body.AppendLine("    /// <summary>");
+            sb_body.AppendLine("    /// 保存信息");
+            sb_body.AppendLine("    /// </summary>");
+            sb_body.AppendLine("    public class Save" + tableName + "CmdDto");
+            sb_body.AppendLine("    {");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 信息");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        public " + tableName + "CmdDto " + tableName + "");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            get; set;");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("    }");
+            sb_body.AppendLine("");
+        }
     }
 }

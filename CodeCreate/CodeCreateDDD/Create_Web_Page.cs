@@ -124,7 +124,7 @@ namespace CodeCreate
             StringBuilder sb_body = new StringBuilder();
             sb_body.AppendLine("@{");
             sb_body.AppendLine("    ViewBag.Title = \"" + tableDesc + "详情\";");
-            sb_body.AppendLine("    Layout = \"~/Views/Shared/_LayoutUser.cshtml\";");
+            sb_body.AppendLine("    Layout = \"~/Views/Shared/_Layout.cshtml\";");
             sb_body.AppendLine("}");
             sb_body.AppendLine("");
             sb_body.AppendLine("<script>");

@@ -214,6 +214,9 @@ namespace CodeCreate
                 case "Company":
                     tableDesc = "公司";
                     break;
+                case "CompanyUserRelation":
+                    tableDesc = "公司与客户关系";
+                    break;
                 case "Shop":
                     tableDesc = "店铺";
                     break;
@@ -286,6 +289,7 @@ namespace CodeCreate
                         NewColumnType="User",
                         NewColumnComment="用户",
 
+                        NewColumnName_Dto ="CreateUser",
                         NewColumnType_Dto="UserDto",
 
                         NewColumnName_VM ="CreateUserName",
@@ -297,13 +301,35 @@ namespace CodeCreate
                 }
             };
             domainModels.Add(domainModel);
-            
+
+            domainModel = new TableModel()
+            {
+                TableName = "TemplateValue",
+                ExcludePropertys = new List<string>()
+                {
+                },
+                List = new List<ColumnModel>
+                {
+                    new ColumnModel()
+                    {
+                        NewColumnComment="列表",
+
+                        NewColumnName_Dto ="listValue",
+                        NewColumnType_Dto="List<string>",
+
+                        NewColumnName_VM ="listValue",
+                        NewColumnType_VM ="List<string>", 
+                    },
+                }
+            };
+            domainModels.Add(domainModel);
             domainModel = new TableModel()
             {
                 TableName = "Template",
                 ExcludePropertys = new List<string>()
                 {
                     "ParentID",
+                    "Number",
                 },
                 List = new List<ColumnModel>
                 {
@@ -316,6 +342,7 @@ namespace CodeCreate
                         NewColumnType="Company",
                         NewColumnComment="甲方公司",
 
+                        NewColumnName_Dto="PartyA_Company",
                         NewColumnType_Dto="CompanyDto",
 
                         NewColumnName_VM ="PartyA_CompanyName",
@@ -329,10 +356,11 @@ namespace CodeCreate
                         ColumnName="PartyB_CompanyID",
                         ColumnType="Guid?",
 
-                        NewColumnType="Company",
                         NewColumnName="PartyB_Company",
+                        NewColumnType="Company",
                         NewColumnComment="乙方公司",
 
+                        NewColumnName_Dto="PartyB_Company",
                         NewColumnType_Dto="CompanyDto",
 
                         NewColumnName_VM ="PartyB_CompanyName",
@@ -346,9 +374,11 @@ namespace CodeCreate
                         ColumnName="New",
                         ColumnType="int",
 
-                        NewColumnType="int",
                         NewColumnName="AttachmentCount",
+                        NewColumnType="int",
                         NewColumnComment="附件个数",
+
+                        NewColumnName_Dto="AttachmentCount",
 
                         NewColumnName_VM ="AttachmentCount",
                     },
@@ -369,12 +399,17 @@ namespace CodeCreate
                 }
             };
             domainModels.Add(domainModel);
-            
+
             domainModel = new TableModel()
             {
-                TableName = "Contract",
+                TableName = "Contracts",
                 ExcludePropertys = new List<string>()
                 {
+                    "ParentID",
+                    "TemplateID",
+                    "Number",
+                    "ContractsTypeID",
+                    "ContractsTypeName",
                     "ParentID",
                 },
                 List = new List<ColumnModel>
@@ -388,6 +423,7 @@ namespace CodeCreate
                         NewColumnType="Company",
                         NewColumnComment="甲方公司",
 
+                        NewColumnName_Dto="PartyA_Company",
                         NewColumnType_Dto="CompanyDto",
 
                         NewColumnName_VM ="PartyA_CompanyName",
@@ -401,10 +437,11 @@ namespace CodeCreate
                         ColumnName="PartyB_CompanyID",
                         ColumnType="Guid?",
 
-                        NewColumnType="Company",
                         NewColumnName="PartyB_Company",
+                        NewColumnType="Company",
                         NewColumnComment="乙方公司",
 
+                        NewColumnName_Dto="PartyB_Company",
                         NewColumnType_Dto="CompanyDto",
 
                         NewColumnName_VM ="PartyB_CompanyName",
@@ -418,9 +455,11 @@ namespace CodeCreate
                         ColumnName="New",
                         ColumnType="int",
 
-                        NewColumnType="int",
                         NewColumnName="AttachmentCount",
+                        NewColumnType="int",
                         NewColumnComment="附件个数",
+
+                        NewColumnName_Dto="AttachmentCount",
 
                         NewColumnName_VM ="AttachmentCount",
                     },
@@ -438,10 +477,16 @@ namespace CodeCreate
                         NewColumnName_VM ="EndTimeFormatter",
                         NewColumnType_VM ="string",
                     },
+                    new ColumnModel()
+                    {
+                        NewColumnComment ="列表",
+
+                        NewColumnName_VM ="listValue",
+                        NewColumnType_VM ="List<string>",
+                    },
                 }
             };
             domainModels.Add(domainModel);
-
 
             domainModel = new TableModel()
             {
@@ -460,6 +505,7 @@ namespace CodeCreate
                         NewColumnType="Brand",
                         NewColumnComment="品牌",
 
+                        NewColumnName_Dto="Brand",
                         NewColumnType_Dto="BrandDto",
 
                         NewColumnName_VM ="BrandName",
@@ -477,6 +523,7 @@ namespace CodeCreate
                         NewColumnType="Customer",
                         NewColumnComment="法定代表人",
 
+                        NewColumnName_Dto="Legal_Customer",
                         NewColumnType_Dto="CustomerDto",
 
                         NewColumnName_VM ="Legal_CustomerName",
@@ -494,6 +541,7 @@ namespace CodeCreate
                         NewColumnType="Customer",
                         NewColumnComment="实际负责人",
 
+                        NewColumnName_Dto="Actual_Customer",
                         NewColumnType_Dto="CustomerDto",
 
                         NewColumnName_VM ="Actual_CustomerName",
@@ -501,6 +549,100 @@ namespace CodeCreate
 
                         IsMapper=true,
                         MapperName="CustomerName",
+                    },
+                }
+            };
+            domainModels.Add(domainModel);
+
+
+            domainModel = new TableModel()
+            {
+                TableName = "Category",
+                ExcludePropertys = new List<string>()
+                {
+                },
+                List = new List<ColumnModel>
+                {
+                    new ColumnModel()
+                    {
+                        ColumnName="BrandID",
+                        ColumnType="Guid?",
+
+                        NewColumnName="Parent",
+                        NewColumnType="Category",
+                        NewColumnComment="上级类目",
+
+                        NewColumnName_Dto="Parent",
+                        NewColumnType_Dto="CategoryDto",
+
+                        NewColumnName_VM ="Parent",
+                        NewColumnType_VM ="CategoryViewModel",
+
+                        IsMapper=true,
+                        MapperName="CategoryName",
+                    },
+                    new ColumnModel()
+                    {
+                        NewColumnComment="销售价",
+
+                        NewColumnName_Dto="SalesAmount",
+                        NewColumnType_Dto="decimal",
+                    },
+                    new ColumnModel()
+                    {
+                        NewColumnComment="Child列表",
+
+                        NewColumnName_Dto="listChild",
+                        NewColumnType_Dto="List<CategoryDto>",
+                    },
+                }
+            };
+            domainModels.Add(domainModel);
+
+
+            domainModel = new TableModel()
+            {
+                TableName = "CompanyUserRelation",
+                ExcludePropertys = new List<string>()
+                {
+                },
+                List = new List<ColumnModel>
+                {
+                    new ColumnModel()
+                    {
+                        ColumnName="CompanyID",
+                        ColumnType="Guid",
+
+                        NewColumnName="Company",
+                        NewColumnType="Company",
+                        NewColumnComment="公司",
+
+                        NewColumnName_Dto="Company",
+                        NewColumnType_Dto="CompanyDto",
+
+                        NewColumnName_VM ="CompanyName",
+                        NewColumnType_VM ="string",
+
+                        IsMapper=true,
+                        MapperName="CompanyName",
+                    },
+                    new ColumnModel()
+                    {
+                        ColumnName="UserID",
+                        ColumnType="Guid",
+
+                        NewColumnName="User",
+                        NewColumnType="User",
+                        NewColumnComment="账号",
+
+                        NewColumnName_Dto="User",
+                        NewColumnType_Dto="UserDto",
+
+                        NewColumnName_VM ="UserName",
+                        NewColumnType_VM ="string",
+
+                        IsMapper=true,
+                        MapperName="UserName",
                     },
                 }
             };

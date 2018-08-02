@@ -278,8 +278,8 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
                     //new CreateDAL().Create(file_DAL, str_table, str_DALName, str_IDALName, str_ModelName, sb_column1, sb_column2, sb_column3, sb_column4, sb_column5, configModel);
 
 
-                    new Create_DeleteCmdDto().Create(configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_SaveCmdDto().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    //new Create_DeleteCmdDto().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    //new Create_SaveCmdDto().Create(configModel.str_nameSpace, dt_tables, str_table);
                     new Create_CmdDto().Create(configModel.str_nameSpace, dt_tables, str_table);
                     new Create_Dto().Create(configModel.str_nameSpace, dt_tables, str_table);
                     new Create_FilterDto().Create(configModel.str_nameSpace, dt_tables, str_table);
@@ -301,6 +301,7 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
                     new Create_DomainModel().Create(configModel.str_nameSpace, dt_tables, str_table);
                     new Create_Web_Page().Create(configModel.str_nameSpace, dt_tables, str_table);
                     new Create_Web_Controller().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Sql().Create(configModel.str_nameSpace, dt_tables, str_table);
 
                     str_CreateMap += new Create_Config().GetStr_CreateMap(configModel.str_nameSpace, dt_tables, str_table);
 
