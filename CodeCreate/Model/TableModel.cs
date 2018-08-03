@@ -5,6 +5,7 @@ using System.Text;
 
 namespace CodeCreate.Model
 {
+    [Serializable]
     public class TableModel
     {
         /// <summary>
@@ -13,12 +14,18 @@ namespace CodeCreate.Model
         public string TableName { get; set; }
 
         /// <summary>
+        /// 表名描述
+        /// </summary>
+        public string TableDesc { get; set; }
+
+        /// <summary>
         /// 不包含的属性
         /// </summary>
         public List<string> ExcludePropertys { get; set; }
 
         public List<ColumnModel> List { get; set; }
     }
+
     public class ColumnModel
     {
         /// <summary>

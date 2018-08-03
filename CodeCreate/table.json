@@ -1,0 +1,416 @@
+﻿[
+  {
+    "TableName": "All",
+    "TableDesc": "【名称】",
+    "ExcludePropertys": [
+      "CreateDate",
+      "CreateUserID"
+    ],
+    "List": [
+      {
+        "ColumnName": "CreateUserID",
+        "ColumnType": "Guid",
+
+        "NewColumnName": "CreateUser",
+        "NewColumnType": "User",
+        "NewColumnComment": "用户",
+
+        "NewColumnName_Dto": "CreateUser",
+        "NewColumnType_Dto": "UserDto",
+
+        "NewColumnName_VM": "CreateUserName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "UserName"
+      }
+    ]
+  },
+
+  {
+    "TableName": "History",
+    "TableDesc": "历史记录",
+    "ExcludePropertys": [
+    ],
+    "List": []
+  },
+  {
+    "TableName": "IPConfig",
+    "TableDesc": "IP授权",
+    "ExcludePropertys": [],
+    "List": []
+  },
+  {
+    "TableName": "SystemConfig",
+    "TableDesc": "系统配置",
+    "ExcludePropertys": [],
+    "List": []
+  },
+
+
+  {
+    "TableName": "Brand",
+    "TableDesc": "品牌",
+    "ExcludePropertys": [],
+    "List": []
+  },
+  {
+    "TableName": "Category",
+    "TableDesc": "类目",
+    "ExcludePropertys": [],
+    "List": [
+
+      {
+        "ColumnName": "BrandID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "Parent",
+        "NewColumnType": "Category",
+        "NewColumnComment": "上级类目",
+
+        "NewColumnName_Dto": "Parent",
+        "NewColumnType_Dto": "CategoryDto",
+
+        "NewColumnName_VM": "Parent",
+        "NewColumnType_VM": "CategoryViewModel",
+
+        "IsMapper": true,
+        "MapperName": "CategoryName"
+      },
+
+      {
+        "NewColumnComment": "销售价",
+
+        "NewColumnName_Dto": "SalesAmount",
+        "NewColumnType_Dto": "decimal"
+      },
+
+      {
+        "NewColumnComment": "Child列表",
+
+        "NewColumnName_Dto": "listChild",
+        "NewColumnType_Dto": "List<CategoryDto>"
+      }
+    ]
+  },
+  {
+    "TableName": "Platform",
+    "TableDesc": "平台",
+    "ExcludePropertys": [],
+    "List": []
+  },
+  {
+    "TableName": "Company",
+    "TableDesc": "公司",
+    "ExcludePropertys": [],
+    "List": [
+
+      {
+        "ColumnName": "BrandID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "Brand",
+        "NewColumnType": "Brand",
+        "NewColumnComment": "品牌",
+
+        "NewColumnName_Dto": "Brand",
+        "NewColumnType_Dto": "BrandDto",
+
+        "NewColumnName_VM": "BrandName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "BrandName"
+      },
+
+      {
+        "ColumnName": "Legal_CustomerID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "Legal_Customer",
+        "NewColumnType": "Customer",
+        "NewColumnComment": "法定代表人",
+
+        "NewColumnName_Dto": "Legal_Customer",
+        "NewColumnType_Dto": "CustomerDto",
+
+        "NewColumnName_VM": "Legal_CustomerName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "CustomerName"
+      },
+
+      {
+        "ColumnName": "Actual_CustomerID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "Actual_Customer",
+        "NewColumnType": "Customer",
+        "NewColumnComment": "实际负责人",
+
+        "NewColumnName_Dto": "Actual_Customer",
+        "NewColumnType_Dto": "CustomerDto",
+
+        "NewColumnName_VM": "Actual_CustomerName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "CustomerName"
+      }
+    ]
+  },
+  {
+    "TableName": "CompanyUserRelation",
+    "TableDesc": "公司与客户关系",
+    "ExcludePropertys": [],
+    "List": [
+
+      {
+        "ColumnName": "CompanyID",
+        "ColumnType": "Guid",
+
+        "NewColumnName": "Company",
+        "NewColumnType": "Company",
+        "NewColumnComment": "公司",
+
+        "NewColumnName_Dto": "Company",
+        "NewColumnType_Dto": "CompanyDto",
+
+        "NewColumnName_VM": "CompanyName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "CompanyName"
+      },
+
+      {
+        "ColumnName": "UserID",
+        "ColumnType": "Guid",
+
+        "NewColumnName": "User",
+        "NewColumnType": "User",
+        "NewColumnComment": "账号",
+
+        "NewColumnName_Dto": "User",
+        "NewColumnType_Dto": "UserDto",
+
+        "NewColumnName_VM": "UserName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "UserName"
+      }
+    ]
+  },
+  {
+    "TableName": "Shop",
+    "TableDesc": "店铺",
+    "ExcludePropertys": [],
+    "List": []
+  },
+  {
+    "TableName": "Department",
+    "TableDesc": "部门",
+    "ExcludePropertys": [],
+    "List": []
+  },
+  {
+    "TableName": "DataSource",
+    "TableDesc": "数据来源",
+    "ExcludePropertys": [],
+    "List": []
+  },
+  {
+    "TableName": "Customer",
+    "TableDesc": "客户",
+    "ExcludePropertys": [],
+    "List": []
+  },
+
+
+
+  {
+    "TableName": "Contracts",
+    "TableDesc": "合同",
+    "ExcludePropertys": [
+      "ParentID",
+      "TemplateID",
+      "Number",
+      "ContractsTypeID",
+      "ContractsTypeName",
+      "ParentID"
+    ],
+    "List": [
+      {
+        "ColumnName": "PartyA_CompanyID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "PartyA_Company",
+        "NewColumnType": "Company",
+        "NewColumnComment": "甲方公司",
+
+        "NewColumnName_Dto": "PartyA_Company",
+        "NewColumnType_Dto": "CompanyDto",
+
+        "NewColumnName_VM": "PartyA_CompanyName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "CompanyName"
+      },
+
+      {
+        "ColumnName": "PartyB_CompanyID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "PartyB_Company",
+        "NewColumnType": "Company",
+        "NewColumnComment": "乙方公司",
+
+        "NewColumnName_Dto": "PartyB_Company",
+        "NewColumnType_Dto": "CompanyDto",
+
+        "NewColumnName_VM": "PartyB_CompanyName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "CompanyName"
+      },
+
+      {
+        "ColumnName": "New",
+        "ColumnType": "int",
+
+        "NewColumnName": "AttachmentCount",
+        "NewColumnType": "int",
+        "NewColumnComment": "附件个数",
+
+        "NewColumnName_Dto": "AttachmentCount",
+
+        "NewColumnName_VM": "AttachmentCount"
+      },
+
+      {
+        "NewColumnComment": "生效日期",
+
+        "NewColumnName_VM": "StartTimeFormatter",
+        "NewColumnType_VM": "string"
+      },
+
+      {
+        "NewColumnComment": "失效日期",
+
+        "NewColumnName_VM": "EndTimeFormatter",
+        "NewColumnType_VM": "string"
+      },
+
+      {
+        "NewColumnComment": "列表",
+
+        "NewColumnName_VM": "listValue",
+        "NewColumnType_VM": "List<string>"
+      }
+    ]
+  },
+  {
+    "TableName": "ContractsValue",
+    "TableDesc": "合同值",
+    "ExcludePropertys": [],
+    "List": []
+  },
+  {
+    "TableName": "Template",
+    "TableDesc": "模板",
+    "ExcludePropertys": [
+      "ParentID",
+      "Number"
+    ],
+    "List": [
+      {
+        "ColumnName": "PartyA_CompanyID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "PartyA_Company",
+        "NewColumnType": "Company",
+        "NewColumnComment": "甲方公司",
+
+        "NewColumnName_Dto": "PartyA_Company",
+        "NewColumnType_Dto": "CompanyDto",
+
+        "NewColumnName_VM": "PartyA_CompanyName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "CompanyName"
+      },
+      {
+        "ColumnName": "PartyB_CompanyID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "PartyB_Company",
+        "NewColumnType": "Company",
+        "NewColumnComment": "乙方公司",
+
+        "NewColumnName_Dto": "PartyB_Company",
+        "NewColumnType_Dto": "CompanyDto",
+
+        "NewColumnName_VM": "PartyB_CompanyName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "CompanyName"
+      },
+      {
+        "ColumnName": "New",
+        "ColumnType": "int",
+
+        "NewColumnName": "AttachmentCount",
+        "NewColumnType": "int",
+        "NewColumnComment": "附件个数",
+
+        "NewColumnName_Dto": "AttachmentCount",
+
+        "NewColumnName_VM": "AttachmentCount"
+      },
+      {
+        "NewColumnComment": "生效日期",
+
+        "NewColumnName_VM": "StartTimeFormatter",
+        "NewColumnType_VM": "string"
+      },
+      {
+        "NewColumnComment": "失效日期",
+
+        "NewColumnName_VM": "EndTimeFormatter",
+        "NewColumnType_VM": "string"
+      }
+    ]
+  },
+  {
+    "TableName": "TemplateValue",
+    "TableDesc": "模板值",
+    "List": [
+      {
+        "NewColumnComment": "列表",
+
+        "NewColumnName_Dto": "listValue",
+        "NewColumnType_Dto": "List<string>",
+
+        "NewColumnName_VM": "listValue",
+        "NewColumnType_VM": "List<string>"
+      }
+    ],
+  },
+  {
+    "TableName": "TemplateType",
+    "TableDesc": "模板类型",
+    "ExcludePropertys": [],
+    "List": []
+  },
+  {
+    "TableName": "ContractsType",
+    "TableDesc": "合同类型"
+  }
+
+]

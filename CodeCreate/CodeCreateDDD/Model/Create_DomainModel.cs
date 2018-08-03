@@ -27,7 +27,7 @@ namespace CodeCreate
             StringBuilder sb3 = new StringBuilder();
 
 
-            var domainModels = CommonCode.GetData();
+            var domainModels = CommonCode.GetListTable();
 
             #region Model
 

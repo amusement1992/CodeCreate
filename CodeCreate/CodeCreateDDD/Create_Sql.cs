@@ -42,7 +42,6 @@ namespace CodeCreate
             sb_body.AppendLine(GetSql_Sys_AuthorityBindOperation("添加、修改" + tableDesc));
             sb_body.AppendLine(GetSql_Sys_AuthorityBindOperation("删除" + tableDesc));
 
-
             string filePath = "C:\\Code\\Sql";
             if (!Directory.Exists(filePath))
             {

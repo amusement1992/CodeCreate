@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using CodeCreate.Helper;
 using CodeCreate.Model;
 
 namespace CodeCreate
@@ -124,6 +125,8 @@ namespace CodeCreate
             return isNullable ? "?" : "";
         }
 
+
+
         /// <summary>
         /// 获取字段的数据类型
         /// </summary>
@@ -180,6 +183,23 @@ namespace CodeCreate
             return arrTemp[1];
         }
 
+
+        /// <summary>
+        /// 获取列表
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <returns></returns>
+        public static List<TableModel> GetListTable()
+        {
+            string filepath = "table.json";
+            string json = JsonHelper.GetFileJson(filepath);
+
+            List<TableModel> tableModels = JsonConvertHelper.DeserializeObject<List<TableModel>>(json) as List<TableModel>;
+
+            return tableModels;
+        }
+
+
         /// <summary>
         /// 获取表的描述
         /// </summary>
@@ -187,74 +207,14 @@ namespace CodeCreate
         /// <returns></returns>
         public static string GetTableDesc(string tableName)
         {
-            string tableDesc = "";
-            switch (tableName)
+            var list = GetListTable();
+            var model = list.Where(d => d.TableName == tableName).FirstOrDefault();
+            if (model == null)
             {
-                case "History":
-                    tableDesc = "历史记录";
-                    break;
-                case "IPConfig":
-                    tableDesc = "IP授权";
-                    break;
-                case "SystemConfig":
-                    tableDesc = "系统配置";
-                    break;
-
-
-
-                case "Brand":
-                    tableDesc = "品牌";
-                    break;
-                case "Category":
-                    tableDesc = "类目";
-                    break;
-                case "Platform":
-                    tableDesc = "平台";
-                    break;
-                case "Company":
-                    tableDesc = "公司";
-                    break;
-                case "CompanyUserRelation":
-                    tableDesc = "公司与客户关系";
-                    break;
-                case "Shop":
-                    tableDesc = "店铺";
-                    break;
-                case "Department":
-                    tableDesc = "部门";
-                    break;
-                case "DataSource":
-                    tableDesc = "数据来源";
-                    break;
-                case "Customer":
-                    tableDesc = "客户";
-                    break;
-
-
-
-                case "Contracts":
-                    tableDesc = "合同";
-                    break;
-                case "ContractsValue":
-                    tableDesc = "合同值";
-                    break;
-                case "Template":
-                    tableDesc = "模板";
-                    break;
-                case "TemplateValue":
-                    tableDesc = "模板值";
-                    break;
-                case "TemplateType":
-                    tableDesc = "模板类型";
-                    break;
-                case "ContractsType":
-                    tableDesc = "合同类型";
-                    break;
-                default:
-                    tableDesc = "【名称】";
-                    break;
+                return "【名称】";
             }
-            return tableDesc;
+
+            return model.TableDesc;
         }
 
         public static List<TableModel> GetTableModel(List<TableModel> domainModels, string TableName)
@@ -264,390 +224,5 @@ namespace CodeCreate
 
         }
 
-        public static List<TableModel> GetData()
-        {
-
-
-            List<TableModel> domainModels = new List<TableModel>();
-
-            TableModel domainModel = new TableModel()
-            {
-                TableName = "All",
-                ExcludePropertys = new List<string>()
-                {
-                    "CreateDate",
-                    "CreateUserID",
-                },
-                List = new List<ColumnModel>
-                {
-                    new ColumnModel()
-                    {
-                        ColumnName="CreateUserID",
-                        ColumnType="Guid",
-
-                        NewColumnName="CreateUser",
-                        NewColumnType="User",
-                        NewColumnComment="用户",
-
-                        NewColumnName_Dto ="CreateUser",
-                        NewColumnType_Dto="UserDto",
-
-                        NewColumnName_VM ="CreateUserName",
-                        NewColumnType_VM ="string",
-
-                        IsMapper=true,
-                        MapperName="UserName",
-                    },
-                }
-            };
-            domainModels.Add(domainModel);
-
-            domainModel = new TableModel()
-            {
-                TableName = "TemplateValue",
-                ExcludePropertys = new List<string>()
-                {
-                },
-                List = new List<ColumnModel>
-                {
-                    new ColumnModel()
-                    {
-                        NewColumnComment="列表",
-
-                        NewColumnName_Dto ="listValue",
-                        NewColumnType_Dto="List<string>",
-
-                        NewColumnName_VM ="listValue",
-                        NewColumnType_VM ="List<string>", 
-                    },
-                }
-            };
-            domainModels.Add(domainModel);
-            domainModel = new TableModel()
-            {
-                TableName = "Template",
-                ExcludePropertys = new List<string>()
-                {
-                    "ParentID",
-                    "Number",
-                },
-                List = new List<ColumnModel>
-                {
-                    new ColumnModel()
-                    {
-                        ColumnName="PartyA_CompanyID",
-                        ColumnType="Guid?",
-
-                        NewColumnName="PartyA_Company",
-                        NewColumnType="Company",
-                        NewColumnComment="甲方公司",
-
-                        NewColumnName_Dto="PartyA_Company",
-                        NewColumnType_Dto="CompanyDto",
-
-                        NewColumnName_VM ="PartyA_CompanyName",
-                        NewColumnType_VM ="string",
-
-                        IsMapper=true,
-                        MapperName="CompanyName",
-                    },
-                    new ColumnModel()
-                    {
-                        ColumnName="PartyB_CompanyID",
-                        ColumnType="Guid?",
-
-                        NewColumnName="PartyB_Company",
-                        NewColumnType="Company",
-                        NewColumnComment="乙方公司",
-
-                        NewColumnName_Dto="PartyB_Company",
-                        NewColumnType_Dto="CompanyDto",
-
-                        NewColumnName_VM ="PartyB_CompanyName",
-                        NewColumnType_VM ="string",
-
-                        IsMapper=true,
-                        MapperName="CompanyName",
-                    },
-                    new ColumnModel()
-                    {
-                        ColumnName="New",
-                        ColumnType="int",
-
-                        NewColumnName="AttachmentCount",
-                        NewColumnType="int",
-                        NewColumnComment="附件个数",
-
-                        NewColumnName_Dto="AttachmentCount",
-
-                        NewColumnName_VM ="AttachmentCount",
-                    },
-                    new ColumnModel()
-                    {
-                        NewColumnComment ="生效日期",
-
-                        NewColumnName_VM ="StartTimeFormatter",
-                        NewColumnType_VM ="string",
-                    },
-                    new ColumnModel()
-                    {
-                        NewColumnComment ="失效日期",
-
-                        NewColumnName_VM ="EndTimeFormatter",
-                        NewColumnType_VM ="string",
-                    },
-                }
-            };
-            domainModels.Add(domainModel);
-
-            domainModel = new TableModel()
-            {
-                TableName = "Contracts",
-                ExcludePropertys = new List<string>()
-                {
-                    "ParentID",
-                    "TemplateID",
-                    "Number",
-                    "ContractsTypeID",
-                    "ContractsTypeName",
-                    "ParentID",
-                },
-                List = new List<ColumnModel>
-                {
-                    new ColumnModel()
-                    {
-                        ColumnName="PartyA_CompanyID",
-                        ColumnType="Guid?",
-
-                        NewColumnName="PartyA_Company",
-                        NewColumnType="Company",
-                        NewColumnComment="甲方公司",
-
-                        NewColumnName_Dto="PartyA_Company",
-                        NewColumnType_Dto="CompanyDto",
-
-                        NewColumnName_VM ="PartyA_CompanyName",
-                        NewColumnType_VM ="string",
-
-                        IsMapper=true,
-                        MapperName="CompanyName",
-                    },
-                    new ColumnModel()
-                    {
-                        ColumnName="PartyB_CompanyID",
-                        ColumnType="Guid?",
-
-                        NewColumnName="PartyB_Company",
-                        NewColumnType="Company",
-                        NewColumnComment="乙方公司",
-
-                        NewColumnName_Dto="PartyB_Company",
-                        NewColumnType_Dto="CompanyDto",
-
-                        NewColumnName_VM ="PartyB_CompanyName",
-                        NewColumnType_VM ="string",
-
-                        IsMapper=true,
-                        MapperName="CompanyName",
-                    },
-                    new ColumnModel()
-                    {
-                        ColumnName="New",
-                        ColumnType="int",
-
-                        NewColumnName="AttachmentCount",
-                        NewColumnType="int",
-                        NewColumnComment="附件个数",
-
-                        NewColumnName_Dto="AttachmentCount",
-
-                        NewColumnName_VM ="AttachmentCount",
-                    },
-                    new ColumnModel()
-                    {
-                        NewColumnComment ="生效日期",
-
-                        NewColumnName_VM ="StartTimeFormatter",
-                        NewColumnType_VM ="string",
-                    },
-                    new ColumnModel()
-                    {
-                        NewColumnComment ="失效日期",
-
-                        NewColumnName_VM ="EndTimeFormatter",
-                        NewColumnType_VM ="string",
-                    },
-                    new ColumnModel()
-                    {
-                        NewColumnComment ="列表",
-
-                        NewColumnName_VM ="listValue",
-                        NewColumnType_VM ="List<string>",
-                    },
-                }
-            };
-            domainModels.Add(domainModel);
-
-            domainModel = new TableModel()
-            {
-                TableName = "Company",
-                ExcludePropertys = new List<string>()
-                {
-                },
-                List = new List<ColumnModel>
-                {
-                    new ColumnModel()
-                    {
-                        ColumnName="BrandID",
-                        ColumnType="Guid?",
-
-                        NewColumnName="Brand",
-                        NewColumnType="Brand",
-                        NewColumnComment="品牌",
-
-                        NewColumnName_Dto="Brand",
-                        NewColumnType_Dto="BrandDto",
-
-                        NewColumnName_VM ="BrandName",
-                        NewColumnType_VM ="string",
-
-                        IsMapper=true,
-                        MapperName="BrandName",
-                    },
-                    new ColumnModel()
-                    {
-                        ColumnName="Legal_CustomerID",
-                        ColumnType="Guid?",
-
-                        NewColumnName="Legal_Customer",
-                        NewColumnType="Customer",
-                        NewColumnComment="法定代表人",
-
-                        NewColumnName_Dto="Legal_Customer",
-                        NewColumnType_Dto="CustomerDto",
-
-                        NewColumnName_VM ="Legal_CustomerName",
-                        NewColumnType_VM ="string",
-
-                        IsMapper=true,
-                        MapperName="CustomerName",
-                    },
-                    new ColumnModel()
-                    {
-                        ColumnName="Actual_CustomerID",
-                        ColumnType="Guid?",
-
-                        NewColumnName="Actual_Customer",
-                        NewColumnType="Customer",
-                        NewColumnComment="实际负责人",
-
-                        NewColumnName_Dto="Actual_Customer",
-                        NewColumnType_Dto="CustomerDto",
-
-                        NewColumnName_VM ="Actual_CustomerName",
-                        NewColumnType_VM ="string",
-
-                        IsMapper=true,
-                        MapperName="CustomerName",
-                    },
-                }
-            };
-            domainModels.Add(domainModel);
-
-
-            domainModel = new TableModel()
-            {
-                TableName = "Category",
-                ExcludePropertys = new List<string>()
-                {
-                },
-                List = new List<ColumnModel>
-                {
-                    new ColumnModel()
-                    {
-                        ColumnName="BrandID",
-                        ColumnType="Guid?",
-
-                        NewColumnName="Parent",
-                        NewColumnType="Category",
-                        NewColumnComment="上级类目",
-
-                        NewColumnName_Dto="Parent",
-                        NewColumnType_Dto="CategoryDto",
-
-                        NewColumnName_VM ="Parent",
-                        NewColumnType_VM ="CategoryViewModel",
-
-                        IsMapper=true,
-                        MapperName="CategoryName",
-                    },
-                    new ColumnModel()
-                    {
-                        NewColumnComment="销售价",
-
-                        NewColumnName_Dto="SalesAmount",
-                        NewColumnType_Dto="decimal",
-                    },
-                    new ColumnModel()
-                    {
-                        NewColumnComment="Child列表",
-
-                        NewColumnName_Dto="listChild",
-                        NewColumnType_Dto="List<CategoryDto>",
-                    },
-                }
-            };
-            domainModels.Add(domainModel);
-
-
-            domainModel = new TableModel()
-            {
-                TableName = "CompanyUserRelation",
-                ExcludePropertys = new List<string>()
-                {
-                },
-                List = new List<ColumnModel>
-                {
-                    new ColumnModel()
-                    {
-                        ColumnName="CompanyID",
-                        ColumnType="Guid",
-
-                        NewColumnName="Company",
-                        NewColumnType="Company",
-                        NewColumnComment="公司",
-
-                        NewColumnName_Dto="Company",
-                        NewColumnType_Dto="CompanyDto",
-
-                        NewColumnName_VM ="CompanyName",
-                        NewColumnType_VM ="string",
-
-                        IsMapper=true,
-                        MapperName="CompanyName",
-                    },
-                    new ColumnModel()
-                    {
-                        ColumnName="UserID",
-                        ColumnType="Guid",
-
-                        NewColumnName="User",
-                        NewColumnType="User",
-                        NewColumnComment="账号",
-
-                        NewColumnName_Dto="User",
-                        NewColumnType_Dto="UserDto",
-
-                        NewColumnName_VM ="UserName",
-                        NewColumnType_VM ="string",
-
-                        IsMapper=true,
-                        MapperName="UserName",
-                    },
-                }
-            };
-            domainModels.Add(domainModel);
-            return domainModels;
-        }
     }
 }
