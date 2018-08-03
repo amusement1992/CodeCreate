@@ -23,6 +23,13 @@
 
         "IsMapper": true,
         "MapperName": "UserName"
+      },
+
+      {
+        "ListFilterVM": [ "int", "rows", "行数" ]
+      },
+      {
+        "ListFilterVM": [ "List<Guid?>", "SysNos", "编号列表" ]
       }
     ]
   },
@@ -157,6 +164,9 @@
 
         "IsMapper": true,
         "MapperName": "CustomerName"
+      },
+      {
+        "ListFilterVM": [ "Guid?", "TemplateTypeID", "" ]
       }
     ]
   },
@@ -200,6 +210,41 @@
 
         "IsMapper": true,
         "MapperName": "UserName"
+      },
+
+      {
+        "NewColumnComment": "真实名",
+        
+        "NewColumnName_VM": "RealName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperModel": "User",
+        "MapperName": "RealName"
+      },
+      {
+        "NewColumnComment": "电话",
+
+        "NewColumnName_VM": "Mobile",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperModel": "User",
+        "MapperName": "Mobile"
+      },
+      {
+        "NewColumnComment": "邮箱",
+        
+        "NewColumnName_VM": "Email",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperModel": "User",
+        "MapperName": "Email"
+      },
+
+      {
+        "ListFilterDto": [ "string", "RealName", "真实名" ]
       }
     ]
   },

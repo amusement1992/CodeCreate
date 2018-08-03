@@ -56,14 +56,6 @@ namespace CodeCreate
                 sb.AppendLine(@"        /// <summary>");
                 sb.AppendLine(@"        /// " + columnComment);
                 sb.AppendLine(@"        /// </summary>");
-                //if (dr["nullable"].ToString().ToUpper().Trim() == "Y")//不為空
-                //{
-                //    sb.AppendLine(@"        [Required]");
-                //}
-                //if (!string.IsNullOrEmpty(data_maxLength))//最大長度
-                //{
-                //    sb.AppendLine(@"        [StringLength(" + data_maxLength + ")]");
-                //}
                 sb.AppendLine("        public " + columnType + nullable + " " + columnName + " { get; set; }");
                 sb.AppendLine("");
             }
@@ -89,6 +81,8 @@ namespace CodeCreate
             sb_body.AppendLine("        public List<Guid> SysNos { get; set; }");
             sb_body.AppendLine("");
 
+            SetData(tableName, sb);
+
             sb_body.Append(sb.ToString());
 
             sb_body.AppendLine("");
@@ -104,5 +98,25 @@ namespace CodeCreate
             CommonCode.Save(file_Model + "/" + tableName + "FilterDto" + ".cs", sb_body.ToString());
         }
 
+
+        private static void SetData(string tableName, StringBuilder sb)
+        {
+            var listModel = CommonCode.GetTableModel(tableName);
+            if (listModel != null)
+            {
+                foreach (var item in listModel)
+                {
+                    foreach (var thisModel in item.List.Where(d => d.ListFilterDto != null))
+                    {
+                        sb.AppendLine("");
+                        sb.AppendLine(@"        /// <summary>");
+                        sb.AppendLine(@"        /// 扩展：" + thisModel.ListFilterDto[2]);
+                        sb.AppendLine(@"        /// </summary>");
+                        sb.AppendLine("        public " + thisModel.ListFilterDto[0] + " " + thisModel.ListFilterDto[1] + " { get; set; }");
+
+                    }
+                }
+            }
+        }
     }
 }

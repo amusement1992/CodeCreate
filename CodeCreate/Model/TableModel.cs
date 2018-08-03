@@ -50,9 +50,17 @@ namespace CodeCreate.Model
         public string NewColumnType_VM { get; set; }
         public string NewColumnName_VM { get; set; }
 
-        public bool  IsMapper { get; set; }
-        public string  MapperName { get; set; }
+        public bool IsMapper { get; set; }
+        public string MapperModel { get; set; }
+        public string MapperName { get; set; }
 
 
-    } 
+        public List<string> ListFilterDto { get; set; }
+        public List<string> ListFilterVM { get; set; }
+
+
+        //public List<string> ListVM { get; set; }
+        //public List<string> ListDto { get; set; }
+
+    }
 }

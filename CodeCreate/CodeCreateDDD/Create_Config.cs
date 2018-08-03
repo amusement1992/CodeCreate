@@ -86,21 +86,20 @@ namespace CodeCreate
         private static void SetData(string tableName, StringBuilder sb)
         {
 
-            var domainModels = CommonCode.GetListTable();
-            var listModel = CommonCode.GetTableModel(domainModels, tableName);
+            var listModel = CommonCode.GetTableModel(tableName);
             if (listModel != null)
             {
                 sb.AppendLine("            cfg.CreateMap<" + tableName + "Dto, " + tableName + "ViewModel>()");
                 foreach (var item in listModel)
                 {
-                    foreach (var thisModel in item.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName) && d.IsMapper))
+                    foreach (var thisModel in item.List.Where(d => d.IsMapper))
                     {
-                        if (string.IsNullOrEmpty(thisModel.NewColumnType_Dto))
+                        if (string.IsNullOrEmpty(thisModel.MapperModel))
                         {
-                            thisModel.NewColumnType_Dto = thisModel.NewColumnType;
+                            thisModel.MapperModel = thisModel.NewColumnName;
                         }
 
-                        sb.AppendLine("                .ForMember(r => r." + thisModel.NewColumnName_VM + ", re => re.MapFrom(rs => rs." + thisModel.NewColumnName + "." + thisModel.MapperName + "))");
+                        sb.AppendLine("                .ForMember(r => r." + thisModel.NewColumnName_VM + ", re => re.MapFrom(rs => rs." + thisModel.MapperModel + "." + thisModel.MapperName + "))");
 
                     }
 

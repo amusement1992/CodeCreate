@@ -26,9 +26,6 @@ namespace CodeCreate
             StringBuilder sb2 = new StringBuilder();
             StringBuilder sb3 = new StringBuilder();
 
-
-            var domainModels = CommonCode.GetListTable();
-
             #region Model
 
             //遍历每个字段
@@ -71,7 +68,7 @@ namespace CodeCreate
                 sb2.AppendLine("            protected set { _" + columnName + " = value; }");
                 sb2.AppendLine("        }");
                 sb2.AppendLine("");
-                SetExcludePropertys(tableName, sb3, domainModels, columnName);
+                SetExcludePropertys(tableName, sb3, columnName);
 
             }
 
@@ -79,7 +76,7 @@ namespace CodeCreate
             StringBuilder sb_instanceMethod = new StringBuilder();
             StringBuilder sb_attribute = new StringBuilder();
 
-            var listModel = CommonCode.GetTableModel(domainModels, tableName);
+            var listModel = CommonCode.GetTableModel(tableName);
             if (listModel != null)
             {
                 foreach (var item in listModel)
@@ -322,9 +319,9 @@ namespace CodeCreate
             CommonCode.Save(file_Model + "/" + tableName + "" + ".cs", sb_body.ToString());
         }
 
-        private static void SetExcludePropertys(string tableName, StringBuilder sb3, List<TableModel> domainModels, string columnName)
+        private static void SetExcludePropertys(string tableName, StringBuilder sb3, string columnName)
         {
-            var tableModel2 = CommonCode.GetTableModel(domainModels, tableName);
+            var tableModel2 = CommonCode.GetTableModel(tableName);
             List<string> ExcludePropertys = new List<string>();
             foreach (var item in tableModel2)
             {

@@ -99,8 +99,7 @@ namespace CodeCreate
 
         private static void SetData(string tableName, StringBuilder sb)
         {
-            var domainModels = CommonCode.GetListTable();
-            var listModel = CommonCode.GetTableModel(domainModels, tableName);
+            var listModel = CommonCode.GetTableModel(tableName);
             if (listModel != null)
             {
                 foreach (var item in listModel)

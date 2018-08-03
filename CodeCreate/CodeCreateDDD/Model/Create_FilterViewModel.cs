@@ -65,8 +65,8 @@ namespace CodeCreate
                 //    sb.AppendLine(@"        [StringLength(" + data_maxLength + ")]");
                 //}
                 sb.AppendLine("        public " + columnType + nullable + " " + columnName + " { get; set; }");
-                sb.AppendLine("");
             }
+            sb.AppendLine("");
             sb.AppendLine("        #endregion Model");
 
             #endregion Model
@@ -83,11 +83,9 @@ namespace CodeCreate
             sb_body.AppendLine("    {");
             sb_body.AppendLine("");
 
+            SetData(tableName, sb);
             sb_body.Append(sb.ToString());
-
-            sb_body.AppendLine("");
-            sb_body.AppendLine("        public int rows { get; set; }");
-            sb_body.AppendLine("");
+            
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
 
@@ -98,6 +96,26 @@ namespace CodeCreate
             }
             CommonCode.Save(file_Model + "/" + tableName + "FilterViewModel" + ".cs", sb_body.ToString());
         }
- 
+
+
+        private static void SetData(string tableName, StringBuilder sb)
+        {
+            var listModel = CommonCode.GetTableModel(tableName);
+            if (listModel != null)
+            {
+                foreach (var item in listModel)
+                {
+                    foreach (var thisModel in item.List.Where(d => d.ListFilterVM != null))
+                    {
+                        sb.AppendLine("");
+                        sb.AppendLine(@"        /// <summary>");
+                        sb.AppendLine(@"        /// 扩展：" + thisModel.ListFilterVM[2]);
+                        sb.AppendLine(@"        /// </summary>");
+                        sb.AppendLine("        public " + thisModel.ListFilterVM[0] + " " + thisModel.ListFilterVM[1] + " { get; set; }");
+
+                    }
+                }
+            }
+        }
     }
 }

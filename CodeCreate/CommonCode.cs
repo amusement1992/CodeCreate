@@ -211,15 +211,15 @@ namespace CodeCreate
             var model = list.Where(d => d.TableName == tableName).FirstOrDefault();
             if (model == null)
             {
-                return "【名称】";
+                model = list.Where(d => d.TableName == "All").FirstOrDefault();
             }
 
             return model.TableDesc;
         }
 
-        public static List<TableModel> GetTableModel(List<TableModel> domainModels, string TableName)
+        public static List<TableModel> GetTableModel(string TableName)
         {
-            var list = domainModels.Where(d => d.TableName == TableName || d.TableName == "All").ToList();
+            var list = GetListTable().Where(d => d.TableName == TableName || d.TableName == "All").ToList();
             return list;
 
         }
