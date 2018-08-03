@@ -55,8 +55,8 @@ namespace CodeCreate
                 sb.AppendLine(@"        /// " + columnComment);
                 sb.AppendLine(@"        /// </summary>");
                 sb.AppendLine("        public " + columnType + nullable + " " + columnName + " { get; set; }");
-                sb.AppendLine("");
             }
+            sb.AppendLine("");
             sb.AppendLine("        #endregion Model");
 
             #endregion Model
@@ -72,6 +72,8 @@ namespace CodeCreate
             sb_body.AppendLine("    public class " + tableName + "CmdDto");
             sb_body.AppendLine("    {");
             sb_body.AppendLine("");
+
+            SetData(tableName, sb);
 
             sb_body.Append(sb.ToString());
 
@@ -135,6 +137,30 @@ namespace CodeCreate
             sb_body.AppendLine("        }");
             sb_body.AppendLine("    }");
             sb_body.AppendLine("");
+        }
+
+        private static void SetData(string tableName, StringBuilder sb)
+        {
+            var listModel = CommonCode.GetTableModel(tableName);
+            if (listModel != null)
+            {
+                foreach (var item in listModel)
+                {
+                    if (item.List != null)
+                    {
+
+                        foreach (var thisModel in item.List.Where(d => d.ListCmdDto != null))
+                        {
+                            sb.AppendLine("");
+                            sb.AppendLine(@"        /// <summary>");
+                            sb.AppendLine(@"        /// 扩展：" + thisModel.ListCmdDto[2]);
+                            sb.AppendLine(@"        /// </summary>");
+                            sb.AppendLine("        public " + thisModel.ListCmdDto[0] + " " + thisModel.ListCmdDto[1] + " { get; set; }");
+
+                        }
+                    }
+                }
+            }
         }
     }
 }

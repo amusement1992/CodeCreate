@@ -106,14 +106,18 @@ namespace CodeCreate
             {
                 foreach (var item in listModel)
                 {
-                    foreach (var thisModel in item.List.Where(d => d.ListFilterDto != null))
+                    if (item.List != null)
                     {
-                        sb.AppendLine("");
-                        sb.AppendLine(@"        /// <summary>");
-                        sb.AppendLine(@"        /// 扩展：" + thisModel.ListFilterDto[2]);
-                        sb.AppendLine(@"        /// </summary>");
-                        sb.AppendLine("        public " + thisModel.ListFilterDto[0] + " " + thisModel.ListFilterDto[1] + " { get; set; }");
 
+                        foreach (var thisModel in item.List.Where(d => d.ListFilterDto != null))
+                        {
+                            sb.AppendLine("");
+                            sb.AppendLine(@"        /// <summary>");
+                            sb.AppendLine(@"        /// 扩展：" + thisModel.ListFilterDto[2]);
+                            sb.AppendLine(@"        /// </summary>");
+                            sb.AppendLine("        public " + thisModel.ListFilterDto[0] + " " + thisModel.ListFilterDto[1] + " { get; set; }");
+
+                        }
                     }
                 }
             }

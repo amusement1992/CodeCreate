@@ -214,7 +214,7 @@
 
       {
         "NewColumnComment": "真实名",
-        
+
         "NewColumnName_VM": "RealName",
         "NewColumnType_VM": "string",
 
@@ -234,7 +234,7 @@
       },
       {
         "NewColumnComment": "邮箱",
-        
+
         "NewColumnName_VM": "Email",
         "NewColumnType_VM": "string",
 
@@ -362,7 +362,12 @@
     "TableName": "ContractsValue",
     "TableDesc": "合同值",
     "ExcludePropertys": [],
-    "List": []
+    "List": [
+      {
+        "ListCmdDto": [ "List<string>", "listValue", "值列表" ]
+
+      }
+    ]
   },
   {
     "TableName": "Template",
@@ -444,8 +449,11 @@
 
         "NewColumnName_VM": "listValue",
         "NewColumnType_VM": "List<string>"
+      },
+      {
+        "ListCmdDto": [ "List<string>", "listValue", "值列表" ]
       }
-    ],
+    ]
   },
   {
     "TableName": "TemplateType",

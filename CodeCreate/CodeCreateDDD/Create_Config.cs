@@ -92,15 +92,18 @@ namespace CodeCreate
                 sb.AppendLine("            cfg.CreateMap<" + tableName + "Dto, " + tableName + "ViewModel>()");
                 foreach (var item in listModel)
                 {
-                    foreach (var thisModel in item.List.Where(d => d.IsMapper))
+                    if (item.List != null)
                     {
-                        if (string.IsNullOrEmpty(thisModel.MapperModel))
+                        foreach (var thisModel in item.List.Where(d => d.IsMapper))
                         {
-                            thisModel.MapperModel = thisModel.NewColumnName;
+                            if (string.IsNullOrEmpty(thisModel.MapperModel))
+                            {
+                                thisModel.MapperModel = thisModel.NewColumnName;
+                            }
+
+                            sb.AppendLine("                .ForMember(r => r." + thisModel.NewColumnName_VM + ", re => re.MapFrom(rs => rs." + thisModel.MapperModel + "." + thisModel.MapperName + "))");
+
                         }
-
-                        sb.AppendLine("                .ForMember(r => r." + thisModel.NewColumnName_VM + ", re => re.MapFrom(rs => rs." + thisModel.MapperModel + "." + thisModel.MapperName + "))");
-
                     }
 
                 }

@@ -60,7 +60,7 @@ namespace CodeCreate.Model
 
 
         //public List<string> ListVM { get; set; }
-        //public List<string> ListDto { get; set; }
+        public List<string> ListCmdDto { get; set; }
 
     }
 }

@@ -104,19 +104,23 @@ namespace CodeCreate
             {
                 foreach (var item in listModel)
                 {
-                    foreach (var thisModel in item.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName_VM)))
+                    if (item.List != null)
                     {
 
-                        if (string.IsNullOrEmpty(thisModel.NewColumnType_VM))
+                        foreach (var thisModel in item.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName_VM)))
                         {
-                            thisModel.NewColumnType_VM = thisModel.NewColumnType;
-                        }
-                        sb.AppendLine("");
-                        sb.AppendLine(@"        /// <summary>");
-                        sb.AppendLine(@"        /// 扩展：" + thisModel.NewColumnComment);
-                        sb.AppendLine(@"        /// </summary>");
-                        sb.AppendLine("        public " + thisModel.NewColumnType_VM + " " + thisModel.NewColumnName_VM + " { get; set; }");
 
+                            if (string.IsNullOrEmpty(thisModel.NewColumnType_VM))
+                            {
+                                thisModel.NewColumnType_VM = thisModel.NewColumnType;
+                            }
+                            sb.AppendLine("");
+                            sb.AppendLine(@"        /// <summary>");
+                            sb.AppendLine(@"        /// 扩展：" + thisModel.NewColumnComment);
+                            sb.AppendLine(@"        /// </summary>");
+                            sb.AppendLine("        public " + thisModel.NewColumnType_VM + " " + thisModel.NewColumnName_VM + " { get; set; }");
+
+                        }
                     }
                 }
             }

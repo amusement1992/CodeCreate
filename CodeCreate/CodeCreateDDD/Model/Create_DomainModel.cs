@@ -325,7 +325,10 @@ namespace CodeCreate
             List<string> ExcludePropertys = new List<string>();
             foreach (var item in tableModel2)
             {
-                ExcludePropertys.AddRange(item.ExcludePropertys);
+                if (item.ExcludePropertys != null)
+                {
+                    ExcludePropertys.AddRange(item.ExcludePropertys);
+                }
             }
 
             if (ExcludePropertys.Contains(columnName))
@@ -346,76 +349,85 @@ namespace CodeCreate
 
         private static void SetAttribute(StringBuilder sb_attribute, TableModel tableModel)
         {
-            foreach (var thisModel in tableModel.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName)))
+            if (tableModel.List != null)
             {
-                sb_attribute.AppendLine("        /// <summary>");
-                sb_attribute.AppendLine("        /// 扩展：" + thisModel.NewColumnComment + "");
-                sb_attribute.AppendLine("        /// </summary>");
-                sb_attribute.AppendLine("        public " + thisModel.NewColumnType + " " + thisModel.NewColumnName + "");
-                sb_attribute.AppendLine("        {");
-                sb_attribute.AppendLine("");
-                sb_attribute.AppendLine("            get { return _" + thisModel.NewColumnName + ".Value; }");
-                sb_attribute.AppendLine("            protected set { _" + thisModel.NewColumnName + ".SetValue(value, false); }");
-                sb_attribute.AppendLine("        }");
-                sb_attribute.AppendLine(" ");
-
+                foreach (var thisModel in tableModel.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName)))
+                {
+                    sb_attribute.AppendLine("        /// <summary>");
+                    sb_attribute.AppendLine("        /// 扩展：" + thisModel.NewColumnComment + "");
+                    sb_attribute.AppendLine("        /// </summary>");
+                    sb_attribute.AppendLine("        public " + thisModel.NewColumnType + " " + thisModel.NewColumnName + "");
+                    sb_attribute.AppendLine("        {");
+                    sb_attribute.AppendLine("");
+                    sb_attribute.AppendLine("            get { return _" + thisModel.NewColumnName + ".Value; }");
+                    sb_attribute.AppendLine("            protected set { _" + thisModel.NewColumnName + ".SetValue(value, false); }");
+                    sb_attribute.AppendLine("        }");
+                    sb_attribute.AppendLine(" ");
+                }
             }
         }
 
         private static void SetInstance(string tableName, StringBuilder sb_instance, StringBuilder sb_instanceMethod, TableModel tableModel)
         {
-            foreach (var thisModel in tableModel.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName)))
+            if (tableModel.List != null)
             {
-                sb_instance.AppendLine("            _" + thisModel.NewColumnName + " = new LazyMember<" + thisModel.NewColumnType + ">(Load" + thisModel.NewColumnName + ");");
 
-                sb_instanceMethod.AppendLine("        /// <summary>");
-                sb_instanceMethod.AppendLine("        /// 加载：" + thisModel.NewColumnComment);
-                sb_instanceMethod.AppendLine("        /// </summary>");
-                sb_instanceMethod.AppendLine("        /// <returns></returns>");
+                foreach (var thisModel in tableModel.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName)))
+                {
+                    sb_instance.AppendLine("            _" + thisModel.NewColumnName + " = new LazyMember<" + thisModel.NewColumnType + ">(Load" + thisModel.NewColumnName + ");");
 
-                if (thisModel.ColumnType == "Guid?")
-                {
-                    sb_instanceMethod.AppendLine("        " + thisModel.NewColumnType + " Load" + thisModel.NewColumnName + "()");
-                    sb_instanceMethod.AppendLine("        {");
-                    sb_instanceMethod.AppendLine("            if (!" + thisModel.ColumnName + ".HasValue || " + thisModel.ColumnName + " == Guid.Empty)");
-                    sb_instanceMethod.AppendLine("            {");
-                    sb_instanceMethod.AppendLine("                return null;");
-                    sb_instanceMethod.AppendLine("            }");
-                    sb_instanceMethod.AppendLine("            return " + thisModel.NewColumnType + "Service.Get" + thisModel.NewColumnType + "(" + thisModel.ColumnName + " ?? Guid.Empty);");
-                    sb_instanceMethod.AppendLine("        }");
-                }
-                else if (thisModel.ColumnType == "Guid")
-                {
-                    sb_instanceMethod.AppendLine("        " + thisModel.NewColumnType + " Load" + thisModel.NewColumnName + "()");
-                    sb_instanceMethod.AppendLine("        {");
-                    sb_instanceMethod.AppendLine("            return " + thisModel.NewColumnType + "Service.Get" + thisModel.NewColumnType + "(" + thisModel.ColumnName + ");");
-                    sb_instanceMethod.AppendLine("        }");
-                }
-                else
-                {
-                    sb_instanceMethod.AppendLine("        " + thisModel.NewColumnType + " Load" + thisModel.NewColumnName + "()");
-                    sb_instanceMethod.AppendLine("        {");
-                    sb_instanceMethod.AppendLine("            return " + tableName + "Service.Get" + thisModel.NewColumnName + "(SysNo);");
-                    sb_instanceMethod.AppendLine("        }");
-                }
+                    sb_instanceMethod.AppendLine("        /// <summary>");
+                    sb_instanceMethod.AppendLine("        /// 加载：" + thisModel.NewColumnComment);
+                    sb_instanceMethod.AppendLine("        /// </summary>");
+                    sb_instanceMethod.AppendLine("        /// <returns></returns>");
 
+                    if (thisModel.ColumnType == "Guid?")
+                    {
+                        sb_instanceMethod.AppendLine("        " + thisModel.NewColumnType + " Load" + thisModel.NewColumnName + "()");
+                        sb_instanceMethod.AppendLine("        {");
+                        sb_instanceMethod.AppendLine("            if (!" + thisModel.ColumnName + ".HasValue || " + thisModel.ColumnName + " == Guid.Empty)");
+                        sb_instanceMethod.AppendLine("            {");
+                        sb_instanceMethod.AppendLine("                return null;");
+                        sb_instanceMethod.AppendLine("            }");
+                        sb_instanceMethod.AppendLine("            return " + thisModel.NewColumnType + "Service.Get" + thisModel.NewColumnType + "(" + thisModel.ColumnName + " ?? Guid.Empty);");
+                        sb_instanceMethod.AppendLine("        }");
+                    }
+                    else if (thisModel.ColumnType == "Guid")
+                    {
+                        sb_instanceMethod.AppendLine("        " + thisModel.NewColumnType + " Load" + thisModel.NewColumnName + "()");
+                        sb_instanceMethod.AppendLine("        {");
+                        sb_instanceMethod.AppendLine("            return " + thisModel.NewColumnType + "Service.Get" + thisModel.NewColumnType + "(" + thisModel.ColumnName + ");");
+                        sb_instanceMethod.AppendLine("        }");
+                    }
+                    else
+                    {
+                        sb_instanceMethod.AppendLine("        " + thisModel.NewColumnType + " Load" + thisModel.NewColumnName + "()");
+                        sb_instanceMethod.AppendLine("        {");
+                        sb_instanceMethod.AppendLine("            return " + tableName + "Service.Get" + thisModel.NewColumnName + "(SysNo);");
+                        sb_instanceMethod.AppendLine("        }");
+                    }
+
+                }
             }
         }
 
         private static void SetSB(StringBuilder sb, TableModel tableModel)
         {
-            foreach (var thisModel in tableModel.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName)))
+            if (tableModel.List != null)
             {
-                //if (string.IsNullOrEmpty(thisModel.NewColumnType))
-                //{
-                //    thisModel.NewColumnType = thisModel.NewColumnName;
-                //}
+                foreach (var thisModel in tableModel.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName)))
+                {
+                    //if (string.IsNullOrEmpty(thisModel.NewColumnType))
+                    //{
+                    //    thisModel.NewColumnType = thisModel.NewColumnName;
+                    //}
 
-                sb.AppendLine("");
-                sb.AppendLine(@"        /// <summary>");
-                sb.AppendLine(@"        /// 扩展：" + thisModel.NewColumnComment);
-                sb.AppendLine(@"        /// </summary>");
-                sb.AppendLine("        protected LazyMember<" + thisModel.NewColumnType + "> _" + thisModel.NewColumnName + ";");
+                    sb.AppendLine("");
+                    sb.AppendLine(@"        /// <summary>");
+                    sb.AppendLine(@"        /// 扩展：" + thisModel.NewColumnComment);
+                    sb.AppendLine(@"        /// </summary>");
+                    sb.AppendLine("        protected LazyMember<" + thisModel.NewColumnType + "> _" + thisModel.NewColumnName + ";");
+                }
             }
         }
     }
