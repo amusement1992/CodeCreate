@@ -468,7 +468,28 @@
   {
     "TableName": "ContractsRelation",
     "TableDesc": "合同关联",
-    "List": []
+    "ExcludePropertys": [
+      "ParentID"
+    ],
+    "List": [
+      {
+        "ColumnName": "ContractID",
+        "ColumnType": "Guid",
+
+        "NewColumnName": "Contracts",
+        "NewColumnType": "Contracts",
+        "NewColumnComment": "合同",
+
+        "NewColumnName_Dto": "Contracts",
+        "NewColumnType_Dto": "ContractsDto",
+
+        "NewColumnName_VM": "ContractName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "Name"
+      }
+    ]
   }
 
 ]

@@ -186,7 +186,7 @@ namespace CodeCreate
             string str_SetObjectName = "";
             string str_SetPrimaryKey = "";
 
-
+            List<string> listTableName = new List<string>();
 
             //遍历每个表
             for (int i = 0; i < listBox2.Items.Count; i++)
@@ -232,6 +232,7 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
                 }
                 if (dt_tables.Rows.Count > 0)
                 {
+                    listTableName.Add(str_table);
                     #region 生成内容
 
                     StringBuilder sb_column1 = new StringBuilder();//格式如 NO_ID,ST_NAME,ST_VALUES,NO_ORDER,ST_OTHER,ST_VALUES_ENG
@@ -339,6 +340,9 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
             CommonCode.Save(filePath + "/AutoMapMapper CreateMap.txt", str_CreateMap);
             CommonCode.Save(filePath + "/DbConfig SetObjectName.txt", str_SetObjectName);
             CommonCode.Save(filePath + "/DbConfig SetPrimaryKey.txt", str_SetPrimaryKey);
+
+
+            new Create_Enum().Create(configModel.str_nameSpace,  listTableName);
 
             //OpenFolder();
         }
