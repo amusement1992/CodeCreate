@@ -128,6 +128,16 @@ namespace CodeCreate
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"SysNo\">编号</param>");
             sb_body.AppendLine("        /// <returns></returns>");
+            sb_body.AppendLine("        public static " + tableName + " Get" + tableName + "(Guid? SysNo)");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            return Get" + tableName + "(SysNo ?? Guid.Empty);");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 获取");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        /// <param name=\"SysNo\">编号</param>");
+            sb_body.AppendLine("        /// <returns></returns>");
             sb_body.AppendLine("        public static " + tableName + " Get" + tableName + "(Guid SysNo)");
             sb_body.AppendLine("        {");
             sb_body.AppendLine("            if (SysNo == Guid.Empty)");

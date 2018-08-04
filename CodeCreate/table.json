@@ -488,6 +488,20 @@
 
         "IsMapper": true,
         "MapperName": "Name"
+      },
+      {
+        "NewColumnName": "ListChild",
+        "NewColumnType": "List<ContractsRelation>",
+        "NewColumnComment": "Child列表",
+
+        "NewColumnName_Dto": "ListChild",
+        "NewColumnType_Dto": "List<ContractsRelationDto>",
+
+        "NewColumnName_VM": "ListChild",
+        "NewColumnType_VM": "List<ContractsRelationViewModel>",
+
+        "IsMapper": false,
+        "MapperName": "Name"
       }
     ]
   }

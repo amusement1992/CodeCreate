@@ -341,9 +341,27 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
             CommonCode.Save(filePath + "/DbConfig SetObjectName.txt", str_SetObjectName);
             CommonCode.Save(filePath + "/DbConfig SetPrimaryKey.txt", str_SetPrimaryKey);
 
+            if (checkBox2.Checked)
+            {
 
-            new Create_Enum().Create(configModel.str_nameSpace,  listTableName);
+                new Create_Enum().Create(configModel.str_nameSpace, listTableName);
+            }
 
+            if (textBox3.Text != "")
+            {
+
+                var arr = textBox3.Text.Split(',');
+                StringBuilder sb_body = new StringBuilder();
+                Create_Sql.SetData2(arr[0], arr[1], arr[2], sb_body);
+
+                filePath = "C:\\Code\\Sql";
+                if (!Directory.Exists(filePath))
+                {
+                    Directory.CreateDirectory(filePath);
+                }
+                CommonCode.Save(filePath + "/生成的.txt", sb_body.ToString());
+                CommonCode.Save(filePath + "/生成的_Delete.txt", Create_Sql.GetSql_Delete(arr[2]));
+            }
             //OpenFolder();
         }
 

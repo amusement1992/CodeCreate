@@ -19,6 +19,21 @@ namespace CodeCreate
             string tableDesc = CommonCode.GetTableDesc(tableName);
 
             StringBuilder sb_body = new StringBuilder();
+            SetData(tableName, tablePrefix, tableDesc, sb_body);
+
+            string filePath = "C:\\Code\\Sql";
+            if (!Directory.Exists(filePath))
+            {
+                Directory.CreateDirectory(filePath);
+            }
+            CommonCode.Save(filePath + "/" + tableName + ".txt", sb_body.ToString());
+
+            CommonCode.Save(filePath + "/" + tableName + "_Delete.txt", GetSql_Delete(tableDesc));
+
+        }
+
+        public static void SetData(string tableName, string tablePrefix, string tableDesc, StringBuilder sb_body)
+        {
 
             //授权
             sb_body.AppendLine(GetSql_Sys_AuthorityOperationGroup(tableDesc, 10, "基础配置"));
@@ -41,16 +56,22 @@ namespace CodeCreate
 
             sb_body.AppendLine(GetSql_Sys_AuthorityBindOperation("添加、修改" + tableDesc));
             sb_body.AppendLine(GetSql_Sys_AuthorityBindOperation("删除" + tableDesc));
+        }
 
-            string filePath = "C:\\Code\\Sql";
-            if (!Directory.Exists(filePath))
-            {
-                Directory.CreateDirectory(filePath);
-            }
-            CommonCode.Save(filePath + "/" + tableName + ".txt", sb_body.ToString());
+        public static void SetData2(string tableName, string tablePrefix, string desc, StringBuilder sb_body)
+        {
 
-            CommonCode.Save(filePath + "/" + tableName + "_Delete.txt", GetSql_Delete(tableDesc));
+            //授权
+            sb_body.AppendLine(GetSql_Sys_AuthorityOperationGroup(desc, 10, "基础配置"));
+            sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, tableName,  desc, desc));
 
+            //权限
+            sb_body.AppendLine(GetSql_Sys_AuthorityGroup(desc, 10, "基础配置"));
+
+            sb_body.AppendLine(GetSql_Sys_Authority(desc, desc));
+
+            //添加关联
+            sb_body.AppendLine(GetSql_Sys_AuthorityBindOperation(desc));
         }
 
         private static string GetSql_Sys_AuthorityOperationGroup(string Name, int Sort, string ParentName)
@@ -126,7 +147,7 @@ namespace CodeCreate
         }
 
 
-        private static string GetSql_Delete(string Name)
+        public static string GetSql_Delete(string Name)
         {
             StringBuilder sb_body = new StringBuilder();
             sb_body.AppendLine("");

@@ -62,6 +62,9 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -175,10 +178,13 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.checkBox2);
             this.groupBox1.Controls.Add(this.checkBox1);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.textBox1);
+            this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.textBox3);
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.textBox9);
             this.groupBox1.Controls.Add(this.label12);
@@ -205,7 +211,7 @@
             // checkBox1
             // 
             this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(150, 327);
+            this.checkBox1.Location = new System.Drawing.Point(148, 346);
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(84, 16);
             this.checkBox1.TabIndex = 7;
@@ -401,6 +407,33 @@
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(238, 346);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(72, 16);
+            this.checkBox2.TabIndex = 7;
+            this.checkBox2.Text = "生成Enum";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(150, 319);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(160, 21);
+            this.textBox3.TabIndex = 1;
+            this.textBox3.Text = "ControllerCode,ActionCode,Name";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(6, 322);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(59, 12);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "生成sql：";
+            // 
             // MSSqlCreate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -470,5 +503,8 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox3;
     }
 }
