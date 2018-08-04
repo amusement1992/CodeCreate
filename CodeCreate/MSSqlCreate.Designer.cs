@@ -61,6 +61,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -87,9 +88,9 @@
             // 
             this.btn_save.BackColor = System.Drawing.Color.Transparent;
             this.btn_save.ForeColor = System.Drawing.Color.Black;
-            this.btn_save.Location = new System.Drawing.Point(684, 381);
+            this.btn_save.Location = new System.Drawing.Point(641, 382);
             this.btn_save.Name = "btn_save";
-            this.btn_save.Size = new System.Drawing.Size(200, 38);
+            this.btn_save.Size = new System.Drawing.Size(204, 38);
             this.btn_save.TabIndex = 4;
             this.btn_save.Text = "生成";
             this.btn_save.UseVisualStyleBackColor = false;
@@ -99,17 +100,17 @@
             // 
             this.listBox1.FormattingEnabled = true;
             this.listBox1.ItemHeight = 12;
-            this.listBox1.Location = new System.Drawing.Point(491, 12);
+            this.listBox1.Location = new System.Drawing.Point(391, 13);
             this.listBox1.Name = "listBox1";
             this.listBox1.ScrollAlwaysVisible = true;
             this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listBox1.Size = new System.Drawing.Size(168, 328);
+            this.listBox1.Size = new System.Drawing.Size(199, 328);
             this.listBox1.TabIndex = 3;
             // 
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.Transparent;
-            this.button1.Location = new System.Drawing.Point(665, 15);
+            this.button1.Location = new System.Drawing.Point(596, 16);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(39, 65);
             this.button1.TabIndex = 2;
@@ -120,7 +121,7 @@
             // button4
             // 
             this.button4.BackColor = System.Drawing.Color.Transparent;
-            this.button4.Location = new System.Drawing.Point(665, 276);
+            this.button4.Location = new System.Drawing.Point(596, 277);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(39, 65);
             this.button4.TabIndex = 2;
@@ -131,7 +132,7 @@
             // button2
             // 
             this.button2.BackColor = System.Drawing.Color.Transparent;
-            this.button2.Location = new System.Drawing.Point(665, 102);
+            this.button2.Location = new System.Drawing.Point(596, 103);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(39, 65);
             this.button2.TabIndex = 2;
@@ -142,7 +143,7 @@
             // button3
             // 
             this.button3.BackColor = System.Drawing.Color.Transparent;
-            this.button3.Location = new System.Drawing.Point(665, 189);
+            this.button3.Location = new System.Drawing.Point(596, 190);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(39, 65);
             this.button3.TabIndex = 2;
@@ -154,18 +155,18 @@
             // 
             this.listBox2.FormattingEnabled = true;
             this.listBox2.ItemHeight = 12;
-            this.listBox2.Location = new System.Drawing.Point(710, 12);
+            this.listBox2.Location = new System.Drawing.Point(641, 13);
             this.listBox2.Name = "listBox2";
             this.listBox2.ScrollAlwaysVisible = true;
             this.listBox2.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.listBox2.Size = new System.Drawing.Size(172, 328);
+            this.listBox2.Size = new System.Drawing.Size(204, 328);
             this.listBox2.TabIndex = 5;
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(491, 380);
+            this.button5.Location = new System.Drawing.Point(391, 382);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(77, 38);
+            this.button5.Size = new System.Drawing.Size(136, 38);
             this.button5.TabIndex = 9;
             this.button5.Text = "返回主窗体";
             this.button5.UseVisualStyleBackColor = true;
@@ -174,6 +175,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.checkBox1);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.textBox1);
             this.groupBox1.Controls.Add(this.label11);
@@ -195,7 +197,7 @@
             this.groupBox1.ForeColor = System.Drawing.SystemColors.ControlText;
             this.groupBox1.Location = new System.Drawing.Point(6, 6);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(449, 328);
+            this.groupBox1.Size = new System.Drawing.Size(344, 379);
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "参数设定";
@@ -341,7 +343,7 @@
             this.label4.AutoSize = true;
             this.label4.BackColor = System.Drawing.Color.Transparent;
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
-            this.label4.Location = new System.Drawing.Point(682, 343);
+            this.label4.Location = new System.Drawing.Point(613, 344);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(65, 12);
             this.label4.TabIndex = 12;
@@ -349,7 +351,7 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(632, 382);
+            this.button10.Location = new System.Drawing.Point(591, 383);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(44, 37);
             this.button10.TabIndex = 15;
@@ -363,7 +365,7 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(469, 417);
+            this.tabControl1.Size = new System.Drawing.Size(364, 417);
             this.tabControl1.TabIndex = 17;
             // 
             // tabPage1
@@ -375,19 +377,31 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(461, 391);
+            this.tabPage1.Size = new System.Drawing.Size(356, 391);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "参数设定";
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(574, 382);
+            this.button6.Location = new System.Drawing.Point(533, 383);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(52, 37);
             this.button6.TabIndex = 15;
             this.button6.Text = "删除";
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Checked = true;
+            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox1.Location = new System.Drawing.Point(150, 327);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(84, 16);
+            this.checkBox1.TabIndex = 7;
+            this.checkBox1.Text = "生成csproj";
+            this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // MSSqlCreate
             // 
@@ -457,5 +471,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

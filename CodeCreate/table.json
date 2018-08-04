@@ -464,6 +464,11 @@
   {
     "TableName": "ContractsType",
     "TableDesc": "合同类型"
+  },
+  {
+    "TableName": "ContractsRelation",
+    "TableDesc": "合同关联",
+    "List": []
   }
 
 ]

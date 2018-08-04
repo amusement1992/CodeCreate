@@ -131,11 +131,11 @@ namespace CodeCreate
             StringBuilder sb_body = new StringBuilder();
             sb_body.AppendLine("");
             sb_body.AppendLine("  --删除");
+            sb_body.AppendLine("  delete from [Sys_AuthorityBindOperation] where [AuthorithOperation] in(select [SysNo] FROM [dbo].[Sys_AuthorityOperation] where [name] like '%" + Name + "%' )");
             sb_body.AppendLine("  delete from [dbo].[Sys_AuthorityOperationGroup] where [Name]='" + Name + "'");
             sb_body.AppendLine("  delete from [dbo].[Sys_AuthorityOperation] where [Name] like '%" + Name + "%'");
             sb_body.AppendLine("  delete from [dbo].[Sys_AuthorityGroup] where [Name]='" + Name + "'");
             sb_body.AppendLine("  delete from [dbo].[Sys_Authority] where [Name] like '%" + Name + "%'");
-            sb_body.AppendLine("  delete from [Sys_AuthorityBindOperation] where [AuthorithOperation] in(select [SysNo] FROM [dbo].[Sys_AuthorityOperation] where [name] like '%" + Name + "%' )");
 
             return sb_body.ToString();
         }

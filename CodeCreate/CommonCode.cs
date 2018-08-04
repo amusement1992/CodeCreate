@@ -10,6 +10,7 @@ namespace CodeCreate
 {
     public class CommonCode
     {
+        public static string projSrc = "E:\\MyWeb\\Web_TFS\\BigDataAnalysis\\BigDataAnalysisDev";
 
         /// <summary>
         /// 保存文件
@@ -21,6 +22,25 @@ namespace CodeCreate
             FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
             fs.SetLength(0);
             var gb2312 = Encoding.GetEncoding("GB2312");
+
+            byte[] buffer = gb2312.GetBytes(fileContent);
+
+            fs.Write(buffer, 0, buffer.Length);
+
+            fs.Flush();
+            fs.Close();
+        }
+
+        /// <summary>
+        /// 保存文件
+        /// </summary>
+        /// <param name="fileName">文件路径</param>
+        /// <param name="fileContent">文件内容</param>
+        public static void Save2(string fileName, string fileContent)
+        {
+            FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
+            fs.SetLength(0);
+            var gb2312 = Encoding.GetEncoding("UTF-8");
 
             byte[] buffer = gb2312.GetBytes(fileContent);
 
@@ -192,7 +212,7 @@ namespace CodeCreate
         public static List<TableModel> GetListTable()
         {
             string filepath = "table.json";
-            string json = JsonHelper.GetFileJson(filepath);
+            string json = JsonHelper.GetFile(filepath);
 
             List<TableModel> tableModels = JsonConvertHelper.DeserializeObject<List<TableModel>>(json) as List<TableModel>;
 

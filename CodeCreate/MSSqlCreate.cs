@@ -303,6 +303,24 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
                     new Create_Web_Controller().Create(configModel.str_nameSpace, dt_tables, str_table);
                     new Create_Sql().Create(configModel.str_nameSpace, dt_tables, str_table);
 
+                    if (checkBox1.Checked)
+                    {
+
+                        new Create_csproj().Create(configModel.str_nameSpace, dt_tables, str_table, "Business");
+                        new Create_csproj().Create(configModel.str_nameSpace, dt_tables, str_table, "BusinessInterface");
+                        new Create_csproj().Create(configModel.str_nameSpace, dt_tables, str_table, "DataAccess");
+                        new Create_csproj().Create(configModel.str_nameSpace, dt_tables, str_table, "DataAccessInterface");
+                        new Create_csproj().Create(configModel.str_nameSpace, dt_tables, str_table, "Domain");
+                        new Create_csproj().Create(configModel.str_nameSpace, dt_tables, str_table, "Dto");
+                        new Create_csproj().Create(configModel.str_nameSpace, dt_tables, str_table, "Entity");
+                        new Create_csproj().Create(configModel.str_nameSpace, dt_tables, str_table, "Query");
+                        new Create_csproj().Create(configModel.str_nameSpace, dt_tables, str_table, "Repository");
+                        new Create_csproj().Create(configModel.str_nameSpace, dt_tables, str_table, "Service");
+                        new Create_csproj().Create(configModel.str_nameSpace, dt_tables, str_table, "ServiceInterface");
+                        new Create_csproj().Create(configModel.str_nameSpace, dt_tables, str_table, "ViewModel");
+                        //new Create_csproj().Create(configModel.str_nameSpace, dt_tables, str_table, "Web");
+                    }
+
                     str_CreateMap += new Create_Config().GetStr_CreateMap(configModel.str_nameSpace, dt_tables, str_table);
 
                     str_SetObjectName += new Create_Config().GetStr_SetObjectName(configModel.str_nameSpace, dt_tables, str_table);

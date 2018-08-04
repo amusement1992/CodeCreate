@@ -103,6 +103,7 @@ namespace CodeCreate
                 Directory.CreateDirectory(file_Model);
             }
             CommonCode.Save(file_Model + "/" + tableName + "Entity.cs", sb_body.ToString());
+
         }
 
     }

@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeCreateDDD\Create_csproj.cs" />
     <Compile Include="CodeCreateDDD\Create_Sql.cs" />
     <Compile Include="CodeCreateDDD\Create_Web_Controller.cs" />
     <Compile Include="CodeCreateDDD\Create_Web_Page.cs" />
