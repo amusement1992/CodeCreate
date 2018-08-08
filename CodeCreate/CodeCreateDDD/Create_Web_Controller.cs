@@ -21,7 +21,7 @@ namespace CodeCreate
             string primaryKey = "";
 
             StringBuilder sb = new StringBuilder();
-             
+
 
             StringBuilder sb_body = new StringBuilder();
             sb_body.AppendLine("using Lee.Web.Mvc;");
@@ -90,6 +90,20 @@ namespace CodeCreate
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 列表");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        /// <param name=\"filter\"></param>");
+            sb_body.AppendLine("        /// <returns></returns>");
+            sb_body.AppendLine("        [HttpGet]");
+            sb_body.AppendLine("        public JsonResult Get" + tableName + "List(" + tableName + "FilterViewModel filter)");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            var list = " + tableName + "Service.Get" + tableName + "List(filter.MapTo<" + tableName + "FilterDto>());");
+            sb_body.AppendLine("            list.Insert(0, new " + tableName + "Dto { SysNo = Guid.Empty, " + tableName + "Name = \"\" });");
+            sb_body.AppendLine("            var result = list.Select(d => new { d.SysNo, d." + tableName + "Name });");
+            sb_body.AppendLine("            return Json(result, JsonRequestBehavior.AllowGet);");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
             sb_body.AppendLine("        /// 添加、修改");
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"user\"></param>");
@@ -98,6 +112,20 @@ namespace CodeCreate
             sb_body.AppendLine("        [HttpPost]");
             sb_body.AppendLine("        public ActionResult Edit" + tableName + "(" + tableName + "ViewModel vm)");
             sb_body.AppendLine("        {");
+            sb_body.AppendLine("            #region 验证是否存在");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            var model = " + tableName + "Service.Get" + tableName + "(new " + tableName + "FilterDto()");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                " + tableName + "Name = vm." + tableName + "Name,");
+            sb_body.AppendLine("            });");
+            sb_body.AppendLine("            if (model != null && (vm.SysNo == Guid.Empty || model.SysNo != vm.SysNo))");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                var result2 = Result<" + tableName + "ViewModel>.ErrorResult(\"" + tableDesc + "名称已存在！\");");
+            sb_body.AppendLine("                return Content(JsonSerialize.ObjectToJson(result2));");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            #endregion 验证是否存在");
+
             sb_body.AppendLine("            vm.UpdateDate = DateTime.Now;");
             sb_body.AppendLine("            vm.UpdateUserID = LoginUserId;");
             sb_body.AppendLine("            if (vm.SysNo == Guid.Empty)");

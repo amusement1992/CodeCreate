@@ -381,18 +381,7 @@ namespace CodeCreate
                     sb_instanceMethod.AppendLine("        /// </summary>");
                     sb_instanceMethod.AppendLine("        /// <returns></returns>");
 
-                    if (thisModel.ColumnType == "Guid?")
-                    {
-                        sb_instanceMethod.AppendLine("        " + thisModel.NewColumnType + " Load" + thisModel.NewColumnName + "()");
-                        sb_instanceMethod.AppendLine("        {");
-                        sb_instanceMethod.AppendLine("            if (!" + thisModel.ColumnName + ".HasValue || " + thisModel.ColumnName + " == Guid.Empty)");
-                        sb_instanceMethod.AppendLine("            {");
-                        sb_instanceMethod.AppendLine("                return null;");
-                        sb_instanceMethod.AppendLine("            }");
-                        sb_instanceMethod.AppendLine("            return " + thisModel.NewColumnType + "Service.Get" + thisModel.NewColumnType + "(" + thisModel.ColumnName + " ?? Guid.Empty);");
-                        sb_instanceMethod.AppendLine("        }");
-                    }
-                    else if (thisModel.ColumnType == "Guid")
+                    if (thisModel.ColumnType == "Guid" || thisModel.ColumnType == "Guid?")
                     {
                         sb_instanceMethod.AppendLine("        " + thisModel.NewColumnType + " Load" + thisModel.NewColumnName + "()");
                         sb_instanceMethod.AppendLine("        {");

@@ -107,7 +107,7 @@ namespace CodeCreate
             sb_body.AppendLine("        /// <summary>");
             sb_body.AppendLine("        /// 编号");
             sb_body.AppendLine("        /// </summary>");
-            sb_body.AppendLine("        public IEnumerable<Guid> " + tableName + "Ids");
+            sb_body.AppendLine("        public List<Guid> " + tableName + "Ids");
             sb_body.AppendLine("        {");
             sb_body.AppendLine("            get; set;");
             sb_body.AppendLine("        }");

@@ -59,7 +59,25 @@
     "TableName": "Brand",
     "TableDesc": "品牌",
     "ExcludePropertys": [],
-    "List": []
+    "List": [
+      {
+        "ColumnName": "PlatformID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "Platform",
+        "NewColumnType": "Platform",
+        "NewColumnComment": "平台",
+
+        "NewColumnName_Dto": "Platform",
+        "NewColumnType_Dto": "PlatformDto",
+
+        "NewColumnName_VM": "PlatformName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "PlatformName"
+      }
+    ]
   },
   {
     "TableName": "Category",
@@ -252,7 +270,42 @@
     "TableName": "Shop",
     "TableDesc": "店铺",
     "ExcludePropertys": [],
-    "List": []
+    "List": [
+      {
+        "ColumnName": "PlatformID",
+        "ColumnType": "Guid",
+
+        "NewColumnName": "Platform",
+        "NewColumnType": "Platform",
+        "NewColumnComment": "平台",
+
+        "NewColumnName_Dto": "Platform",
+        "NewColumnType_Dto": "PlatformDto",
+
+        "NewColumnName_VM": "PlatformName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "PlatformName"
+      },
+      {
+        "ColumnName": "CompanyID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "Company",
+        "NewColumnType": "Company",
+        "NewColumnComment": "公司",
+
+        "NewColumnName_Dto": "Company",
+        "NewColumnType_Dto": "CompanyDto",
+
+        "NewColumnName_VM": "CompanyName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "CompanyName"
+      }
+    ]
   },
   {
     "TableName": "Department",

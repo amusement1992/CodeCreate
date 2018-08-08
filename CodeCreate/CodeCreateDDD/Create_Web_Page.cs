@@ -137,9 +137,7 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("");
             sb_body.AppendLine("        $(\"#searchList\").on(\"click\", function () {");
-            sb_body.AppendLine("            $('#dtGrid').datagrid('load', {");
-            sb_body.AppendLine("                " + tableName + "Name: $('#" + tableName + "Name').val()");
-            sb_body.AppendLine("            });");
+            sb_body.AppendLine("            $('#dtGrid').datagrid('load', GetQueryParams());");
             sb_body.AppendLine("        });");
             sb_body.AppendLine("");
             sb_body.AppendLine("        //删除选中");
@@ -204,6 +202,7 @@ namespace CodeCreate
             sb_body.AppendLine("            collapsible: true,");
             sb_body.AppendLine("            pagination: true,");
             sb_body.AppendLine("            pageSize: 10,");
+            sb_body.AppendLine("            queryParams: GetQueryParams(),");
             sb_body.AppendLine("            striped: true,");
             sb_body.AppendLine("            loading: true,");
             sb_body.AppendLine("            singleSelect: false,");
@@ -269,6 +268,11 @@ namespace CodeCreate
             sb_body.AppendLine("                                contentType: \"application/json\",");
             sb_body.AppendLine("                                data: JSON.stringify(GetEditData(type)),");
             sb_body.AppendLine("                                success: function (data) {");
+            sb_body.AppendLine("                                    data = $.parseJSON(data);");
+            sb_body.AppendLine("                                    if (!data.Success) {");
+            sb_body.AppendLine("                                        layer.alert(data.Message, { icon: 0, tiem: 1500 });");
+            sb_body.AppendLine("                                        return;");
+            sb_body.AppendLine("                                    }");
             sb_body.AppendLine("                                    var rows = $(\"#dtGrid\").datagrid(\"getRows\");");
             sb_body.AppendLine("                                    $(\"#dtGrid\").datagrid('loadData', rows);");
             sb_body.AppendLine("                                    layer.close(j);//关闭面板");
@@ -298,9 +302,16 @@ namespace CodeCreate
             sb_body.AppendLine("            }");
             sb_body.AppendLine("        });");
             sb_body.AppendLine("    }");
-
-
             sb_body.AppendLine("");
+            sb_body.AppendLine("    //查询条件");
+            sb_body.AppendLine("    function GetQueryParams() {");
+            sb_body.AppendLine("        var parm = {");
+            sb_body.AppendLine("            " + tableName + "Name: $('#" + tableName + "Name').val(),");
+            sb_body.AppendLine("        };");
+            sb_body.AppendLine("        return parm;");
+            sb_body.AppendLine("    }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("    //提交数据");
             sb_body.AppendLine("    function GetEditData(type) {");
             sb_body.AppendLine("        var parm = {");
             sb_body.AppendLine("            SysNo: type == \"updateRow\" ? $(\".SysNo\").textbox(\"getText\") : \"00000000-0000-0000-0000-000000000000\",");
@@ -311,6 +322,7 @@ namespace CodeCreate
             sb_body.AppendLine("        return parm;");
             sb_body.AppendLine("    }");
             sb_body.AppendLine("");
+            sb_body.AppendLine("    //编辑页面赋值");
             sb_body.AppendLine("    function SetEditData(row) {");
             sb_body.AppendLine("        $(\".SysNo\").textbox(\"setText\", row.SysNo);");
 
@@ -328,7 +340,7 @@ namespace CodeCreate
             sb_body.AppendLine("        <thead>");
             sb_body.AppendLine("            <tr>");
             sb_body.AppendLine("                <th data-options=\"field:'ck',checkbox:true,fixed:true\"></th>");
-            sb_body.AppendLine("                <th data-options=\"field:'SysNo',width:100,align:'center'\">编号</th>");
+            sb_body.AppendLine("                <th data-options=\"field:'SysNo',width:100,align:'center',hidden:true\">编号</th>");
 
             sb_body.AppendLine(sb_Table_Th.ToString());
 
