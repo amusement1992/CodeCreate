@@ -68,8 +68,8 @@ namespace CodeCreate
                 sb.AppendLine("            set { valueDic.SetValue(\"" + columnName + "\", value); }");
                 sb.AppendLine("        }");
 
-                sb.AppendLine("");
             }
+            sb.AppendLine("");
             sb.AppendLine("        #endregion Model");
 
             #endregion Model

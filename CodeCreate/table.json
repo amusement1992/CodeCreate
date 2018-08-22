@@ -58,25 +58,9 @@
   {
     "TableName": "Brand",
     "TableDesc": "品牌",
-    "ExcludePropertys": [],
+    "ExcludePropertys": [ "BrandCode" ],
     "List": [
-      {
-        "ColumnName": "PlatformID",
-        "ColumnType": "Guid?",
 
-        "NewColumnName": "Platform",
-        "NewColumnType": "Platform",
-        "NewColumnComment": "平台",
-
-        "NewColumnName_Dto": "Platform",
-        "NewColumnType_Dto": "PlatformDto",
-
-        "NewColumnName_VM": "PlatformName",
-        "NewColumnType_VM": "string",
-
-        "IsMapper": true,
-        "MapperName": "PlatformName"
-      }
     ]
   },
   {
@@ -184,7 +168,11 @@
         "MapperName": "CustomerName"
       },
       {
-        "ListFilterVM": [ "Guid?", "TemplateTypeID", "" ]
+        "ListFilterVM": [ "Guid?", "TemplateTypeID", "模板类型ID" ]
+      },
+      {
+        "ListFilterVM": [ "string", "BrandName", "品牌名称" ],
+        "ListFilterDto": [ "string", "BrandName", "品牌名称" ]
       }
     ]
   },
@@ -269,7 +257,7 @@
   {
     "TableName": "Shop",
     "TableDesc": "店铺",
-    "ExcludePropertys": [],
+    "ExcludePropertys": [ "ShopCode" ],
     "List": [
       {
         "ColumnName": "PlatformID",
@@ -555,8 +543,185 @@
 
         "IsMapper": false,
         "MapperName": "Name"
+      },
+      {
+        "ListCmdDto": [ "List<Guid>", "ListContractID", "合同列表" ]
+      },
+      {
+        "ListCmdDto": [ "Guid?", "ParentID", "父节点" ]
+      }
+    ]
+  },
+  {
+    "TableName": "ContractsLevel",
+    "TableDesc": "合同等级",
+    "ExcludePropertys": [
+      "ParentID",
+      "UserID",
+      "RoleID"
+    ],
+    "List": [
+      {
+        "ColumnName": "UserID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "User",
+        "NewColumnType": "User",
+        "NewColumnComment": "账号",
+
+        "NewColumnName_Dto": "User",
+        "NewColumnType_Dto": "UserDto",
+
+        "NewColumnName_VM": "UserName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "UserName"
+      },
+      {
+        "ColumnName": "RoleID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "Role",
+        "NewColumnType": "Role",
+        "NewColumnComment": "角色",
+
+        "NewColumnName_Dto": "Role",
+        "NewColumnType_Dto": "RoleDto",
+
+        "NewColumnName_VM": "RoleName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "RoleName"
+      },
+      {
+        "NewColumnName": "ListChild",
+        "NewColumnType": "List<ContractsLevel>",
+        "NewColumnComment": "Child列表",
+
+        "NewColumnName_Dto": "ListChild",
+        "NewColumnType_Dto": "List<ContractsLevelDto>",
+
+        "NewColumnName_VM": "ListChild",
+        "NewColumnType_VM": "List<ContractsLevelViewModel>",
+
+        "IsMapper": false,
+        "MapperName": "Name"
+      },
+      {
+        "ListDeleteCmdDto": [ "List<Guid>", "ListUserID", "账号列表" ]
+      },
+      {
+        "ListDeleteCmdDto": [ "List<Guid>", "ListRoleID", "角色列表" ]
+      },
+      {
+        "ListDeleteCmdDto": [ "Guid?", "ParentID", "父节点" ]
+      },
+      {
+        "ListDeleteCmdDto": [ "bool?", "IsForbidden", "是否禁止" ]
+      },
+      {
+        "ListFilterDto": [ "List<Guid>", "ListUserID", "账号列表" ]
+      },
+      {
+        "ListFilterDto": [ "List<Guid>", "ListRoleID", "角色列表" ]
+      }
+    ]
+  },
+  {
+    "TableName": "ContractsEvent",
+    "TableDesc": "合同事件",
+    "ExcludePropertys": [
+      "ContractID"
+    ],
+    "List": [
+      {
+        "ColumnName": "ContractID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "Contracts",
+        "NewColumnType": "Contracts",
+        "NewColumnComment": "合同",
+
+        "NewColumnName_Dto": "Contracts",
+        "NewColumnType_Dto": "ContractsDto",
+
+        "NewColumnName_VM": "ContractsName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "Name"
+      }
+    ]
+  },
+  {
+    "TableName": "ContractsEventReminder",
+    "TableDesc": "合同事件提醒人",
+    "ExcludePropertys": [
+      "ContractID"
+    ],
+    "List": [
+      {
+        "ColumnName": "ContractID",
+        "ColumnType": "Guid",
+
+        "NewColumnName": "Contracts",
+        "NewColumnType": "Contracts",
+        "NewColumnComment": "合同",
+
+        "NewColumnName_Dto": "Contracts",
+        "NewColumnType_Dto": "ContractsDto",
+
+        "NewColumnName_VM": "ContractsName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "Name"
+      },
+      {
+        "ColumnName": "UserID",
+        "ColumnType": "Guid",
+
+        "NewColumnName": "User",
+        "NewColumnType": "User",
+        "NewColumnComment": "账号",
+
+        "NewColumnName_Dto": "User",
+        "NewColumnType_Dto": "UserDto",
+
+        "NewColumnName_VM": "UserName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "UserName"
+      }
+    ]
+  },
+
+  {
+    "TableName": "Msg",
+    "TableDesc": "消息通知",
+    "ExcludePropertys": [
+      "MsgID",
+      "MsgType",
+      "MsgNo",
+      "FromUrl",
+      "ReminderPerson",
+      "ReminderTime",
+      "Remark"
+    ],
+    "List": [
+      {
+        "ListFilterVM": [ "bool?", "ReminderType", "提醒类型" ],
+        "ListFilterDto": [ "bool?", "ReminderType", "提醒类型" ]
+      },
+      {
+        "NewColumnName_VM": "IsHandle",
+        "NewColumnType_VM": "bool",
+        "NewColumnComment": "已处理"
+
       }
     ]
   }
-
 ]

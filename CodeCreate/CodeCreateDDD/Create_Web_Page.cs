@@ -142,7 +142,6 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("        //删除选中");
             sb_body.AppendLine("        $('#remove').linkbutton({");
-            sb_body.AppendLine("            iconCls: 'icon iconfont icon-icon_delete',");
             sb_body.AppendLine("            onClick: function () {");
             sb_body.AppendLine("                var row = $(\"#dtGrid\").datagrid('getSelections');");
             sb_body.AppendLine("");
@@ -233,6 +232,10 @@ namespace CodeCreate
             sb_body.AppendLine("                    });");
             sb_body.AppendLine("                    $(ddlMenu.menubutton('options').menu).menu({");
             sb_body.AppendLine("                        onClick: function (item) {");
+            sb_body.AppendLine("                            $(id).datagrid(\"selectRow\", EditIndex);");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                            var rows = $(id).datagrid('getRows');");
+            sb_body.AppendLine("                            var row = rows[EditIndex];");
             sb_body.AppendLine("                            //编辑");
             sb_body.AppendLine("                            if (item.name == 'edit') {");
             sb_body.AppendLine("                                $(id).datagrid(\"selectRow\", EditIndex);");
@@ -336,6 +339,16 @@ namespace CodeCreate
             sb_body.AppendLine("</script>");
             sb_body.AppendLine("");
             sb_body.AppendLine("<body class=\"easyui-layout\">");
+            sb_body.AppendLine("    <div style=\"padding: 10px;\" id=\"dtGridToolber\">");
+            sb_body.AppendLine("        <input class=\"easyui-textbox\" style=\"width: 400px;\" id=\"" + tableName + "Name\" data-options=\"label:'" + tableDesc + "名称',prompt:'请输入" + tableDesc + "名称'\" />");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            <a id=\"searchList\" class=\"easyui-linkbutton style-primary\" style=\"margin: 0\" data-options=\"iconCls:'icon iconfont icon-sousuo'\">搜索</a>");
+            sb_body.AppendLine("            <a id=\"remove\" class=\"easyui-linkbutton style-red\" style=\"float: right;margin: 0 5px 0 0;\" data-options=\"iconCls:'icon iconfont icon-delete2'\">删除选中</a>");
+            sb_body.AppendLine("            <a id=\"add\" class=\"easyui-linkbutton style-blue\" style=\"float: right;margin: 0 5px 0 0;\" data-options=\"iconCls:'icon iconfont icon-tianjia1'\">添加" + tableDesc + "</a>");
+
+            sb_body.AppendLine("");
+            sb_body.AppendLine("    </div>");
+
             sb_body.AppendLine("    <table id=\"dtGrid\" scroll=\"on\">");
             sb_body.AppendLine("        <thead>");
             sb_body.AppendLine("            <tr>");
@@ -344,8 +357,8 @@ namespace CodeCreate
 
             sb_body.AppendLine(sb_Table_Th.ToString());
 
-            sb_body.AppendLine("                <th data-options=\"field:'CreateDate',width:160,align:'center',fixed:true,formatter:fmDate\">添加时间</th>");
-            sb_body.AppendLine("                <th data-options=\"field:'UpdateDate',width:160,align:'center',fixed:true,formatter:fmDate\">更新时间</th>");
+            sb_body.AppendLine("                <th data-options=\"field:'CreateDate',width:120,align:'center',fixed:true,formatter:fmDate\">添加时间</th>");
+            sb_body.AppendLine("                <th data-options=\"field:'UpdateDate',width:120,align:'center',fixed:true,formatter:fmDate\">更新时间</th>");
             sb_body.AppendLine("                <th data-options=\"field:'color',title:'操作',width:200,align:'center',fixed:true,formatter:function(){return '<a class=menuBtn>操作</a>'}\"></th>");
             sb_body.AppendLine("            </tr>");
             sb_body.AppendLine("        </thead>");
@@ -354,14 +367,6 @@ namespace CodeCreate
             sb_body.AppendLine("        <div data-options=\"iconCls:'icon iconfont icon-bianji1',name:'edit'\">");
             sb_body.AppendLine("            <a href=\"###\" class=\"easyui-linkbutton style-purple\">编辑</a>");
             sb_body.AppendLine("        </div>");
-            sb_body.AppendLine("    </div>");
-            sb_body.AppendLine("    <div style=\"padding: 10px;\" id=\"dtGridToolber\">");
-            sb_body.AppendLine("        <input class=\"easyui-textbox\" style=\"width: 400px;\" id=\"" + tableName + "Name\" data-options=\"label:'" + tableDesc + "名称',prompt:'请输入" + tableDesc + "名称'\" />");
-            sb_body.AppendLine("        <a href=\"###\" class=\"easyui-linkbutton style-red\" id=\"searchList\" style=\"margin: 0;\">搜索</a>");
-            sb_body.AppendLine("        <a class=\"easyui-linkbutton style-primary delete\" id=\"remove\" style=\"float: right;margin: 0\" data-options=\"iconCls:'icon iconfont icon-delete2'\">删除选中</a>");
-            sb_body.AppendLine("        <a class=\"easyui-linkbutton style-blue add\" style=\"float: right;margin: 0 5px 0 0;\" data-options=\"iconCls:'icon iconfont icon-tianjia1'\" id=\"add\">添加" + tableDesc + "</a>");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("");
             sb_body.AppendLine("    </div>");
             sb_body.AppendLine("");
             sb_body.AppendLine("    <div id=\"Add" + tableName + "\" style=\"width: 600px;height: 400px;display: none;\">");

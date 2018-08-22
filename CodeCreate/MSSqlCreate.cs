@@ -337,13 +337,20 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
             {
                 Directory.CreateDirectory(filePath);
             }
+
+
             CommonCode.Save(filePath + "/AutoMapMapper CreateMap.txt", str_CreateMap);
             CommonCode.Save(filePath + "/DbConfig SetObjectName.txt", str_SetObjectName);
             CommonCode.Save(filePath + "/DbConfig SetPrimaryKey.txt", str_SetPrimaryKey);
 
+            if (checkBox3.Checked)
+            {
+                Create_Config.SaveAutoMapMapper(str_CreateMap);
+                Create_Config.SaveDBConfig(str_SetObjectName, str_SetPrimaryKey);
+            }
+
             if (checkBox2.Checked)
             {
-
                 new Create_Enum().Create(configModel.str_nameSpace, listTableName);
             }
 

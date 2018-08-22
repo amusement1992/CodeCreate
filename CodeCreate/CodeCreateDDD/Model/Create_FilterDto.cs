@@ -57,8 +57,8 @@ namespace CodeCreate
                 sb.AppendLine(@"        /// " + columnComment);
                 sb.AppendLine(@"        /// </summary>");
                 sb.AppendLine("        public " + columnType + nullable + " " + columnName + " { get; set; }");
-                sb.AppendLine("");
             }
+            sb.AppendLine("");
             sb.AppendLine("        #endregion Model");
 
             #endregion Model

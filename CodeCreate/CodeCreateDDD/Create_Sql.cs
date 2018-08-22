@@ -81,8 +81,8 @@ namespace CodeCreate
             sb_body.AppendLine("  --插入授权组  ");
             sb_body.AppendLine("  INSERT INTO [dbo].[Sys_AuthorityOperationGroup]([SysNo],[Name],[Sort],[Parent],[Root],[Level],[Status],[Application],[Remark],[CreateDate])");
             sb_body.AppendLine("     VALUES (newid(),'" + Name + "'," + Sort + ",");
-            sb_body.AppendLine("	 (select [SysNo] FROM [dbo].[Sys_AuthorityOperationGroup] where [name]='" + ParentName + "' ),");
-            sb_body.AppendLine("	 (select [SysNo] FROM [dbo].[Sys_AuthorityOperationGroup] where [name]='" + ParentName + "' ),");
+            sb_body.AppendLine("	 (select [SysNo] FROM [dbo].[Sys_AuthorityOperationGroup] where [name]='" + ParentName + "' and Parent='00000000-0000-0000-0000-000000000000' ),");
+            sb_body.AppendLine("	 (select [SysNo] FROM [dbo].[Sys_AuthorityOperationGroup] where [name]='" + ParentName + "' and Parent='00000000-0000-0000-0000-000000000000' ),");
             sb_body.AppendLine("	 2,310,1,null,getdate()");
             sb_body.AppendLine("  );");
             sb_body.AppendLine("");
@@ -108,7 +108,7 @@ namespace CodeCreate
             sb_body.AppendLine("  --插入权限组  ");
             sb_body.AppendLine("  INSERT INTO [dbo].[Sys_AuthorityGroup]([SysNo],[Name],[SortIndex],[Status],[Parent],[Level],[Application],[Remark],[CreateDate])");
             sb_body.AppendLine("     VALUES (newid(),'" + Name + "'," + Sort + ",310,");
-            sb_body.AppendLine("	 (select [SysNo] FROM [dbo].[Sys_AuthorityGroup] where [name]='" + ParentName + "' ),");
+            sb_body.AppendLine("	 (select [SysNo] FROM [dbo].[Sys_AuthorityGroup] where [name]='" + ParentName + "' and Parent='00000000-0000-0000-0000-000000000000' ),");
             sb_body.AppendLine("	 2,1,null,getdate()");
             sb_body.AppendLine("  );");
 

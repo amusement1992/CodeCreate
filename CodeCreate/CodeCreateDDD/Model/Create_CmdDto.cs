@@ -116,6 +116,12 @@ namespace CodeCreate
             sb_body.AppendLine("        /// 修改人");
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        public Guid UpdateUserID { get; set; }");
+            
+            StringBuilder sb = new StringBuilder();
+            SetDeleteData(tableName, sb);
+
+            sb_body.Append(sb.ToString());
+
             sb_body.AppendLine("    }");
             sb_body.AppendLine("");
         }
@@ -162,5 +168,30 @@ namespace CodeCreate
                 }
             }
         }
+
+        private static void SetDeleteData(string tableName, StringBuilder sb)
+        {
+            var listModel = CommonCode.GetTableModel(tableName);
+            if (listModel != null)
+            {
+                foreach (var item in listModel)
+                {
+                    if (item.List != null)
+                    {
+
+                        foreach (var thisModel in item.List.Where(d => d.ListDeleteCmdDto != null))
+                        {
+                            sb.AppendLine("");
+                            sb.AppendLine(@"        /// <summary>");
+                            sb.AppendLine(@"        /// 扩展：" + thisModel.ListDeleteCmdDto[2]);
+                            sb.AppendLine(@"        /// </summary>");
+                            sb.AppendLine("        public " + thisModel.ListDeleteCmdDto[0] + " " + thisModel.ListDeleteCmdDto[1] + " { get; set; }");
+
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

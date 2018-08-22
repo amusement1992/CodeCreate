@@ -19,16 +19,16 @@ namespace CodeCreate
             StringBuilder sb_body = new StringBuilder();
             StringBuilder sb = new StringBuilder();
 
-            sb_body.AppendLine("using " + str_nameSpace + ".Entity." + tablePrefix + ";");
-            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Model;");
-            sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Query;");
-            sb_body.AppendLine("using " + str_nameSpace + ".ViewModel." + tablePrefix + ".Filter;");
-            sb_body.AppendLine("using " + str_nameSpace + ".ViewModel." + tablePrefix + ";");
-            sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Cmd;");
-            sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Query.Filter;");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("");
+            //sb_body.AppendLine("using " + str_nameSpace + ".Entity." + tablePrefix + ";");
+            //sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Model;");
+            //sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Query;");
+            //sb_body.AppendLine("using " + str_nameSpace + ".ViewModel." + tablePrefix + ".Filter;");
+            //sb_body.AppendLine("using " + str_nameSpace + ".ViewModel." + tablePrefix + ";");
+            //sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Cmd;");
+            //sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Query.Filter;");
+            //sb_body.AppendLine("");
+            //sb_body.AppendLine("");
+            //sb_body.AppendLine("");
 
 
             sb_body.AppendLine("            #region " + tableName + "");
@@ -111,5 +111,62 @@ namespace CodeCreate
             }
         }
 
+
+        public static void SaveAutoMapMapper(string str_CreateMap)
+        {
+            string src = CommonCode.projSrc + "/BigDataAnalysis.Mapper/AutoMapMapper.cs";
+
+            var str = JsonHelper.GetFile(src);
+
+            string[] arr = JsonHelper.SplitString(str, "\r\n");
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in arr)
+            {
+                if (item.Contains("AutoMapper.Mapper.Initialize(cfg);"))
+                {
+                    sb.AppendLine(str_CreateMap);
+                }
+                sb.AppendLine(item);
+            }
+
+            string file_Model = "C:\\Code\\BigDataAnalysis.Mapper";
+            if (!Directory.Exists(file_Model))
+            {
+                Directory.CreateDirectory(file_Model);
+            }
+
+            CommonCode.Save(file_Model + "/AutoMapMapper.cs", sb.ToString());
+        }
+
+        public static void SaveDBConfig(string str_SetObjectName, string str_SetPrimaryKey)
+        {
+            string src = CommonCode.projSrc + "/BigDataAnalysis.Config/DbConfig.cs";
+
+            var str = JsonHelper.GetFile(src);
+
+            string[] arr = JsonHelper.SplitString(str, "\r\n");
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in arr)
+            {
+                sb.AppendLine(item);
+                if (item.Contains("#region 数据库表名配置"))
+                {
+                    sb.AppendLine(str_SetObjectName);
+                }else if (item.Contains("#region 数据表主键配置"))
+                {
+                    sb.AppendLine(str_SetPrimaryKey);
+                }
+            }
+
+            string file_Model = "C:\\Code\\BigDataAnalysis.Config";
+            if (!Directory.Exists(file_Model))
+            {
+                Directory.CreateDirectory(file_Model);
+            }
+
+            CommonCode.Save(file_Model + "/DbConfig.cs", sb.ToString());
+
+
+        }
     }
 }

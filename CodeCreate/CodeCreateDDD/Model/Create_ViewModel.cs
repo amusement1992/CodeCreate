@@ -63,8 +63,8 @@ namespace CodeCreate
                 //    sb.AppendLine(@"        [StringLength(" + data_maxLength + ")]");
                 //}
                 sb.AppendLine("        public " + columnType + nullable + " " + columnName + " { get; set; }");
-                sb.AppendLine("");
             }
+            sb.AppendLine("");
             sb.AppendLine("        #endregion Model");
 
             #endregion Model

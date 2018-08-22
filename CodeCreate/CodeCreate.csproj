@@ -75,8 +75,6 @@
     <Compile Include="CodeCreateDDD\Model\Create_FilterDto.cs" />
     <Compile Include="CodeCreateDDD\Model\Create_Dto.cs" />
     <Compile Include="CodeCreateDDD\Model\Create_CmdDto.cs" />
-    <Compile Include="CodeCreateDDD\Model\Create_SaveCmdDto.cs" />
-    <Compile Include="CodeCreateDDD\Model\Create_DeleteCmdDto.cs" />
     <Compile Include="CommonCode.cs" />
     <Compile Include="Helper\JsonConvertHelper.cs" />
     <Compile Include="Helper\JsonHelper.cs" />
