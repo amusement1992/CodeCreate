@@ -14,8 +14,9 @@ namespace CodeCreate
     {
         public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
-
+            string tablePrefix = CommonCode.GetTablePrefix(tableName);
+            tableName = CommonCode.GetTableName(tableName);
+            string tableDesc = CommonCode.GetTableDesc(tableName);
 
             bool isPrimeKey = false;
             string primaryKey = "";
@@ -51,7 +52,7 @@ namespace CodeCreate
 
                 if (columnType == "string")
                 {
-                    sb.AppendLine("            if (!filter."+ columnName + ".IsNullOrEmpty())");
+                    sb.AppendLine("            if (!filter." + columnName + ".IsNullOrEmpty())");
                 }
                 else
                 {
@@ -93,7 +94,7 @@ namespace CodeCreate
             sb_body.AppendLine("namespace " + str_nameSpace + ".Business." + tablePrefix + "");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    /// <summary>");
-            sb_body.AppendLine("    /// 业务");
+            sb_body.AppendLine("    /// 业务：" + tableDesc);
             sb_body.AppendLine("    /// </summary>");
             sb_body.AppendLine("    public class " + tableName + "Business : I" + tableName + "Business");
             sb_body.AppendLine("    {");
@@ -104,7 +105,7 @@ namespace CodeCreate
             sb_body.AppendLine("        #region 保存");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 保存");
+            sb_body.AppendLine("        /// 保存" + tableDesc);
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"saveInfo\">保存信息</param>");
             sb_body.AppendLine("        /// <returns>执行结果</returns>");
@@ -112,7 +113,7 @@ namespace CodeCreate
             sb_body.AppendLine("        {");
             sb_body.AppendLine("            if (saveInfo == null)");
             sb_body.AppendLine("            {");
-            sb_body.AppendLine("                return Result<" + tableName + "Dto>.ErrorResult(\"没有指定任何要保持的信息\");");
+            sb_body.AppendLine("                return Result<" + tableName + "Dto>.ErrorResult(\"没有指定任何要保存的信息\");");
             sb_body.AppendLine("            }");
             sb_body.AppendLine("            using (var businessWork = UnitOfWork.Create())");
             sb_body.AppendLine("            {");
@@ -122,26 +123,9 @@ namespace CodeCreate
             sb_body.AppendLine("                    return Result<" + tableName + "Dto>.ErrorResult(saveResult.Message);");
             sb_body.AppendLine("                }");
             sb_body.AppendLine("");
-            sb_body.AppendLine("                #region 历史记录");
+            sb_body.AppendLine("                SaveHistory(saveInfo." + tableName + ", saveResult.Data.SysNo);");
             sb_body.AppendLine("");
-            sb_body.AppendLine("                SaveHistoryCmdDto saveHistoryCmdDto = new SaveHistoryCmdDto()");
-            sb_body.AppendLine("                {");
-            sb_body.AppendLine("                    History = new HistoryCmdDto()");
-            sb_body.AppendLine("                    {");
-            sb_body.AppendLine("                        OperationID = saveResult.Data.SysNo,");
-            sb_body.AppendLine("                        OperationType = OperationTypeEnum." + tableName + ".ToString(),");
-            sb_body.AppendLine("                        OperationName = saveInfo." + tableName + ".SysNo == Guid.Empty ? OperationNameEnum.Add.ToString() : OperationNameEnum.Edit.ToString(),");
-            sb_body.AppendLine("                        CreateUserID = saveInfo." + tableName + ".UpdateUserID ?? Guid.Empty,");
-            sb_body.AppendLine("                    }");
-            sb_body.AppendLine("                };");
-            sb_body.AppendLine("                HistoryService.SaveHistory(saveHistoryCmdDto.History.MapTo<Domain.Bcl.Model.History>());");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("                #endregion");
-
             sb_body.AppendLine("                var commitResult = businessWork.Commit();");
-
-            sb_body.AppendLine("                LogHelper.WriteLog(\"【Save" + tableName + "】操作对象：\" + JsonConvertHelper.SerializeObject(saveInfo) + \"。IP地址：\" + CommonCode.GetIP());");
-
             sb_body.AppendLine("                Result<" + tableName + "Dto> result = null;");
             sb_body.AppendLine("                if (commitResult.ExecutedSuccess)");
             sb_body.AppendLine("                {");
@@ -156,12 +140,43 @@ namespace CodeCreate
             sb_body.AppendLine("            }");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 批量保存" + tableDesc);
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        /// <param name=\"saveInfo\">保存信息</param>");
+            sb_body.AppendLine("        /// <returns>执行结果</returns>");
+            sb_body.AppendLine("        public Result SaveList" + tableName + "(Save" + tableName + "CmdDto saveInfo)");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            if (saveInfo == null || saveInfo.List" + tableName + ".IsNullOrEmpty())");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                return Result.ErrorResult(\"没有指定任何要保存的信息\");");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("            using (var businessWork = UnitOfWork.Create())");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                var saveResult = " + tableName + "Service.SaveList" + tableName + "(saveInfo.List" + tableName + ".Select(c => c.MapTo<" + tableName + ">()));");
+            sb_body.AppendLine("                if (!saveResult.Success)");
+            sb_body.AppendLine("                {");
+            sb_body.AppendLine("                    return saveResult;");
+            sb_body.AppendLine("                }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                foreach (var item in saveInfo.List" + tableName + ")");
+            sb_body.AppendLine("                {");
+            sb_body.AppendLine("                    SaveHistory(item, item.SysNo);");
+            sb_body.AppendLine("                }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                var commitResult = businessWork.Commit();");
+            sb_body.AppendLine("                return commitResult.ExecutedSuccess ? Result.SuccessResult(\"修改成功\") : Result.ErrorResult(\"修改失败\");");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("");
+
             sb_body.AppendLine("        #endregion 保存");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #region 获取");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 获取");
+            sb_body.AppendLine("        /// 获取" + tableDesc);
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"filter\">查询条件</param>");
             sb_body.AppendLine("        /// <returns></returns>");
@@ -176,7 +191,7 @@ namespace CodeCreate
             sb_body.AppendLine("        #region 获取列表");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 获取列表");
+            sb_body.AppendLine("        /// 获取" + tableDesc + "列表");
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"filter\">查询条件</param>");
             sb_body.AppendLine("        /// <returns></returns>");
@@ -191,7 +206,7 @@ namespace CodeCreate
             sb_body.AppendLine("        #region 获取分页");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 获取分页");
+            sb_body.AppendLine("        /// 获取" + tableDesc + "分页");
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"filter\">查询条件</param>");
             sb_body.AppendLine("        /// <returns></returns>");
@@ -206,7 +221,7 @@ namespace CodeCreate
             sb_body.AppendLine("        #region 删除");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 删除");
+            sb_body.AppendLine("        /// 删除" + tableDesc);
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"deleteInfo\">删除信息</param>");
             sb_body.AppendLine("        /// <returns>执行结果</returns>");
@@ -230,34 +245,66 @@ namespace CodeCreate
             sb_body.AppendLine("                    return deleteResult;");
             sb_body.AppendLine("                }");
             sb_body.AppendLine("");
-            sb_body.AppendLine("                #region 历史记录");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("                foreach (var item in deleteInfo." + tableName + "Ids)");
-            sb_body.AppendLine("                {");
-            sb_body.AppendLine("                    SaveHistoryCmdDto saveHistoryCmdDto = new SaveHistoryCmdDto()");
-            sb_body.AppendLine("                    {");
-            sb_body.AppendLine("                        History = new HistoryCmdDto()");
-            sb_body.AppendLine("                        {");
-            sb_body.AppendLine("                            OperationID = item,");
-            sb_body.AppendLine("                            OperationType = OperationTypeEnum." + tableName + ".ToString(),");
-            sb_body.AppendLine("                            OperationName = OperationNameEnum.Delete.ToString(),");
-            sb_body.AppendLine("                            CreateUserID = deleteInfo.UpdateUserID,");
-            sb_body.AppendLine("                        }");
-            sb_body.AppendLine("                    };");
-            sb_body.AppendLine("                    HistoryService.SaveHistory(saveHistoryCmdDto.History.MapTo<Domain.Bcl.Model.History>());");
-            sb_body.AppendLine("                }");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("                #endregion");
+            sb_body.AppendLine("                SaveDeleteHistory(deleteInfo);");
             sb_body.AppendLine("");
             sb_body.AppendLine("                var commitResult = businessWork.Commit();");
-            sb_body.AppendLine("                LogHelper.WriteLog(\"【Delete" + tableName + "】操作对象：\" + JsonConvertHelper.SerializeObject(deleteInfo) + \"。IP地址：\" + CommonCode.GetIP());");
-
             sb_body.AppendLine("                return commitResult.ExecutedSuccess ? Result.SuccessResult(\"删除成功\") : Result.ErrorResult(\"删除失败\");");
             sb_body.AppendLine("            }");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion 删除");
             sb_body.AppendLine("");
+            sb_body.AppendLine("        #region 历史记录");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 保存时，记录历史记录");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        /// <param name=\"saveInfo\"></param>");
+            sb_body.AppendLine("        /// <param name=\"SysNo\"></param>");
+            sb_body.AppendLine("        private static void SaveHistory(" + tableName + "CmdDto saveInfo, Guid SysNo)");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            SaveHistoryCmdDto saveHistoryCmdDto = new SaveHistoryCmdDto()");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                History = new HistoryCmdDto()");
+            sb_body.AppendLine("                {");
+            sb_body.AppendLine("                    OperationID = SysNo,");
+            sb_body.AppendLine("                    OperationType = OperationTypeEnum." + tableName + ".ToString(),");
+            sb_body.AppendLine("                    OperationName = saveInfo.SysNo == Guid.Empty ? OperationNameEnum.Add.ToString() : OperationNameEnum.Edit.ToString(),");
+            sb_body.AppendLine("                    CreateUserID = saveInfo.UpdateUserID ?? Guid.Empty,");
+            sb_body.AppendLine("                }");
+            sb_body.AppendLine("            };");
+            sb_body.AppendLine("            HistoryService.SaveHistory(saveHistoryCmdDto.History.MapTo<Domain.Bcl.Model.History>());");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            LogHelper.WriteLog(\"【Save" + tableName + "】操作对象：\" + JsonConvertHelper.SerializeObject(saveInfo) + \"。IP地址：\" + CommonCode.GetIP());");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 删除时，记录历史记录");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        /// <param name=\"deleteInfo\"></param>");
+            sb_body.AppendLine("        private void SaveDeleteHistory(Delete" + tableName + "CmdDto deleteInfo)");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            foreach (var item in deleteInfo." + tableName + "Ids)");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                SaveHistoryCmdDto saveHistoryCmdDto = new SaveHistoryCmdDto()");
+            sb_body.AppendLine("                {");
+            sb_body.AppendLine("                    History = new HistoryCmdDto()");
+            sb_body.AppendLine("                    {");
+            sb_body.AppendLine("                        OperationID = item,");
+            sb_body.AppendLine("                        OperationType = OperationTypeEnum." + tableName + ".ToString(),");
+            sb_body.AppendLine("                        OperationName = OperationNameEnum.Delete.ToString(),");
+            sb_body.AppendLine("                        CreateUserID = deleteInfo.UpdateUserID,");
+            sb_body.AppendLine("                    }");
+            sb_body.AppendLine("                };");
+            sb_body.AppendLine("                HistoryService.SaveHistory(saveHistoryCmdDto.History.MapTo<Domain.Bcl.Model.History>());");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            LogHelper.WriteLog(\"【Delete" + tableName + "】操作对象：\" + JsonConvertHelper.SerializeObject(deleteInfo) + \"。IP地址：\" + CommonCode.GetIP());");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        #endregion 历史记录");
+            sb_body.AppendLine("");
+
             sb_body.AppendLine("        #region 根据查询条件生成查询对象");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");

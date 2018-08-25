@@ -107,10 +107,7 @@ namespace CodeCreate
             sb_body.AppendLine("        /// <summary>");
             sb_body.AppendLine("        /// 编号");
             sb_body.AppendLine("        /// </summary>");
-            sb_body.AppendLine("        public List<Guid> " + tableName + "Ids");
-            sb_body.AppendLine("        {");
-            sb_body.AppendLine("            get; set;");
-            sb_body.AppendLine("        }");
+            sb_body.AppendLine("        public List<Guid> " + tableName + "Ids { get; set; }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
             sb_body.AppendLine("        /// 修改人");
@@ -137,10 +134,12 @@ namespace CodeCreate
             sb_body.AppendLine("        /// <summary>");
             sb_body.AppendLine("        /// 信息");
             sb_body.AppendLine("        /// </summary>");
-            sb_body.AppendLine("        public " + tableName + "CmdDto " + tableName + "");
-            sb_body.AppendLine("        {");
-            sb_body.AppendLine("            get; set;");
-            sb_body.AppendLine("        }");
+            sb_body.AppendLine("        public " + tableName + "CmdDto " + tableName + " { get; set; }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 列表信息");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        public List<" + tableName + "CmdDto> List" + tableName + " { get; set; }");
             sb_body.AppendLine("    }");
             sb_body.AppendLine("");
         }

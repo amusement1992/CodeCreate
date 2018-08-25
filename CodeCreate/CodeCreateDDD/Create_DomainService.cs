@@ -14,7 +14,10 @@ namespace CodeCreate
     {
         public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
+            string tablePrefix = CommonCode.GetTablePrefix(tableName);
+            tableName = CommonCode.GetTableName(tableName);
+            string tableDesc = CommonCode.GetTableDesc(tableName);
+
             StringBuilder sb_body = new StringBuilder();
 
             sb_body.AppendLine("using Lee.CQuery;");
@@ -35,7 +38,7 @@ namespace CodeCreate
             sb_body.AppendLine("namespace " + str_nameSpace + ".Domain." + tablePrefix + ".Service");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    /// <summary>");
-            sb_body.AppendLine("    /// 服务");
+            sb_body.AppendLine("    /// 服务：" + tableDesc);
             sb_body.AppendLine("    /// </summary>");
             sb_body.AppendLine("    public static class " + tableName + "Service");
             sb_body.AppendLine("    {");
@@ -44,7 +47,7 @@ namespace CodeCreate
             sb_body.AppendLine("        #region 保存");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 保存");
+            sb_body.AppendLine("        /// 保存" + tableDesc);
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"" + tableName + "\">信息</param>");
             sb_body.AppendLine("        /// <returns></returns>");
@@ -67,12 +70,32 @@ namespace CodeCreate
             sb_body.AppendLine("            return result;");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 批量保存" + tableDesc);
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        /// <param name=\"" + tableName + "\">信息</param>");
+            sb_body.AppendLine("        /// <returns></returns>");
+            sb_body.AppendLine("        public static Result SaveList" + tableName + "(IEnumerable<" + tableName + "> List" + tableName + ")");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            if (List" + tableName + ".IsNullOrEmpty())");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                return Result.ErrorResult(\"信息为空\");");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            foreach (var item in List" + tableName + ")");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                Save" + tableName + "(item);");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            return Result.SuccessResult(\"修改成功\");");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #region 添加");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 添加信息");
+            sb_body.AppendLine("        /// 添加" + tableDesc);
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"" + tableName + "\">信息</param>");
             sb_body.AppendLine("        /// <returns></returns>");
@@ -89,7 +112,7 @@ namespace CodeCreate
             sb_body.AppendLine("        #region 修改");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 修改信息");
+            sb_body.AppendLine("        /// 修改" + tableDesc);
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"" + tableName + "\">信息</param>");
             sb_body.AppendLine("        /// <returns></returns>");
@@ -113,7 +136,7 @@ namespace CodeCreate
             sb_body.AppendLine("        #region 获取");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 获取");
+            sb_body.AppendLine("        /// 获取" + tableDesc);
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"query\">查询条件</param>");
             sb_body.AppendLine("        /// <returns></returns>");
@@ -124,7 +147,7 @@ namespace CodeCreate
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 获取");
+            sb_body.AppendLine("        /// 获取" + tableDesc);
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"SysNo\">编号</param>");
             sb_body.AppendLine("        /// <returns></returns>");
@@ -134,7 +157,7 @@ namespace CodeCreate
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 获取");
+            sb_body.AppendLine("        /// 获取" + tableDesc);
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"SysNo\">编号</param>");
             sb_body.AppendLine("        /// <returns></returns>");
@@ -152,7 +175,7 @@ namespace CodeCreate
             sb_body.AppendLine("        #region 获取列表");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 获取列表");
+            sb_body.AppendLine("        /// 获取" + tableDesc + "列表");
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"query\">查询条件</param>");
             sb_body.AppendLine("        /// <returns></returns>");
@@ -167,7 +190,7 @@ namespace CodeCreate
             sb_body.AppendLine("        #region 获取分页");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 获取分页");
+            sb_body.AppendLine("        /// 获取" + tableDesc + "分页");
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"query\">查询条件</param>");
             sb_body.AppendLine("        /// <returns></returns>");
@@ -182,7 +205,7 @@ namespace CodeCreate
             sb_body.AppendLine("        #region 删除");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 删除数据");
+            sb_body.AppendLine("        /// 删除" + tableDesc);
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"" + tableName + "s\">要删除的信息</param>");
             sb_body.AppendLine("        /// <returns></returns>");
@@ -197,7 +220,7 @@ namespace CodeCreate
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 删除数据");
+            sb_body.AppendLine("        /// 删除" + tableDesc);
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"" + tableName + "Ids\">编号</param>");
             sb_body.AppendLine("        /// <returns></returns>");
