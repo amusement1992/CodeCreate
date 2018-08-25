@@ -14,7 +14,8 @@ namespace CodeCreate
     {
         public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
+            string tablePrefix = CommonCode.GetTablePrefix(tableName);
+            tableName = CommonCode.GetTableName(tableName);
             string tableDesc = CommonCode.GetTableDesc(tableName);
 
             bool isPrimeKey = false;
@@ -56,6 +57,10 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".Web.Controllers");
             sb_body.AppendLine("{");
+            sb_body.AppendLine("    /// <summary>");
+            sb_body.AppendLine("    /// Controller：" + tableDesc);
+            sb_body.AppendLine("    /// </summary>");
+
             sb_body.AppendLine("    public class " + tableName + "Controller : WebBaseController");
             sb_body.AppendLine("    {");
             sb_body.AppendLine("        I" + tableName + "Service " + tableName + "Service = ContainerManager.Container.Resolve<I" + tableName + "Service>();");
@@ -149,6 +154,10 @@ namespace CodeCreate
             sb_body.AppendLine("        [HttpPost]");
             sb_body.AppendLine("        public ActionResult EditList" + tableName + "(List<" + tableName + "ViewModel> list_vm)");
             sb_body.AppendLine("        {");
+            sb_body.AppendLine("            list_vm.ForEach(d => d.UpdateDate = DateTime.Now);");
+            sb_body.AppendLine("            list_vm.ForEach(d => d.UpdateUserID = LoginUserId);");
+            sb_body.AppendLine("            list_vm.Where(d => d.SysNo == Guid.Empty).ToList().ForEach(d => d.CreateUserID = LoginUserId);");
+            sb_body.AppendLine("");
             sb_body.AppendLine("            Result result = " + tableName + "Service.SaveList" + tableName + "(new Save" + tableName + "CmdDto()");
             sb_body.AppendLine("            {");
             sb_body.AppendLine("                List" + tableName + " = list_vm.Select(d => d.MapTo<" + tableName + "CmdDto>()).ToList(),");

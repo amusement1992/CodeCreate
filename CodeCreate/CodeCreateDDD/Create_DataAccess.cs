@@ -14,7 +14,9 @@ namespace CodeCreate
     {
         public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
+            string tablePrefix = CommonCode.GetTablePrefix(tableName);
+            tableName = CommonCode.GetTableName(tableName);
+            string tableDesc = CommonCode.GetTableDesc(tableName);
 
             bool isPrimeKey = false;
             string primaryKey = "";
@@ -45,7 +47,7 @@ namespace CodeCreate
                 }
 
                 CommonCode.GetColumnType(ref columnType, ref data_default);
-                
+
                 nullable = CommonCode.GetNullable(columnType, nullable);
 
                 sb.Append("\"" + columnName + "\", ");
@@ -73,7 +75,7 @@ namespace CodeCreate
             sb_body.AppendLine("namespace " + str_nameSpace + ".DataAccess." + tablePrefix + "");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    /// <summary>");
-            sb_body.AppendLine("    /// 数据访问");
+            sb_body.AppendLine("    /// 数据访问：" + tableDesc);
             sb_body.AppendLine("    /// </summary>");
             sb_body.AppendLine("    public class " + tableName + "DataAccess : RdbDataAccess<" + tableName + "Entity>, I" + tableName + "DbAccess");
             sb_body.AppendLine("    {");
@@ -100,7 +102,7 @@ namespace CodeCreate
             sb_body.AppendLine("        /// <returns></returns>");
             sb_body.AppendLine("        protected override string[] GetQueryFields()");
             sb_body.AppendLine("        {");
-            sb_body.AppendLine("            return new string[] { "+ str + " };");
+            sb_body.AppendLine("            return new string[] { " + str + " };");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion");
@@ -116,6 +118,6 @@ namespace CodeCreate
             }
             CommonCode.Save(file_Model + "/" + tableName + "DataAccess" + ".cs", sb_body.ToString());
         }
- 
+
     }
 }

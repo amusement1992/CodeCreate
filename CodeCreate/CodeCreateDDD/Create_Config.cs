@@ -15,7 +15,11 @@ namespace CodeCreate
         public string GetStr_CreateMap(string str_nameSpace, DataTable dt_tables, string tableName)
         {
             string temp = tableName;
-            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
+
+            string tablePrefix = CommonCode.GetTablePrefix(tableName);
+            tableName = CommonCode.GetTableName(tableName);
+            string tableDesc = CommonCode.GetTableDesc(tableName);
+
             StringBuilder sb_body = new StringBuilder();
             StringBuilder sb = new StringBuilder();
 

@@ -14,7 +14,10 @@ namespace CodeCreate
     {
         public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
+            string tablePrefix = CommonCode.GetTablePrefix(tableName);
+            tableName = CommonCode.GetTableName(tableName);
+            string tableDesc = CommonCode.GetTableDesc(tableName);
+
             StringBuilder sb_body = new StringBuilder();
 
             sb_body.AppendLine("using Lee.Command;");
@@ -31,13 +34,13 @@ namespace CodeCreate
             sb_body.AppendLine("namespace " + str_nameSpace + ".Domain." + tablePrefix + ".Repository");
             sb_body.AppendLine("{");
             sb_body.AppendLine("    /// <summary>");
-            sb_body.AppendLine("    /// 存储");
+            sb_body.AppendLine("    /// 存储：" + tableDesc);
             sb_body.AppendLine("    /// </summary>");
             sb_body.AppendLine("    public interface I" + tableName + "Repository : IRepository<" + tableName + ">");
             sb_body.AppendLine("    {");
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
-            
+
             string file_Model = "C:\\Code\\" + str_nameSpace + ".Domain\\" + tablePrefix + "\\Repository";
             if (!Directory.Exists(file_Model))
             {

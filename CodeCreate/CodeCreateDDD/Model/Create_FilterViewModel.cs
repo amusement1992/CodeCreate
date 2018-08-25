@@ -14,7 +14,9 @@ namespace CodeCreate
     {
         public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
+            string tablePrefix = CommonCode.GetTablePrefix(tableName);
+            tableName = CommonCode.GetTableName(tableName);
+            string tableDesc = CommonCode.GetTableDesc(tableName);
 
             bool isPrimeKey = false;
             string primaryKey = "";
@@ -79,6 +81,9 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".ViewModel." + tablePrefix + ".Filter");
             sb_body.AppendLine("{");
+            sb_body.AppendLine("    /// <summary>");
+            sb_body.AppendLine("    /// FilterViewModel：" + tableDesc);
+            sb_body.AppendLine("    /// </summary>");
             sb_body.AppendLine("    public class " + tableName + "FilterViewModel: PagingFilter");
             sb_body.AppendLine("    {");
             sb_body.AppendLine("");

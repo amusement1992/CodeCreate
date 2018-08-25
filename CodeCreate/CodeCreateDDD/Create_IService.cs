@@ -17,7 +17,7 @@ namespace CodeCreate
             string tablePrefix = CommonCode.GetTablePrefix(tableName);
             tableName = CommonCode.GetTableName(tableName);
             string tableDesc = CommonCode.GetTableDesc(tableName);
-
+            
             StringBuilder sb_body = new StringBuilder();
 
             sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Cmd;");

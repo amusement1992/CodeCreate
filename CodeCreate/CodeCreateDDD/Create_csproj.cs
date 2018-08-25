@@ -14,7 +14,10 @@ namespace CodeCreate
     {
         public void Create(string str_nameSpace, DataTable dt_tables, string tableName, string type)
         {
-            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
+            string tablePrefix = CommonCode.GetTablePrefix(tableName);
+            tableName = CommonCode.GetTableName(tableName);
+            string tableDesc = CommonCode.GetTableDesc(tableName);
+
             string src = CommonCode.projSrc + "/" + str_nameSpace + "." + type + "/" + str_nameSpace + "." + type + ".csproj";
             var str = JsonHelper.GetFile(src);
             var suffix = type;

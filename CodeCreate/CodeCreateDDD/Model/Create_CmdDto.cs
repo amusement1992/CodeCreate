@@ -14,7 +14,9 @@ namespace CodeCreate
     {
         public void Create(string str_nameSpace, DataTable dt_tables, string tableName)
         {
-            string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
+            string tablePrefix = CommonCode.GetTablePrefix(tableName);
+            tableName = CommonCode.GetTableName(tableName);
+            string tableDesc = CommonCode.GetTableDesc(tableName);
 
             bool isPrimeKey = false;
             string primaryKey = "";
@@ -69,6 +71,9 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".DTO." + tablePrefix + ".Cmd");
             sb_body.AppendLine("{");
+            sb_body.AppendLine("    /// <summary>");
+            sb_body.AppendLine("    /// CmdDto：" + tableDesc);
+            sb_body.AppendLine("    /// </summary>");
             sb_body.AppendLine("    public class " + tableName + "CmdDto");
             sb_body.AppendLine("    {");
             sb_body.AppendLine("");
@@ -98,9 +103,10 @@ namespace CodeCreate
 
         private static void SetDeleteCmdDto(string tableName, StringBuilder sb_body)
         {
+            string tableDesc = CommonCode.GetTableDesc(tableName);
             sb_body.AppendLine("");
             sb_body.AppendLine("    /// <summary>");
-            sb_body.AppendLine("    /// 删除");
+            sb_body.AppendLine("    /// DeleteCmdDto：" + tableDesc);
             sb_body.AppendLine("    /// </summary>");
             sb_body.AppendLine("    public class Delete" + tableName + "CmdDto");
             sb_body.AppendLine("    {");
@@ -113,7 +119,7 @@ namespace CodeCreate
             sb_body.AppendLine("        /// 修改人");
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        public Guid UpdateUserID { get; set; }");
-            
+
             StringBuilder sb = new StringBuilder();
             SetDeleteData(tableName, sb);
 
@@ -125,9 +131,10 @@ namespace CodeCreate
 
         private static void SetSaveCmdDto(string tableName, StringBuilder sb_body)
         {
+            string tableDesc = CommonCode.GetTableDesc(tableName);
             sb_body.AppendLine("");
             sb_body.AppendLine("    /// <summary>");
-            sb_body.AppendLine("    /// 保存信息");
+            sb_body.AppendLine("    /// SaveCmdDto：" + tableDesc);
             sb_body.AppendLine("    /// </summary>");
             sb_body.AppendLine("    public class Save" + tableName + "CmdDto");
             sb_body.AppendLine("    {");
