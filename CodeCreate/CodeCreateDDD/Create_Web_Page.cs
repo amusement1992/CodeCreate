@@ -99,18 +99,30 @@ namespace CodeCreate
                     }
                     else
                     {
-                        sb_GetEditData.AppendLine("            " + columnName + ": $(\"." + columnName + "\").textbox(\"getText\"),");
 
+                        if (columnName.Contains("ID"))
+                        {
+                            sb_GetEditData.AppendLine("            " + columnName + ": $(\"." + columnName + "\").combobox(\"getValue\"),");
+                            sb_SetEditData.AppendLine("        $(\"." + columnName + "\").combobox(\"select\", row." + columnName + ");");
 
-                        sb_SetEditData.AppendLine("        $(\"." + columnName + "\").textbox(\"setText\", row." + columnName + ");");
+                            sb_EditDiv.AppendLine("            <div style=\"margin-top: 10px;\">");
+                            sb_EditDiv.AppendLine("                <input class=\"easyui-combobox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:" + required + ",missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
+                            sb_EditDiv.AppendLine("            </div>");
+                        }
+                        else
+                        {
+                            sb_GetEditData.AppendLine("            " + columnName + ": $(\"." + columnName + "\").textbox(\"getText\"),");
+                            sb_SetEditData.AppendLine("        $(\"." + columnName + "\").textbox(\"setText\", row." + columnName + ");");
+
+                            sb_EditDiv.AppendLine("            <div style=\"margin-top: 10px;\">");
+                            sb_EditDiv.AppendLine("                <input class=\"easyui-textbox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:" + required + ",missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
+                            sb_EditDiv.AppendLine("            </div>");
+                        }
 
 
                         sb_Table_Th.AppendLine("                <th data-options=\"field:'" + columnName + "',width:100,align:'center'\">" + columnComment + "</th>");
 
 
-                        sb_EditDiv.AppendLine("            <div style=\"margin-top: 10px;\">");
-                        sb_EditDiv.AppendLine("                <input class=\"easyui-textbox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:" + required + ",missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
-                        sb_EditDiv.AppendLine("            </div>");
                     }
 
                 }
@@ -130,12 +142,16 @@ namespace CodeCreate
             sb_body.AppendLine("<script>");
             sb_body.AppendLine("");
             sb_body.AppendLine("    $(function () {");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        //加载表格");
             sb_body.AppendLine("        grid(\"#dtGrid\", \"#dtGridToolber\");");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        //添加");
             sb_body.AppendLine("        $(\"#add\").on(\"click\", function () {");
             sb_body.AppendLine("            content(\"添加" + tableDesc + "\", \"insertRow\", true);");
-            sb_body.AppendLine("        })");
+            sb_body.AppendLine("        });");
             sb_body.AppendLine("");
-            sb_body.AppendLine("");
+            sb_body.AppendLine("        //搜索");
             sb_body.AppendLine("        $(\"#searchList\").on(\"click\", function () {");
             sb_body.AppendLine("            $('#dtGrid').datagrid('load', GetQueryParams());");
             sb_body.AppendLine("        });");
@@ -143,41 +159,15 @@ namespace CodeCreate
             sb_body.AppendLine("        //删除选中");
             sb_body.AppendLine("        $('#remove').linkbutton({");
             sb_body.AppendLine("            onClick: function () {");
-            sb_body.AppendLine("                var row = $(\"#dtGrid\").datagrid('getSelections');");
+            sb_body.AppendLine("                var gridID = \"#dtGrid\";");
+            sb_body.AppendLine("                var rows = $(gridID).datagrid('getSelections');");
             sb_body.AppendLine("");
-            sb_body.AppendLine("                if (row.length > 0) {");
+            sb_body.AppendLine("                if (rows.length > 0) {");
             sb_body.AppendLine("                    layer.alert(\"确定删除选中的" + tableDesc + "吗\", {");
             sb_body.AppendLine("                        icon: 3,");
             sb_body.AppendLine("                        btn: ['确定', '取消'],");
             sb_body.AppendLine("                        yes: function (j) {");
-            sb_body.AppendLine("                            var " + tableName + "Ids = new Array()");
-            sb_body.AppendLine("                            for (var i = 0; i < row.length; i++) {");
-            sb_body.AppendLine("                                " + tableName + "Ids.push(row[i].SysNo);");
-            sb_body.AppendLine("                            }");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("                            var parm = {");
-            sb_body.AppendLine("                                " + tableName + "Ids: " + tableName + "Ids,");
-            sb_body.AppendLine("                            }");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("                            $.ajax({");
-            sb_body.AppendLine("                                type: \"Post\",");
-            sb_body.AppendLine("                                url: \"Delete" + tableName + "\",");
-            sb_body.AppendLine("                                dataType: \"json\",");
-            sb_body.AppendLine("                                data: JSON.stringify(parm),");
-            sb_body.AppendLine("                                contentType: \"application/json\",");
-            sb_body.AppendLine("                                success: function (data) {");
-            sb_body.AppendLine("                                    if (data.Success) {");
-            sb_body.AppendLine("                                        for (var i = 0; i < row.length; i++) {");
-            sb_body.AppendLine("                                            var _index = $(\"#dtGrid\").datagrid(\"getRowIndex\", row[i]);");
-            sb_body.AppendLine("                                            $(\"#dtGrid\").datagrid('deleteRow', _index);");
-            sb_body.AppendLine("                                        }");
-            sb_body.AppendLine("                                        layer.close(j);");
-            sb_body.AppendLine("                                    } else {");
-            sb_body.AppendLine("                                        layer.alert(data.Message);");
-            sb_body.AppendLine("                                    }");
-            sb_body.AppendLine("                                }");
-            sb_body.AppendLine("                            });");
-            sb_body.AppendLine("");
+            sb_body.AppendLine("                            deleSelected(gridID, rows);");
             sb_body.AppendLine("                        }");
             sb_body.AppendLine("                    })");
             sb_body.AppendLine("");
@@ -188,6 +178,36 @@ namespace CodeCreate
             sb_body.AppendLine("        })");
             sb_body.AppendLine("    });");
             sb_body.AppendLine("");
+            sb_body.AppendLine("    //删除选中");
+            sb_body.AppendLine("    function deleSelected(gridID, rows) {");
+            sb_body.AppendLine("        var " + tableName + "Ids = new Array();");
+            sb_body.AppendLine("        for (var i = 0; i < rows.length; i++) {");
+            sb_body.AppendLine("            " + tableName + "Ids.push(rows[i].SysNo);");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        var parm = {");
+            sb_body.AppendLine("            " + tableName + "Ids: " + tableName + "Ids,");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        $.ajax({");
+            sb_body.AppendLine("            type: \"Post\",");
+            sb_body.AppendLine("            url: \"Delete" + tableName + "\",");
+            sb_body.AppendLine("            dataType: \"json\",");
+            sb_body.AppendLine("            data: JSON.stringify(parm),");
+            sb_body.AppendLine("            contentType: \"application/json\",");
+            sb_body.AppendLine("            success: function (data) {");
+            sb_body.AppendLine("                if (data.Success) {");
+            sb_body.AppendLine("                    for (var i = 0; i < rows.length; i++) {");
+            sb_body.AppendLine("                        var _index = $(gridID).datagrid(\"getRowIndex\", rows[i]);");
+            sb_body.AppendLine("                        $(gridID).datagrid('deleteRow', _index);");
+            sb_body.AppendLine("                    }");
+            sb_body.AppendLine("                    layer.close(closeIndex);");
+            sb_body.AppendLine("                } else {");
+            sb_body.AppendLine("                    layer.alert(data.Message);");
+            sb_body.AppendLine("                }");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("        });");
+            sb_body.AppendLine("    }");
             sb_body.AppendLine("");
             sb_body.AppendLine("    //实例化表格");
             sb_body.AppendLine("    function grid(id, toolbar) {");
@@ -209,48 +229,15 @@ namespace CodeCreate
             sb_body.AppendLine("            scrollbarSize: 0,");
             sb_body.AppendLine("            toolbar: toolbar,");
             sb_body.AppendLine("            onLoadSuccess: function (data) {");
-            sb_body.AppendLine("");
             sb_body.AppendLine("                if (data.total > 0) {");
             sb_body.AppendLine("                    //加载完成 实例化按钮");
-            sb_body.AppendLine("                    var ddlMenu = $(\".menuBtn\").addClass(\"style-blue\").menubutton({");
-            sb_body.AppendLine("                        menu: \"#menu\"");
-            sb_body.AppendLine("                    });");
-            sb_body.AppendLine("                    var EditIndex = -1;");
-            sb_body.AppendLine("                    $(ddlMenu).on(\"click\", function () {");
-            sb_body.AppendLine("                        var index = $(this).parents(\"tr\").index();");
-            sb_body.AppendLine("                        $(id).datagrid(\"selectRow\", index);");
-            sb_body.AppendLine("                        EditIndex = index;");
-            sb_body.AppendLine("                        $(\".menu-item\").css({ height: 36 });");
-            sb_body.AppendLine("                        $(\"#menu\").css({ height: 120 });");
-            sb_body.AppendLine("                        $(\".menu-line\").css({ height: 124 });");
-            sb_body.AppendLine("                    })");
-            sb_body.AppendLine("                    $(ddlMenu).unbind('mouseenter').bind(\"mouseenter\", function () {");
-            sb_body.AppendLine("                        return false");
-            sb_body.AppendLine("                    });");
-            sb_body.AppendLine("                    $(\"#menu\").bind(\"mouseenter\", function () {");
-            sb_body.AppendLine("                        $(\".menuBtn\").css({ padding: 1 });");
-            sb_body.AppendLine("                    });");
-            sb_body.AppendLine("                    $(ddlMenu.menubutton('options').menu).menu({");
-            sb_body.AppendLine("                        onClick: function (item) {");
-            sb_body.AppendLine("                            $(id).datagrid(\"selectRow\", EditIndex);");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("                            var rows = $(id).datagrid('getRows');");
-            sb_body.AppendLine("                            var row = rows[EditIndex];");
-            sb_body.AppendLine("                            //编辑");
-            sb_body.AppendLine("                            if (item.name == 'edit') {");
-            sb_body.AppendLine("                                $(id).datagrid(\"selectRow\", EditIndex);");
-            sb_body.AppendLine("                                content(\"编辑" + tableDesc + "\", \"updateRow\", false, EditIndex)");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("                            }");
-            sb_body.AppendLine("                        }");
-            sb_body.AppendLine("                    })");
+            sb_body.AppendLine("                    handle_edit(id);");
             sb_body.AppendLine("                }");
-
-            sb_body.AppendLine("");
             sb_body.AppendLine("            }");
             sb_body.AppendLine("        })");
             sb_body.AppendLine("    };");
             sb_body.AppendLine("");
+            sb_body.AppendLine("    //弹框");
             sb_body.AppendLine("    function content(title, type, check, _index) {");
             sb_body.AppendLine("        layer.open({");
             sb_body.AppendLine("            type: 1,");
@@ -259,40 +246,11 @@ namespace CodeCreate
             sb_body.AppendLine("            zIndex: 100,");
             sb_body.AppendLine("            content: $(\"#Add" + tableName + "\"),");
             sb_body.AppendLine("            btn: ['保存', '取消'],");
-            sb_body.AppendLine("            btn1: function (j) {");
-            sb_body.AppendLine("                var index = _index ? _index : 0;");
-            sb_body.AppendLine("                //下一步");
-            sb_body.AppendLine("                $(\"#Add" + tableName + "Temp\").form(\"submit\", {");
-            sb_body.AppendLine("                    onSubmit: function () {");
-            sb_body.AppendLine("                        if ($(this).form(\"validate\")) {");
-            sb_body.AppendLine("                            $.ajax({");
-            sb_body.AppendLine("                                url: \"Edit" + tableName + "\",");
-            sb_body.AppendLine("                                type: 'post',");
-            sb_body.AppendLine("                                contentType: \"application/json\",");
-            sb_body.AppendLine("                                data: JSON.stringify(GetEditData(type)),");
-            sb_body.AppendLine("                                success: function (data) {");
-            sb_body.AppendLine("                                    data = $.parseJSON(data);");
-            sb_body.AppendLine("                                    if (!data.Success) {");
-            sb_body.AppendLine("                                        layer.alert(data.Message, { icon: 0, tiem: 1500 });");
-            sb_body.AppendLine("                                        return;");
-            sb_body.AppendLine("                                    }");
-            sb_body.AppendLine("                                    var rows = $(\"#dtGrid\").datagrid(\"getRows\");");
-            sb_body.AppendLine("                                    $(\"#dtGrid\").datagrid('loadData', rows);");
-            sb_body.AppendLine("                                    layer.close(j);//关闭面板");
-            sb_body.AppendLine("                                    $('#dtGrid').datagrid('reload');");
-            sb_body.AppendLine("                                },");
-            sb_body.AppendLine("                                error: function (s) {");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("                                }");
-            sb_body.AppendLine("                            });");
-            sb_body.AppendLine("                        } else {");
-            sb_body.AppendLine("                            layer.alert(\"信息填写不完整\", { icon: 0, tiem: 1500 });");
-            sb_body.AppendLine("                        }");
-            sb_body.AppendLine("                    }");
-            sb_body.AppendLine("                });");
+            sb_body.AppendLine("            btn1: function (closeIndex) {");
+            sb_body.AppendLine("                submit(type, closeIndex);");
             sb_body.AppendLine("            },");
-            sb_body.AppendLine("            btn2: function (j) {");
-            sb_body.AppendLine("                layer.close(j);//关闭面板");
+            sb_body.AppendLine("            btn2: function (closeIndex) {");
+            sb_body.AppendLine("                layer.close(closeIndex);");
             sb_body.AppendLine("            },");
             sb_body.AppendLine("            success: function () {");
             sb_body.AppendLine("                if (check) {");
@@ -301,6 +259,39 @@ namespace CodeCreate
             sb_body.AppendLine("                    var rows = $('#dtGrid').datagrid('getRows');");
             sb_body.AppendLine("                    var row = rows[_index];");
             sb_body.AppendLine("                    SetEditData(row);");
+            sb_body.AppendLine("                }");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("        });");
+            sb_body.AppendLine("    }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("    //弹框 提交表单");
+            sb_body.AppendLine("    function submit(type, closeIndex) {");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        $(\"#Add" + tableName + "Form\").form(\"submit\", {");
+            sb_body.AppendLine("            onSubmit: function () {");
+            sb_body.AppendLine("                if ($(this).form(\"validate\")) {");
+            sb_body.AppendLine("                    $.ajax({");
+            sb_body.AppendLine("                        url: \"Edit" + tableName + "\",");
+            sb_body.AppendLine("                        type: 'post',");
+            sb_body.AppendLine("                        contentType: \"application/json\",");
+            sb_body.AppendLine("                        data: JSON.stringify(GetEditData(type)),");
+            sb_body.AppendLine("                        success: function (data) {");
+            sb_body.AppendLine("                            data = $.parseJSON(data);");
+            sb_body.AppendLine("                            if (!data.Success) {");
+            sb_body.AppendLine("                                layer.alert(data.Message, { icon: 0, tiem: 1500 });");
+            sb_body.AppendLine("                                return;");
+            sb_body.AppendLine("                            }");
+            sb_body.AppendLine("                            var rows = $(\"#dtGrid\").datagrid(\"getRows\");");
+            sb_body.AppendLine("                            $(\"#dtGrid\").datagrid('loadData', rows);");
+            sb_body.AppendLine("                            layer.close(closeIndex);//关闭面板");
+            sb_body.AppendLine("                            $('#dtGrid').datagrid('reload');");
+            sb_body.AppendLine("                        },");
+            sb_body.AppendLine("                        error: function (s) {");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                        }");
+            sb_body.AppendLine("                    });");
+            sb_body.AppendLine("                } else {");
+            sb_body.AppendLine("                    layer.alert(\"信息填写不完整\", { icon: 0, tiem: 1500 });");
             sb_body.AppendLine("                }");
             sb_body.AppendLine("            }");
             sb_body.AppendLine("        });");
@@ -321,6 +312,7 @@ namespace CodeCreate
 
             sb_body.AppendLine(sb_GetEditData.ToString());
 
+            sb_body.AppendLine("");
             sb_body.AppendLine("        };");
             sb_body.AppendLine("        return parm;");
             sb_body.AppendLine("    }");
@@ -331,24 +323,43 @@ namespace CodeCreate
 
             sb_body.AppendLine(sb_SetEditData.ToString());
 
+            sb_body.AppendLine("");
             sb_body.AppendLine("    }");
             sb_body.AppendLine("");
-
-            sb_body.AppendLine(sb_Formatter.ToString());
-
+            sb_body.AppendLine("    //格式化操作栏");
+            sb_body.AppendLine("    function formatterHandle(val, row, index) {");
+            sb_body.AppendLine("        var ops = \"\";");
+            sb_body.AppendLine("        ops += \"<a class='easyui-linkbutton style-primary edit'>编辑</a>\";");
+            sb_body.AppendLine("        return ops;");
+            sb_body.AppendLine("    }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("    //编辑");
+            sb_body.AppendLine("    function handle_edit(id) {");
+            sb_body.AppendLine("        $(id).datagrid(\"getPanel\").find(\"tr .edit\").linkbutton({");
+            sb_body.AppendLine("            iconCls: 'icon iconfont icon-edit',");
+            sb_body.AppendLine("            onClick: function (item) {");
+            sb_body.AppendLine("                var EditIndex = $(this).parents(\"tr\").index();");
+            sb_body.AppendLine("                $(id).datagrid(\"selectRow\", EditIndex);");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                //var rows = $(id).datagrid('getRows');");
+            sb_body.AppendLine("                //var row = rows[EditIndex];");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                $(id).datagrid(\"selectRow\", EditIndex);");
+            sb_body.AppendLine("                content(\"编辑" + tableDesc + "\", \"updateRow\", false, EditIndex);");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("        });");
+            sb_body.AppendLine("    }");
             sb_body.AppendLine("</script>");
             sb_body.AppendLine("");
             sb_body.AppendLine("<body class=\"easyui-layout\">");
             sb_body.AppendLine("    <div style=\"padding: 10px;\" id=\"dtGridToolber\">");
             sb_body.AppendLine("        <input class=\"easyui-textbox\" style=\"width: 400px;\" id=\"" + tableName + "Name\" data-options=\"label:'" + tableDesc + "名称',prompt:'请输入" + tableDesc + "名称'\" />");
             sb_body.AppendLine("");
-            sb_body.AppendLine("            <a id=\"searchList\" class=\"easyui-linkbutton style-primary\" style=\"margin: 0\" data-options=\"iconCls:'icon iconfont icon-sousuo'\">搜索</a>");
-            sb_body.AppendLine("            <a id=\"remove\" class=\"easyui-linkbutton style-red\" style=\"float: right;margin: 0 5px 0 0;\" data-options=\"iconCls:'icon iconfont icon-delete2'\">删除选中</a>");
-            sb_body.AppendLine("            <a id=\"add\" class=\"easyui-linkbutton style-blue\" style=\"float: right;margin: 0 5px 0 0;\" data-options=\"iconCls:'icon iconfont icon-tianjia1'\">添加" + tableDesc + "</a>");
-
+            sb_body.AppendLine("        <a id=\"searchList\" class=\"easyui-linkbutton style-primary\" style=\"margin: 0\" data-options=\"iconCls:'icon iconfont icon-sousuo'\">搜索</a>");
+            sb_body.AppendLine("        <a id=\"remove\" class=\"easyui-linkbutton style-red\" style=\"float: right;margin: 0 5px 0 0;\" data-options=\"iconCls:'icon iconfont icon-delete2'\">删除选中</a>");
+            sb_body.AppendLine("        <a id=\"add\" class=\"easyui-linkbutton style-blue\" style=\"float: right;margin: 0 5px 0 0;\" data-options=\"iconCls:'icon iconfont icon-tianjia1'\">添加" + tableDesc + "</a>");
             sb_body.AppendLine("");
             sb_body.AppendLine("    </div>");
-
             sb_body.AppendLine("    <table id=\"dtGrid\" scroll=\"on\">");
             sb_body.AppendLine("        <thead>");
             sb_body.AppendLine("            <tr>");
@@ -357,9 +368,10 @@ namespace CodeCreate
 
             sb_body.AppendLine(sb_Table_Th.ToString());
 
-            sb_body.AppendLine("                <th data-options=\"field:'CreateDate',width:120,align:'center',fixed:true,formatter:fmDate\">添加时间</th>");
-            sb_body.AppendLine("                <th data-options=\"field:'UpdateDate',width:120,align:'center',fixed:true,formatter:fmDate\">更新时间</th>");
-            sb_body.AppendLine("                <th data-options=\"field:'color',title:'操作',width:200,align:'center',fixed:true,formatter:function(){return '<a class=menuBtn>操作</a>'}\"></th>");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                <th data-options=\"field:'CreateDate',width:120,align:'center',formatter:fmDate\">添加时间</th>");
+            sb_body.AppendLine("                <th data-options=\"field:'UpdateDate',width:120,align:'center',formatter:fmDate\">更新时间</th>");
+            sb_body.AppendLine("                <th data-options=\"field:'handle',width:100,align:'center',fixed:true,formatter:formatterHandle\">操作</th>");
             sb_body.AppendLine("            </tr>");
             sb_body.AppendLine("        </thead>");
             sb_body.AppendLine("    </table>");
@@ -370,11 +382,13 @@ namespace CodeCreate
             sb_body.AppendLine("    </div>");
             sb_body.AppendLine("");
             sb_body.AppendLine("    <div id=\"Add" + tableName + "\" style=\"width: 600px;height: 400px;display: none;\">");
-            sb_body.AppendLine("        <form class=\"easyui-form\" id=\"Add" + tableName + "Temp\" style=\"width: 80%;margin: 20px auto;\">");
+            sb_body.AppendLine("        <form class=\"easyui-form\" id=\"Add" + tableName + "Form\" style=\"width: 80%;margin: 20px auto;\">");
             sb_body.AppendLine("            <div style=\"margin-top: 10px;display:none\">");
             sb_body.AppendLine("                <input class=\"easyui-textbox SysNo\" name=\"SysNo\" data-options=\"label:'编号'\" />");
             sb_body.AppendLine("            </div>");
+
             sb_body.AppendLine(sb_EditDiv.ToString());
+
             sb_body.AppendLine("");
             sb_body.AppendLine("        </form>");
             sb_body.AppendLine("");
@@ -382,12 +396,7 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("</body>");
             sb_body.AppendLine("");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("");
-            sb_body.AppendLine("");
-
+            
 
             string file_Model = "C:\\Code\\" + str_nameSpace + ".Web\\Views\\" + tablePrefix + "\\";
             if (!Directory.Exists(file_Model))

@@ -74,6 +74,9 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".DTO." + tablePrefix + ".Query");
             sb_body.AppendLine("{");
+            sb_body.AppendLine("	/// <summary>");
+            sb_body.AppendLine("	/// Dto：" + tableDesc);
+            sb_body.AppendLine("	/// </summary>");
             sb_body.AppendLine("    public class " + tableName + "Dto");
             sb_body.AppendLine("    {");
             sb_body.AppendLine("");
