@@ -737,7 +737,7 @@
         "MapperName": "Name"
       },
       {
-        
+
         "NewColumnType": "Contracts",
         "NewColumnComment": "合同",
 
@@ -748,6 +748,37 @@
         "MapperName": "Number"
       }
 
+    ]
+  },
+  {
+    "TableName": "BusinessStaff",
+    "TableDesc": "生意参谋",
+    "ExcludePropertys": [],
+    "List": [
+      {
+        "ColumnName": "ShopID",
+        "ColumnType": "Guid",
+
+        "NewColumnName": "Shop",
+        "NewColumnType": "Shop",
+        "NewColumnComment": "店铺",
+
+        "NewColumnName_Dto": "Shop",
+        "NewColumnType_Dto": "ShopDto",
+
+        "NewColumnName_VM": "ShopName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "ShopName"
+      }
+    ]
+  },
+  {
+    "TableName": "UploadFile",
+    "TableDesc": "上传文件",
+    "ExcludePropertys": [],
+    "List": [
     ]
   }
 ]

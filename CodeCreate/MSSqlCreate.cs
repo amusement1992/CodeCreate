@@ -303,6 +303,7 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
                     new Create_Web_Page().Create(configModel.str_nameSpace, dt_tables, str_table);
                     new Create_Web_Controller().Create(configModel.str_nameSpace, dt_tables, str_table);
                     new Create_Sql().Create(configModel.str_nameSpace, dt_tables, str_table);
+                    new Create_Json().Create(configModel.str_nameSpace, dt_tables, str_table);
 
                     if (checkBox1.Checked)
                     {

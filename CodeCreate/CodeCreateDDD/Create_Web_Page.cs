@@ -75,9 +75,7 @@ namespace CodeCreate
                     {
                         sb_GetEditData.AppendLine("            " + columnName + ": $(\"." + columnName + "\").combobox(\"getValue\"),");
 
-
                         sb_SetEditData.AppendLine("        $(\"." + columnName + "\").combobox(\"select\", row." + columnName + ");");
-
 
                         sb_Formatter.AppendLine("    function formatter" + columnName + "(value, row, index) {");
                         sb_Formatter.AppendLine("        if (value == true) {");
@@ -88,25 +86,21 @@ namespace CodeCreate
                         sb_Formatter.AppendLine("        return value;");
                         sb_Formatter.AppendLine("    }");
 
-
                         sb_Table_Th.AppendLine("                <th data-options=\"field:'" + columnName + "',width:100,align:'center',formatter:formatter" + columnName + "\">" + columnComment + "</th>");
-
 
                         sb_EditDiv.AppendLine("                <div style=\"margin-top: 10px;\">");
                         sb_EditDiv.AppendLine("                    <input class=\"easyui-combobox " + columnName + "\" name=\"" + columnName + "\" style=\"width: 300px;\" data-options=\"label:'" + columnComment + "',required:" + required + ",editable:false,valueField:'value',textField:'label',data:[{'value':true,label:'是',selected:true},{'value':false,label:'否'}],panelHeight:true\" />");
                         sb_EditDiv.AppendLine("                </div>");
-
                     }
                     else
                     {
-
                         if (columnName.Contains("ID"))
                         {
                             sb_GetEditData.AppendLine("            " + columnName + ": $(\"." + columnName + "\").combobox(\"getValue\"),");
                             sb_SetEditData.AppendLine("        $(\"." + columnName + "\").combobox(\"select\", row." + columnName + ");");
 
                             sb_EditDiv.AppendLine("            <div style=\"margin-top: 10px;\">");
-                            sb_EditDiv.AppendLine("                <input class=\"easyui-combobox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:" + required + ",missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
+                            sb_EditDiv.AppendLine("                <input class=\"easyui-combobox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',editable:false,valueField:'SysNo',textField:'" + columnName.Replace("ID", "Name") + "',method:'get',url:'/Data/Get" + columnName.Replace("ID", "") + "List',panelHeight:true\" style=\"width: 300px;\" />");
                             sb_EditDiv.AppendLine("            </div>");
                         }
                         else
@@ -115,23 +109,16 @@ namespace CodeCreate
                             sb_SetEditData.AppendLine("        $(\"." + columnName + "\").textbox(\"setText\", row." + columnName + ");");
 
                             sb_EditDiv.AppendLine("            <div style=\"margin-top: 10px;\">");
-                            sb_EditDiv.AppendLine("                <input class=\"easyui-textbox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:" + required + ",missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
+                            sb_EditDiv.AppendLine("                <input class=\"easyui-textbox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:" + required + ",validType:['length[1,"+ data_maxLength + "]'],missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
                             sb_EditDiv.AppendLine("            </div>");
                         }
 
-
                         sb_Table_Th.AppendLine("                <th data-options=\"field:'" + columnName + "',width:100,align:'center'\">" + columnComment + "</th>");
-
-
                     }
-
                 }
-
-
             }
 
             #endregion Model
-
 
             StringBuilder sb_body = new StringBuilder();
             sb_body.AppendLine("@{");
@@ -244,7 +231,7 @@ namespace CodeCreate
             sb_body.AppendLine("            area: [],");
             sb_body.AppendLine("            title: title,");
             sb_body.AppendLine("            zIndex: 100,");
-            sb_body.AppendLine("            content: $(\"#Add" + tableName + "\"),");
+            sb_body.AppendLine("            content: $(\"#Layer_" + tableName + "\"),");
             sb_body.AppendLine("            btn: ['保存', '取消'],");
             sb_body.AppendLine("            btn1: function (closeIndex) {");
             sb_body.AppendLine("                submit(type, closeIndex);");
@@ -254,7 +241,7 @@ namespace CodeCreate
             sb_body.AppendLine("            },");
             sb_body.AppendLine("            success: function () {");
             sb_body.AppendLine("                if (check) {");
-            sb_body.AppendLine("                    $(\"#Add" + tableName + "Temp\").form(\"reset\");");
+            sb_body.AppendLine("                    $(\"#Layer_Form_" + tableName + "\").form(\"reset\");");
             sb_body.AppendLine("                } else {");
             sb_body.AppendLine("                    var rows = $('#dtGrid').datagrid('getRows');");
             sb_body.AppendLine("                    var row = rows[_index];");
@@ -267,7 +254,7 @@ namespace CodeCreate
             sb_body.AppendLine("    //弹框 提交表单");
             sb_body.AppendLine("    function submit(type, closeIndex) {");
             sb_body.AppendLine("");
-            sb_body.AppendLine("        $(\"#Add" + tableName + "Form\").form(\"submit\", {");
+            sb_body.AppendLine("        $(\"#Layer_Form_" + tableName + "\").form(\"submit\", {");
             sb_body.AppendLine("            onSubmit: function () {");
             sb_body.AppendLine("                if ($(this).form(\"validate\")) {");
             sb_body.AppendLine("                    $.ajax({");
@@ -344,7 +331,6 @@ namespace CodeCreate
             sb_body.AppendLine("                //var rows = $(id).datagrid('getRows');");
             sb_body.AppendLine("                //var row = rows[EditIndex];");
             sb_body.AppendLine("");
-            sb_body.AppendLine("                $(id).datagrid(\"selectRow\", EditIndex);");
             sb_body.AppendLine("                content(\"编辑" + tableDesc + "\", \"updateRow\", false, EditIndex);");
             sb_body.AppendLine("            }");
             sb_body.AppendLine("        });");
@@ -381,8 +367,8 @@ namespace CodeCreate
             sb_body.AppendLine("        </div>");
             sb_body.AppendLine("    </div>");
             sb_body.AppendLine("");
-            sb_body.AppendLine("    <div id=\"Add" + tableName + "\" style=\"width: 600px;height: 400px;display: none;\">");
-            sb_body.AppendLine("        <form class=\"easyui-form\" id=\"Add" + tableName + "Form\" style=\"width: 80%;margin: 20px auto;\">");
+            sb_body.AppendLine("    <div id=\"Layer_" + tableName + "\" style=\"width: 600px;height: 400px;display: none;\">");
+            sb_body.AppendLine("        <form class=\"easyui-form\" id=\"Layer_Form_" + tableName + "\" style=\"width: 80%;margin: 20px auto;\">");
             sb_body.AppendLine("            <div style=\"margin-top: 10px;display:none\">");
             sb_body.AppendLine("                <input class=\"easyui-textbox SysNo\" name=\"SysNo\" data-options=\"label:'编号'\" />");
             sb_body.AppendLine("            </div>");
@@ -396,7 +382,6 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("</body>");
             sb_body.AppendLine("");
-            
 
             string file_Model = "C:\\Code\\" + str_nameSpace + ".Web\\Views\\" + tablePrefix + "\\";
             if (!Directory.Exists(file_Model))
@@ -405,6 +390,5 @@ namespace CodeCreate
             }
             CommonCode.Save(file_Model + "/" + tableName + ".cshtml", sb_body.ToString());
         }
-
     }
 }

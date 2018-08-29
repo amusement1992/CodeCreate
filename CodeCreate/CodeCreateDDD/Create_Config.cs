@@ -139,7 +139,7 @@ namespace CodeCreate
                 Directory.CreateDirectory(file_Model);
             }
 
-            CommonCode.Save(file_Model + "/AutoMapMapper.cs", sb.ToString());
+            CommonCode.Save2(file_Model + "/AutoMapMapper.cs", sb.ToString());
         }
 
         public static void SaveDBConfig(string str_SetObjectName, string str_SetPrimaryKey)
@@ -152,14 +152,15 @@ namespace CodeCreate
             StringBuilder sb = new StringBuilder();
             foreach (var item in arr)
             {
-                sb.AppendLine(item);
-                if (item.Contains("#region 数据库表名配置"))
+                if (item.Contains("#endregion 数据库表名配置"))
                 {
                     sb.AppendLine(str_SetObjectName);
-                }else if (item.Contains("#region 数据表主键配置"))
+                }
+                else if (item.Contains("#endregion 数据表主键配置"))
                 {
                     sb.AppendLine(str_SetPrimaryKey);
                 }
+                sb.AppendLine(item);
             }
 
             string file_Model = "C:\\Code\\BigDataAnalysis.Config";
@@ -168,7 +169,7 @@ namespace CodeCreate
                 Directory.CreateDirectory(file_Model);
             }
 
-            CommonCode.Save(file_Model + "/DbConfig.cs", sb.ToString());
+            CommonCode.Save2(file_Model + "/DbConfig.cs", sb.ToString());
 
 
         }

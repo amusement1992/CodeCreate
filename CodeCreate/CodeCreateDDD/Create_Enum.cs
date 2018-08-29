@@ -43,7 +43,7 @@ namespace CodeCreate
             {
                 Directory.CreateDirectory(file_Model);
             }
-            CommonCode.Save(file_Model + "//OperationTypeEnum.cs", sb.ToString());
+            CommonCode.Save2(file_Model + "//OperationTypeEnum.cs", sb.ToString());
         }
 
         private static void SaveData(string tableName, StringBuilder sb_body)
