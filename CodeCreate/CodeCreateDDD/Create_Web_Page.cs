@@ -88,9 +88,10 @@ namespace CodeCreate
 
                         sb_Table_Th.AppendLine("                <th data-options=\"field:'" + columnName + "',width:100,align:'center',formatter:formatter" + columnName + "\">" + columnComment + "</th>");
 
-                        sb_EditDiv.AppendLine("                <div style=\"margin-top: 10px;\">");
+                        sb_EditDiv.AppendLine("            <div class=\"layer_form_div\">");
                         sb_EditDiv.AppendLine("                    <input class=\"easyui-combobox " + columnName + "\" name=\"" + columnName + "\" style=\"width: 300px;\" data-options=\"label:'" + columnComment + "',required:" + required + ",editable:false,valueField:'value',textField:'label',data:[{'value':true,label:'是',selected:true},{'value':false,label:'否'}],panelHeight:true\" />");
                         sb_EditDiv.AppendLine("                </div>");
+                        sb_EditDiv.AppendLine("");
                     }
                     else
                     {
@@ -99,18 +100,20 @@ namespace CodeCreate
                             sb_GetEditData.AppendLine("            " + columnName + ": $(\"." + columnName + "\").combobox(\"getValue\"),");
                             sb_SetEditData.AppendLine("        $(\"." + columnName + "\").combobox(\"select\", row." + columnName + ");");
 
-                            sb_EditDiv.AppendLine("            <div style=\"margin-top: 10px;\">");
+                            sb_EditDiv.AppendLine("            <div class=\"layer_form_div\">");
                             sb_EditDiv.AppendLine("                <input class=\"easyui-combobox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',editable:false,valueField:'SysNo',textField:'" + columnName.Replace("ID", "Name") + "',method:'get',url:'/Data/Get" + columnName.Replace("ID", "") + "List',panelHeight:true\" style=\"width: 300px;\" />");
                             sb_EditDiv.AppendLine("            </div>");
+                            sb_EditDiv.AppendLine("");
                         }
                         else
                         {
                             sb_GetEditData.AppendLine("            " + columnName + ": $(\"." + columnName + "\").textbox(\"getText\"),");
                             sb_SetEditData.AppendLine("        $(\"." + columnName + "\").textbox(\"setText\", row." + columnName + ");");
 
-                            sb_EditDiv.AppendLine("            <div style=\"margin-top: 10px;\">");
-                            sb_EditDiv.AppendLine("                <input class=\"easyui-textbox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:" + required + ",validType:['length[1,"+ data_maxLength + "]'],missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
+                            sb_EditDiv.AppendLine("            <div class=\"layer_form_div\">");
+                            sb_EditDiv.AppendLine("                <input class=\"easyui-textbox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:" + required + ",validType:['length[1," + data_maxLength + "]'],missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
                             sb_EditDiv.AppendLine("            </div>");
+                            sb_EditDiv.AppendLine("");
                         }
 
                         sb_Table_Th.AppendLine("                <th data-options=\"field:'" + columnName + "',width:100,align:'center'\">" + columnComment + "</th>");
@@ -150,11 +153,11 @@ namespace CodeCreate
             sb_body.AppendLine("                var rows = $(gridID).datagrid('getSelections');");
             sb_body.AppendLine("");
             sb_body.AppendLine("                if (rows.length > 0) {");
-            sb_body.AppendLine("                    layer.alert(\"确定删除选中的" + tableDesc + "吗\", {");
+            sb_body.AppendLine("                    layer.alert(\"确定删除选中的" + tableDesc + "吗？\", {");
             sb_body.AppendLine("                        icon: 3,");
             sb_body.AppendLine("                        btn: ['确定', '取消'],");
-            sb_body.AppendLine("                        yes: function (j) {");
-            sb_body.AppendLine("                            deleSelected(gridID, rows);");
+            sb_body.AppendLine("                        yes: function (closeIndex) {");
+            sb_body.AppendLine("                            deleSelected(gridID, rows, closeIndex);");
             sb_body.AppendLine("                        }");
             sb_body.AppendLine("                    })");
             sb_body.AppendLine("");
@@ -166,7 +169,7 @@ namespace CodeCreate
             sb_body.AppendLine("    });");
             sb_body.AppendLine("");
             sb_body.AppendLine("    //删除选中");
-            sb_body.AppendLine("    function deleSelected(gridID, rows) {");
+            sb_body.AppendLine("    function deleSelected(gridID, rows, closeIndex) {");
             sb_body.AppendLine("        var " + tableName + "Ids = new Array();");
             sb_body.AppendLine("        for (var i = 0; i < rows.length; i++) {");
             sb_body.AppendLine("            " + tableName + "Ids.push(rows[i].SysNo);");
@@ -176,13 +179,18 @@ namespace CodeCreate
             sb_body.AppendLine("            " + tableName + "Ids: " + tableName + "Ids,");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
+            sb_body.AppendLine("        var loadLayer = null;");
             sb_body.AppendLine("        $.ajax({");
             sb_body.AppendLine("            type: \"Post\",");
             sb_body.AppendLine("            url: \"Delete" + tableName + "\",");
             sb_body.AppendLine("            dataType: \"json\",");
             sb_body.AppendLine("            data: JSON.stringify(parm),");
             sb_body.AppendLine("            contentType: \"application/json\",");
+            sb_body.AppendLine("            beforeSend: function () {");
+            sb_body.AppendLine("                loadLayer = layer.load(2);");
+            sb_body.AppendLine("            },");
             sb_body.AppendLine("            success: function (data) {");
+            sb_body.AppendLine("                layer.close(loadLayer);");
             sb_body.AppendLine("                if (data.Success) {");
             sb_body.AppendLine("                    for (var i = 0; i < rows.length; i++) {");
             sb_body.AppendLine("                        var _index = $(gridID).datagrid(\"getRowIndex\", rows[i]);");
@@ -207,12 +215,14 @@ namespace CodeCreate
             sb_body.AppendLine("            fitColumns: true,");
             sb_body.AppendLine("            collapsible: true,");
             sb_body.AppendLine("            pagination: true,");
-            sb_body.AppendLine("            pageSize: 10,");
+            sb_body.AppendLine("            pageList: [10, 50, 100, 200, 500, 1000],");
+            sb_body.AppendLine("            pageSize: 100,");
             sb_body.AppendLine("            queryParams: GetQueryParams(),");
             sb_body.AppendLine("            striped: true,");
             sb_body.AppendLine("            loading: true,");
             sb_body.AppendLine("            singleSelect: false,");
             sb_body.AppendLine("            //nowrap:true,");
+            sb_body.AppendLine("            rownumbers: true,");
             sb_body.AppendLine("            scrollbarSize: 0,");
             sb_body.AppendLine("            toolbar: toolbar,");
             sb_body.AppendLine("            onLoadSuccess: function (data) {");
@@ -257,12 +267,17 @@ namespace CodeCreate
             sb_body.AppendLine("        $(\"#Layer_Form_" + tableName + "\").form(\"submit\", {");
             sb_body.AppendLine("            onSubmit: function () {");
             sb_body.AppendLine("                if ($(this).form(\"validate\")) {");
+            sb_body.AppendLine("                    var loadLayer = null;");
             sb_body.AppendLine("                    $.ajax({");
             sb_body.AppendLine("                        url: \"Edit" + tableName + "\",");
             sb_body.AppendLine("                        type: 'post',");
             sb_body.AppendLine("                        contentType: \"application/json\",");
             sb_body.AppendLine("                        data: JSON.stringify(GetEditData(type)),");
+            sb_body.AppendLine("                        beforeSend: function () {");
+            sb_body.AppendLine("                            loadLayer = layer.load(2);");
+            sb_body.AppendLine("                        },");
             sb_body.AppendLine("                        success: function (data) {");
+            sb_body.AppendLine("                            layer.close(loadLayer);");
             sb_body.AppendLine("                            data = $.parseJSON(data);");
             sb_body.AppendLine("                            if (!data.Success) {");
             sb_body.AppendLine("                                layer.alert(data.Message, { icon: 0, tiem: 1500 });");
@@ -339,7 +354,7 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("<body class=\"easyui-layout\">");
             sb_body.AppendLine("    <div style=\"padding: 10px;\" id=\"dtGridToolber\">");
-            sb_body.AppendLine("        <input class=\"easyui-textbox\" style=\"width: 400px;\" id=\"" + tableName + "Name\" data-options=\"label:'" + tableDesc + "名称',prompt:'请输入" + tableDesc + "名称'\" />");
+            sb_body.AppendLine("        <input class=\"easyui-textbox\" style=\"width: 300px;\" id=\"" + tableName + "Name\" data-options=\"label:'" + tableDesc + "名称',prompt:'请输入" + tableDesc + "名称'\" />");
             sb_body.AppendLine("");
             sb_body.AppendLine("        <a id=\"searchList\" class=\"easyui-linkbutton style-primary\" style=\"margin: 0\" data-options=\"iconCls:'icon iconfont icon-sousuo'\">搜索</a>");
             sb_body.AppendLine("        <a id=\"remove\" class=\"easyui-linkbutton style-red\" style=\"float: right;margin: 0 5px 0 0;\" data-options=\"iconCls:'icon iconfont icon-delete2'\">删除选中</a>");
@@ -369,7 +384,7 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("    <div id=\"Layer_" + tableName + "\" style=\"width: 600px;height: 400px;display: none;\">");
             sb_body.AppendLine("        <form class=\"easyui-form\" id=\"Layer_Form_" + tableName + "\" style=\"width: 80%;margin: 20px auto;\">");
-            sb_body.AppendLine("            <div style=\"margin-top: 10px;display:none\">");
+            sb_body.AppendLine("            <div class=\"layer_form_div\" style=\"display:none\">");
             sb_body.AppendLine("                <input class=\"easyui-textbox SysNo\" name=\"SysNo\" data-options=\"label:'编号'\" />");
             sb_body.AppendLine("            </div>");
 

@@ -357,18 +357,20 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
 
             if (textBox3.Text != "")
             {
-
                 var arr = textBox3.Text.Split(',');
-                StringBuilder sb_body = new StringBuilder();
-                Create_Sql.SetData2(arr[0], arr[1], arr[2], sb_body);
-
-                filePath = "C:\\Code\\Sql";
-                if (!Directory.Exists(filePath))
+                if (arr[0] != "ControllerCode")
                 {
-                    Directory.CreateDirectory(filePath);
+                    StringBuilder sb_body = new StringBuilder();
+                    Create_Sql.SetData2(arr[0], arr[1], arr[2], sb_body);
+
+                    filePath = "C:\\Code\\Sql";
+                    if (!Directory.Exists(filePath))
+                    {
+                        Directory.CreateDirectory(filePath);
+                    }
+                    CommonCode.Save(filePath + "/生成的.txt", sb_body.ToString());
+                    CommonCode.Save(filePath + "/生成的_Delete.txt", Create_Sql.GetSql_Delete(arr[2]));
                 }
-                CommonCode.Save(filePath + "/生成的.txt", sb_body.ToString());
-                CommonCode.Save(filePath + "/生成的_Delete.txt", Create_Sql.GetSql_Delete(arr[2]));
             }
             //OpenFolder();
         }

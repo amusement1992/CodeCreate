@@ -51,10 +51,7 @@ namespace CodeCreate
 
                 nullable = CommonCode.GetNullable(columnType, nullable);
 
-                sb.AppendLine("			{");
-                sb.AppendLine("				\"ColumnName\": \"" + columnName + "\",");
-                sb.AppendLine("				\"ColumnDesc\": \"" + columnComment + "\"");
-                sb.AppendLine("			},");
+                sb.AppendLine("model." + columnName + " = GetColumnValue(listColumn, listDesc, row, \"" + columnName + "\").StrTo"+ columnType + "(0);");
             }
 
 

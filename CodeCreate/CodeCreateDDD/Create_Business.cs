@@ -53,15 +53,20 @@ namespace CodeCreate
                 if (columnType == "string")
                 {
                     sb.AppendLine("            if (!filter." + columnName + ".IsNullOrEmpty())");
+
+                    sb.AppendLine("            {");
+                    sb.AppendLine("                query.Like<" + tableName + "Query>(c => c." + columnName + ", filter." + columnName + ");");
+                    sb.AppendLine("            }");
                 }
                 else
                 {
                     sb.AppendLine("            if (filter." + columnName + ".HasValue)");
 
+                    sb.AppendLine("            {");
+                    sb.AppendLine("                query.Equal<" + tableName + "Query>(c => c." + columnName + ", filter." + columnName + ");");
+                    sb.AppendLine("            }");
+
                 }
-                sb.AppendLine("            {");
-                sb.AppendLine("                query.Equal<" + tableName + "Query>(c => c." + columnName + ", filter." + columnName + ");");
-                sb.AppendLine("            }");
             }
 
             #endregion Model

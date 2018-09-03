@@ -85,11 +85,11 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("            filter.PageSize = filter.rows;");
             sb_body.AppendLine("");
-            sb_body.AppendLine("            var userPager = " + tableName + "Service.Get" + tableName + "Paging(filter.MapTo<" + tableName + "FilterDto>()).Convert<" + tableName + "Dto, " + tableName + "ViewModel>();");
+            sb_body.AppendLine("            var pager = " + tableName + "Service.Get" + tableName + "Paging(filter.MapTo<" + tableName + "FilterDto>()).Convert<" + tableName + "Dto, " + tableName + "ViewModel>();");
             sb_body.AppendLine("            object objResult = new");
             sb_body.AppendLine("            {");
-            sb_body.AppendLine("                total = userPager.TotalCount,");
-            sb_body.AppendLine("                rows = userPager,");
+            sb_body.AppendLine("                total = pager.TotalCount,");
+            sb_body.AppendLine("                rows = pager,");
             sb_body.AppendLine("            };");
             sb_body.AppendLine("            return Json(objResult, JsonRequestBehavior.AllowGet);");
             sb_body.AppendLine("        }");

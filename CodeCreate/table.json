@@ -771,7 +771,18 @@
 
         "IsMapper": true,
         "MapperName": "ShopName"
+      },
+      {
+        "ListFilterVM": [ "string", "ShopName", "店铺名称" ],
+        "ListFilterDto": [ "string", "ShopName", "店铺名称" ]
       }
+    ]
+  },
+  {
+    "TableName": "SpyItems",
+    "TableDesc": "店侦探",
+    "ExcludePropertys": [],
+    "List": [
     ]
   },
   {
