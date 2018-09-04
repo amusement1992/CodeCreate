@@ -302,7 +302,7 @@ namespace CodeCreate
             sb_body.AppendLine("    //查询条件");
             sb_body.AppendLine("    function GetQueryParams() {");
             sb_body.AppendLine("        var parm = {");
-            sb_body.AppendLine("            " + tableName + "Name: $('#" + tableName + "Name').val(),");
+            sb_body.AppendLine("            " + tableName + "Name_Search: $('#" + tableName + "Name').val(),");
             sb_body.AppendLine("        };");
             sb_body.AppendLine("        return parm;");
             sb_body.AppendLine("    }");

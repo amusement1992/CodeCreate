@@ -22,6 +22,7 @@ namespace CodeCreate
             string primaryKey = "";
 
             StringBuilder sb = new StringBuilder();
+            StringBuilder sb_search = new StringBuilder();
 
             #region Model
 
@@ -54,14 +55,24 @@ namespace CodeCreate
                 nullable = columnType == "string" ? "" : "?";
 
                 sb.AppendLine("");
-
                 sb.AppendLine(@"        /// <summary>");
                 sb.AppendLine(@"        /// " + columnComment);
                 sb.AppendLine(@"        /// </summary>");
                 sb.AppendLine("        public " + columnType + nullable + " " + columnName + " { get; set; }");
+
+                if (columnType == "string")
+                {
+                    sb_search.AppendLine("");
+                    sb_search.AppendLine(@"        /// <summary>");
+                    sb_search.AppendLine(@"        /// " + columnComment);
+                    sb_search.AppendLine(@"        /// </summary>");
+                    sb_search.AppendLine("        public " + columnType + nullable + " " + columnName + "_Search { get; set; }");
+
+                }
             }
             sb.AppendLine("");
             sb.AppendLine("        #endregion Model");
+
 
             #endregion Model
 
@@ -80,17 +91,15 @@ namespace CodeCreate
             sb_body.AppendLine("    {");
             sb_body.AppendLine("");
 
-            sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 系统编号");
-            sb_body.AppendLine("        /// </summary>");
-            sb_body.AppendLine("        public List<Guid> SysNos { get; set; }");
-            sb_body.AppendLine("");
-
             SetData(tableName, sb);
 
             sb_body.Append(sb.ToString());
 
             sb_body.AppendLine("");
+            sb_body.AppendLine("        #region Search");
+            sb_body.Append(sb_search.ToString());
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        #endregion Search");
             sb_body.AppendLine("");
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");

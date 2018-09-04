@@ -30,6 +30,9 @@
       },
       {
         "ListFilterVM": [ "List<Guid?>", "SysNos", "编号列表" ]
+      },
+      {
+        "ListFilterDto": [ "List<Guid?>", "SysNos", "编号列表" ]
       }
     ]
   },
@@ -65,7 +68,7 @@
   },
   {
     "TableName": "Category",
-    "TableDesc": "类目",
+    "TableDesc": "产品分类",
     "ExcludePropertys": [],
     "List": [
 
@@ -75,13 +78,52 @@
 
         "NewColumnName": "Parent",
         "NewColumnType": "Category",
-        "NewColumnComment": "上级类目",
+        "NewColumnComment": "上级分类",
 
         "NewColumnName_Dto": "Parent",
         "NewColumnType_Dto": "CategoryDto",
 
         "NewColumnName_VM": "Parent",
         "NewColumnType_VM": "CategoryViewModel",
+
+        "IsMapper": true,
+        "MapperName": "CategoryName"
+      },
+
+      {
+        "NewColumnComment": "销售价",
+
+        "NewColumnName_Dto": "SalesAmount",
+        "NewColumnType_Dto": "decimal"
+      },
+
+      {
+        "NewColumnComment": "Child列表",
+
+        "NewColumnName_Dto": "listChild",
+        "NewColumnType_Dto": "List<CategoryDto>"
+      }
+    ]
+  },
+  {
+    "TableName": "ShopCategory",
+    "TableDesc": "店铺分类",
+    "ExcludePropertys": [],
+    "List": [
+
+      {
+        "ColumnName": "ParentID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "Parent",
+        "NewColumnType": "ShopCategory",
+        "NewColumnComment": "上级分类",
+
+        "NewColumnName_Dto": "Parent",
+        "NewColumnType_Dto": "ShopCategoryDto",
+
+        "NewColumnName_VM": "Parent",
+        "NewColumnType_VM": "ShopCategoryViewModel",
 
         "IsMapper": true,
         "MapperName": "CategoryName"
@@ -292,6 +334,23 @@
 
         "IsMapper": true,
         "MapperName": "CompanyName"
+      },
+      {
+        "ColumnName": "ShopCategoryID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "ShopCategory",
+        "NewColumnType": "ShopCategory",
+        "NewColumnComment": "店铺分类",
+
+        "NewColumnName_Dto": "ShopCategory",
+        "NewColumnType_Dto": "ShopCategoryDto",
+
+        "NewColumnName_VM": "CategoryName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "CategoryName"
       }
     ]
   },
@@ -783,6 +842,10 @@
     "TableDesc": "店侦探",
     "ExcludePropertys": [],
     "List": [
+      {
+        "ListFilterVM": [ "DateTime?", "CreateDate_End", "抓取时间——结束" ],
+        "ListFilterDto": [ "DateTime?", "CreateDate_End", "抓取时间——结束" ]
+      }
     ]
   },
   {

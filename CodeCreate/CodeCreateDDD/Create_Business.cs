@@ -22,6 +22,7 @@ namespace CodeCreate
             string primaryKey = "";
 
             StringBuilder sb = new StringBuilder();
+            StringBuilder sb_search = new StringBuilder();
 
             #region Model
 
@@ -53,15 +54,18 @@ namespace CodeCreate
                 if (columnType == "string")
                 {
                     sb.AppendLine("            if (!filter." + columnName + ".IsNullOrEmpty())");
-
                     sb.AppendLine("            {");
-                    sb.AppendLine("                query.Like<" + tableName + "Query>(c => c." + columnName + ", filter." + columnName + ");");
+                    sb.AppendLine("                query.Equal<" + tableName + "Query>(c => c." + columnName + ", filter." + columnName + ");");
                     sb.AppendLine("            }");
+
+                    sb_search.AppendLine("            if (!filter." + columnName + "_Search.IsNullOrEmpty())");
+                    sb_search.AppendLine("            {");
+                    sb_search.AppendLine("                query.Like<" + tableName + "Query>(c => c." + columnName + ", filter." + columnName + "_Search);");
+                    sb_search.AppendLine("            }");
                 }
                 else
                 {
                     sb.AppendLine("            if (filter." + columnName + ".HasValue)");
-
                     sb.AppendLine("            {");
                     sb.AppendLine("                query.Equal<" + tableName + "Query>(c => c." + columnName + ", filter." + columnName + ");");
                     sb.AppendLine("            }");
@@ -280,7 +284,7 @@ namespace CodeCreate
             sb_body.AppendLine("            };");
             sb_body.AppendLine("            HistoryService.SaveHistory(saveHistoryCmdDto.History.MapTo<Domain.Bcl.Model.History>());");
             sb_body.AppendLine("");
-            sb_body.AppendLine("            LogHelper.WriteLog(\"【Save" + tableName + "】操作对象：\" + JsonConvertHelper.SerializeObject(saveInfo) + \"。IP地址：\" + CommonCode.GetIP());");
+            sb_body.AppendLine("            LogHelper.WriteHistory(\"Save" + tableName + "\", JsonConvertHelper.SerializeObject(saveInfo), saveInfo.UpdateUserID);");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
@@ -304,7 +308,7 @@ namespace CodeCreate
             sb_body.AppendLine("                HistoryService.SaveHistory(saveHistoryCmdDto.History.MapTo<Domain.Bcl.Model.History>());");
             sb_body.AppendLine("            }");
             sb_body.AppendLine("");
-            sb_body.AppendLine("            LogHelper.WriteLog(\"【Delete" + tableName + "】操作对象：\" + JsonConvertHelper.SerializeObject(deleteInfo) + \"。IP地址：\" + CommonCode.GetIP());");
+            sb_body.AppendLine("            LogHelper.WriteHistory(\"Delete" + tableName + "\", JsonConvertHelper.SerializeObject(deleteInfo), deleteInfo.UpdateUserID);");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion 历史记录");
@@ -331,6 +335,14 @@ namespace CodeCreate
 
 
             sb_body.AppendLine(sb.ToString());
+
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            #region Search");
+            sb_body.AppendLine("");
+            sb_body.AppendLine(sb_search.ToString());
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            #endregion");
+
 
             sb_body.AppendLine("            query.Desc<" + tableName + "Query>(c => c.CreateDate);");
 

@@ -22,6 +22,7 @@ namespace CodeCreate
             string primaryKey = "";
 
             StringBuilder sb = new StringBuilder();
+            StringBuilder sb_search = new StringBuilder();
 
             #region Model
 
@@ -54,19 +55,20 @@ namespace CodeCreate
                 nullable = columnType == "string" ? "" : "?";
 
                 sb.AppendLine("");
-
                 sb.AppendLine(@"        /// <summary>");
                 sb.AppendLine(@"        /// " + columnComment);
                 sb.AppendLine(@"        /// </summary>");
-                //if (dr["nullable"].ToString().ToUpper().Trim() == "Y")//不為空
-                //{
-                //    sb.AppendLine(@"        [Required]");
-                //}
-                //if (!string.IsNullOrEmpty(data_maxLength))//最大長度
-                //{
-                //    sb.AppendLine(@"        [StringLength(" + data_maxLength + ")]");
-                //}
                 sb.AppendLine("        public " + columnType + nullable + " " + columnName + " { get; set; }");
+
+                if (columnType == "string")
+                {
+                    sb_search.AppendLine("");
+                    sb_search.AppendLine(@"        /// <summary>");
+                    sb_search.AppendLine(@"        /// " + columnComment);
+                    sb_search.AppendLine(@"        /// </summary>");
+                    sb_search.AppendLine("        public " + columnType + nullable + " " + columnName + "_Search { get; set; }");
+
+                }
             }
             sb.AppendLine("");
             sb.AppendLine("        #endregion Model");
@@ -88,8 +90,16 @@ namespace CodeCreate
             sb_body.AppendLine("    {");
             sb_body.AppendLine("");
 
+
             SetData(tableName, sb);
             sb_body.Append(sb.ToString());
+
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        #region Search");
+            sb_body.Append(sb_search.ToString());
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        #endregion Search");
+            sb_body.AppendLine("");
 
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
