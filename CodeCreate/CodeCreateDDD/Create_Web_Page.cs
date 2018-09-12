@@ -93,15 +93,30 @@ namespace CodeCreate
                         sb_EditDiv.AppendLine("                </div>");
                         sb_EditDiv.AppendLine("");
                     }
+                    else if (columnType == "DateTime")
+                    {
+                        sb_Table_Th.AppendLine("                <th data-options=\"field:'" + columnName + "',width:120,align:'center',formatter:fmDate\">" + columnComment + "</th>");
+                        
+                        sb_GetEditData.AppendLine("            " + columnName + ": $(\"." + columnName + "\").textbox(\"getText\"),");
+                        sb_SetEditData.AppendLine("        $(\"." + columnName + "\").textbox(\"setText\", fmDate(row." + columnName + "));");
+
+                        sb_EditDiv.AppendLine("            <div class=\"layer_form_div\">");
+                        sb_EditDiv.AppendLine("                <input class=\"easyui-datebox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:" + required + ",validType:['length[1," + data_maxLength + "]'],missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
+                        sb_EditDiv.AppendLine("            </div>");
+                        sb_EditDiv.AppendLine("");
+
+                    }
                     else
                     {
+                        sb_Table_Th.AppendLine("                <th data-options=\"field:'" + columnName + "',width:100,align:'center'\">" + columnComment + "</th>");
+
                         if (columnName.Contains("ID"))
                         {
                             sb_GetEditData.AppendLine("            " + columnName + ": $(\"." + columnName + "\").combobox(\"getValue\"),");
                             sb_SetEditData.AppendLine("        $(\"." + columnName + "\").combobox(\"select\", row." + columnName + ");");
 
                             sb_EditDiv.AppendLine("            <div class=\"layer_form_div\">");
-                            sb_EditDiv.AppendLine("                <input class=\"easyui-combobox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',editable:false,valueField:'SysNo',textField:'" + columnName.Replace("ID", "Name") + "',method:'get',url:'/Data/Get" + columnName.Replace("ID", "") + "List',panelHeight:true\" style=\"width: 300px;\" />");
+                            sb_EditDiv.AppendLine("                <input class=\"easyui-combobox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',editable:false,valueField:'SysNo',textField:'" + columnName.Replace("ID", "Name") + "',method:'get',url:'/Data/Get" + columnName.Replace("ID", "") + "List',panelHeight:200\" style=\"width: 300px;\" />");
                             sb_EditDiv.AppendLine("            </div>");
                             sb_EditDiv.AppendLine("");
                         }
@@ -116,7 +131,6 @@ namespace CodeCreate
                             sb_EditDiv.AppendLine("");
                         }
 
-                        sb_Table_Th.AppendLine("                <th data-options=\"field:'" + columnName + "',width:100,align:'center'\">" + columnComment + "</th>");
                     }
                 }
             }

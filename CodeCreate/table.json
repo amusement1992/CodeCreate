@@ -32,7 +32,7 @@
         "ListFilterVM": [ "List<Guid?>", "SysNos", "编号列表" ]
       },
       {
-        "ListFilterDto": [ "List<Guid?>", "SysNos", "编号列表" ]
+        "ListFilterDto": [ "List<Guid>", "SysNos", "编号列表" ]
       }
     ]
   },
@@ -845,6 +845,34 @@
       {
         "ListFilterVM": [ "DateTime?", "CreateDate_End", "抓取时间——结束" ],
         "ListFilterDto": [ "DateTime?", "CreateDate_End", "抓取时间——结束" ]
+      }
+    ]
+  },
+  {
+    "TableName": "Pinduoduo",
+    "TableDesc": "拼多多",
+    "ExcludePropertys": [],
+    "List": [
+      {
+        "ColumnName": "ShopID",
+        "ColumnType": "Guid",
+
+        "NewColumnName": "Shop",
+        "NewColumnType": "Shop",
+        "NewColumnComment": "店铺",
+
+        "NewColumnName_Dto": "Shop",
+        "NewColumnType_Dto": "ShopDto",
+
+        "NewColumnName_VM": "ShopName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "ShopName"
+      },
+      {
+        "ListFilterVM": [ "string", "ShopName", "店铺名称" ],
+        "ListFilterDto": [ "string", "ShopName", "店铺名称" ]
       }
     ]
   },

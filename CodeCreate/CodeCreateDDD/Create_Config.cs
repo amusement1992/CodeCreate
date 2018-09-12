@@ -169,7 +169,7 @@ namespace CodeCreate
                 Directory.CreateDirectory(file_Model);
             }
 
-            CommonCode.Save2(file_Model + "/DbConfig.cs", sb.ToString());
+            CommonCode.Save(file_Model + "/DbConfig.cs", sb.ToString());
 
 
         }

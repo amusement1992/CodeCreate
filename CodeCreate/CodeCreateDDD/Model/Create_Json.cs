@@ -22,6 +22,9 @@ namespace CodeCreate
             string primaryKey = "";
 
             StringBuilder sb = new StringBuilder();
+            StringBuilder sb2 = new StringBuilder();
+            StringBuilder sb3 = new StringBuilder();
+            StringBuilder sb4 = new StringBuilder();
 
 
             #region Model
@@ -51,7 +54,50 @@ namespace CodeCreate
 
                 nullable = CommonCode.GetNullable(columnType, nullable);
 
-                sb.AppendLine("model." + columnName + " = GetColumnValue(listColumn, listDesc, row, \"" + columnName + "\").StrTo"+ columnType + "(0);");
+                var arr = new List<string> {
+                    "SysNo",
+                    "OutsideCode",
+                    "ShopID",
+
+                    "Remark",
+                    "CreateDate",
+                    "UpdateDate",
+                    "CreateUserID",
+                    "UpdateUserID",
+                };
+                if (!arr.Contains(columnName))
+                {
+                    if (columnType == "string")
+                    {
+                        sb2.AppendLine("model." + columnName + " = GetColumnValue(listColumn, listDesc, row, \"" + columnName + "\");");
+                        sb4.AppendLine("                        model." + columnName + " = GetColumnValue(listColumn, dr, \"" + columnName + "\");");
+
+                    }
+                    else if (columnType == "DateTime")
+                    {
+                        string col = columnType[0].ToString().ToUpper();
+                        col += columnType.Substring(1, columnType.Length - 1);
+                        sb2.AppendLine("model." + columnName + " = GetColumnValue(listColumn, listDesc, row, \"" + columnName + "\").StrTo" + col + "();");
+                        sb4.AppendLine("                        model." + columnName + " = GetColumnValue(listColumn, dr, \"" + columnName + "\").StrTo" + col + "();");
+                    }
+                    else
+                    {
+                        string col = columnType[0].ToString().ToUpper();
+                        col += columnType.Substring(1, columnType.Length - 1);
+                        sb2.AppendLine("model." + columnName + " = GetColumnValue(listColumn, listDesc, row, \"" + columnName + "\").StrTo" + col + "(-1);");
+                        sb4.AppendLine("                        model." + columnName + " = GetColumnValue(listColumn, dr, \"" + columnName + "\").StrTo" + col + "(-1);");
+                    }
+
+                    sb3.AppendLine("            Map(m => m." + columnName + ").Name(\"" + columnComment + "\");");
+
+                }
+
+                sb.AppendLine("			{");
+                sb.AppendLine("				\"ColumnName\": \"" + columnName + "\",");
+                sb.AppendLine("				\"ColumnDesc\": \"" + columnComment + "\"");
+                sb.AppendLine("			},");
+
+
             }
 
 
@@ -70,12 +116,42 @@ namespace CodeCreate
             sb_body.AppendLine("]");
 
 
+            StringBuilder sb_body3 = new StringBuilder();
+            sb_body3.AppendLine("using BigDataAnalysis.DTO.Original.Cmd;");
+            sb_body3.AppendLine("using System;");
+            sb_body3.AppendLine("using System.Collections.Generic;");
+            sb_body3.AppendLine("using System.Linq;");
+            sb_body3.AppendLine("using System.Text;");
+            sb_body3.AppendLine("using System.Threading.Tasks;");
+            sb_body3.AppendLine("");
+            sb_body3.AppendLine("namespace BigDataAnalysis.DTO.CSVMap");
+            sb_body3.AppendLine("{");
+            sb_body3.AppendLine("    /// <summary>");
+            sb_body3.AppendLine("    /// CSVHeaderMap：" + tableDesc + "");
+            sb_body3.AppendLine("    /// </summary>");
+            sb_body3.AppendLine("    public class CSVHeaderMap_" + tableName + " : CsvHelper.Configuration.ClassMap<" + tableName + "CmdDto>");
+            sb_body3.AppendLine("    {");
+            sb_body3.AppendLine("        public CSVHeaderMap_" + tableName + "()");
+            sb_body3.AppendLine("        {");
+            sb_body3.AppendLine(sb3.ToString());
+            sb_body3.AppendLine("        }");
+            sb_body3.AppendLine("    }");
+            sb_body3.AppendLine("}");
+            sb_body3.AppendLine("");
+
+
             string file_Model = "C:\\Code\\Json";
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);
             }
             CommonCode.Save(file_Model + "/" + tableName + ".json", sb_body.ToString());
+
+            CommonCode.Save(file_Model + "/" + tableName + "_GetColumnValue.txt", sb2.ToString());
+
+            CommonCode.Save(file_Model + "/CSVHeaderMap_" + tableName + ".cs", sb_body3.ToString());
+
+            CommonCode.Save(file_Model + "/DT_" + tableName + ".txt", sb4.ToString());
         }
 
     }

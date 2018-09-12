@@ -115,7 +115,7 @@ namespace CodeCreate
             sb_body.AppendLine("        /// <param name=\"userRoles\"></param>");
             sb_body.AppendLine("        /// <returns></returns>");
             sb_body.AppendLine("        [HttpPost]");
-            sb_body.AppendLine("        public ActionResult Edit" + tableName + "(" + tableName + "ViewModel vm)");
+            sb_body.AppendLine("        public JsonResult Edit" + tableName + "(" + tableName + "ViewModel vm)");
             sb_body.AppendLine("        {");
             sb_body.AppendLine("            #region 验证是否存在");
             sb_body.AppendLine("");
@@ -126,7 +126,7 @@ namespace CodeCreate
             sb_body.AppendLine("            if (model != null && (vm.SysNo == Guid.Empty || model.SysNo != vm.SysNo))");
             sb_body.AppendLine("            {");
             sb_body.AppendLine("                var result2 = Result<" + tableName + "ViewModel>.ErrorResult(\"" + tableDesc + "名称已存在！\");");
-            sb_body.AppendLine("                return Content(JsonSerialize.ObjectToJson(result2));");
+            sb_body.AppendLine("                return Json(result2)");
             sb_body.AppendLine("            }");
             sb_body.AppendLine("");
             sb_body.AppendLine("            #endregion 验证是否存在");
@@ -142,7 +142,7 @@ namespace CodeCreate
             sb_body.AppendLine("                " + tableName + " = vm.MapTo<" + tableName + "CmdDto>()");
             sb_body.AppendLine("            };");
             sb_body.AppendLine("            var result = " + tableName + "Service.Save" + tableName + "(saveInfo);");
-            sb_body.AppendLine("            return Content(JsonSerialize.ObjectToJson(result));");
+            sb_body.AppendLine("            return Json(result);");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
@@ -152,7 +152,7 @@ namespace CodeCreate
             sb_body.AppendLine("        /// <param name=\"userRoles\"></param>");
             sb_body.AppendLine("        /// <returns></returns>");
             sb_body.AppendLine("        [HttpPost]");
-            sb_body.AppendLine("        public ActionResult EditList" + tableName + "(List<" + tableName + "ViewModel> list_vm)");
+            sb_body.AppendLine("        public JsonResult EditList" + tableName + "(List<" + tableName + "ViewModel> list_vm)");
             sb_body.AppendLine("        {");
             sb_body.AppendLine("            list_vm.ForEach(d => d.UpdateDate = DateTime.Now);");
             sb_body.AppendLine("            list_vm.ForEach(d => d.UpdateUserID = LoginUserId);");
@@ -162,7 +162,7 @@ namespace CodeCreate
             sb_body.AppendLine("            {");
             sb_body.AppendLine("                List" + tableName + " = list_vm.Select(d => d.MapTo<" + tableName + "CmdDto>()).ToList(),");
             sb_body.AppendLine("            });");
-            sb_body.AppendLine("            return Content(JsonSerialize.ObjectToJson(result));");
+            sb_body.AppendLine("            return Json(result);");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
@@ -172,11 +172,11 @@ namespace CodeCreate
             sb_body.AppendLine("        /// <param name=\"userRoles\"></param>");
             sb_body.AppendLine("        /// <returns></returns>");
             sb_body.AppendLine("        [HttpPost]");
-            sb_body.AppendLine("        public ActionResult Delete" + tableName + "(Delete" + tableName + "CmdDto vm)");
+            sb_body.AppendLine("        public JsonResult Delete" + tableName + "(Delete" + tableName + "CmdDto vm)");
             sb_body.AppendLine("        {");
             sb_body.AppendLine("            vm.UpdateUserID = LoginUserId;");
             sb_body.AppendLine("            var result = " + tableName + "Service.Delete" + tableName + "(vm);");
-            sb_body.AppendLine("            return Content(JsonSerialize.ObjectToJson(result));");
+            sb_body.AppendLine("            return Json(result);");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion " + tableDesc + "管理");
