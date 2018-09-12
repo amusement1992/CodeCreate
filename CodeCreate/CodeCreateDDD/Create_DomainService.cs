@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeCreate.Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -20,6 +21,19 @@ namespace CodeCreate
 
             StringBuilder sb_body = new StringBuilder();
 
+            StringBuilder sb_List = new StringBuilder();
+            StringBuilder sb_AllowLoad = new StringBuilder();
+            StringBuilder sb_SetData = new StringBuilder();
+
+            var listModel = CommonCode.GetTableModel(tableName);
+            if (listModel != null)
+            {
+                foreach (var item in listModel)
+                {
+                    SetInstance(tableName, sb_List, sb_AllowLoad, sb_SetData, item);
+                }
+            }
+
             sb_body.AppendLine("using Lee.CQuery;");
             sb_body.AppendLine("using Lee.CQuery.Paging;");
             sb_body.AppendLine("using Lee.Utility;");
@@ -30,10 +44,14 @@ namespace CodeCreate
             sb_body.AppendLine("using System.Text;");
             sb_body.AppendLine("using System.Threading.Tasks;");
             sb_body.AppendLine("using Lee.Utility.Extension;");
+            sb_body.AppendLine("using Lee.Utility.ExpressionUtil;");
             sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Repository;");
             sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Model;");
             sb_body.AppendLine("using " + str_nameSpace + ".Query." + tablePrefix + ";");
-            sb_body.AppendLine("using Lee.Utility.ExpressionUtil;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Model;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Service;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Model;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Service;");
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".Domain." + tablePrefix + ".Service");
             sb_body.AppendLine("{");
@@ -182,7 +200,23 @@ namespace CodeCreate
             sb_body.AppendLine("        public static List<" + tableName + "> Get" + tableName + "List(IQuery query)");
             sb_body.AppendLine("        {");
             sb_body.AppendLine("            var " + tableName + "List = " + tableName + "Repository.GetList(query);");
+            sb_body.AppendLine("            " + tableName + "List = LoadOtherObjectData(" + tableName + "List, query);");
             sb_body.AppendLine("            return " + tableName + "List;");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 获取" + tableDesc + "列表");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        /// <param name=\"listID\"></param>");
+            sb_body.AppendLine("        /// <returns></returns>");
+            sb_body.AppendLine("        public static List<" + tableName + "> Get" + tableName + "List(IEnumerable<Guid> listID)");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            if (listID.IsNullOrEmpty())");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                return new List<" + tableName + ">(0);");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("            IQuery query = QueryFactory.Create<" + tableName + "Query>(c => listID.Contains(c.SysNo));");
+            sb_body.AppendLine("            return Get" + tableName + "List(query);");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion");
@@ -197,7 +231,8 @@ namespace CodeCreate
             sb_body.AppendLine("        public static IPaging<" + tableName + "> Get" + tableName + "Paging(IQuery query)");
             sb_body.AppendLine("        {");
             sb_body.AppendLine("            var " + tableName + "Paging = " + tableName + "Repository.GetPaging(query);");
-            sb_body.AppendLine("            return " + tableName + "Paging;");
+            sb_body.AppendLine("            var list = LoadOtherObjectData(" + tableName + "Paging, query);");
+            sb_body.AppendLine("            return new Paging<" + tableName + ">(" + tableName + "Paging.Page, " + tableName + "Paging.PageSize, " + tableName + "Paging.TotalCount, list);");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion");
@@ -237,6 +272,48 @@ namespace CodeCreate
             sb_body.AppendLine("        #endregion");
             sb_body.AppendLine("");
             sb_body.AppendLine("");
+            sb_body.AppendLine("        #region 加载其它数据");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 加载其它数据");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        /// <param name=\"" + tableName + "s\">数据</param>");
+            sb_body.AppendLine("        /// <param name=\"query\">筛选条件</param>");
+            sb_body.AppendLine("        /// <returns></returns>");
+            sb_body.AppendLine("        static List<" + tableName + "> LoadOtherObjectData(IEnumerable<" + tableName + "> " + tableName + "s, IQuery query)");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            if (" + tableName + "s.IsNullOrEmpty())");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                return new List<" + tableName + ">(0);");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("            if (query == null)");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                return " + tableName + "s.ToList();");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            #region 获取数据");
+            sb_body.AppendLine("");
+            sb_body.AppendLine(sb_List.ToString());
+            sb_body.AppendLine(sb_AllowLoad.ToString());
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            #endregion");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            foreach (var item in " + tableName + "s)");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                if (item == null)");
+            sb_body.AppendLine("                {");
+            sb_body.AppendLine("                    continue;");
+            sb_body.AppendLine("                }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine(sb_SetData.ToString());
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            return " + tableName + "s.ToList();");
+            sb_body.AppendLine("        }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        #endregion");
+
+            sb_body.AppendLine("");
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
             sb_body.AppendLine("");
@@ -248,6 +325,38 @@ namespace CodeCreate
                 Directory.CreateDirectory(file_Model);
             }
             CommonCode.Save(file_Model + "/" + tableName + "Service.cs", sb_body.ToString());
+        }
+
+        private static void SetInstance(string tableName, StringBuilder sb_List, StringBuilder sb_AllowLoad, StringBuilder sb_SetData, TableModel tableModel)
+        {
+            if (tableModel.List != null)
+            {
+                foreach (var thisModel in tableModel.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName)))
+                {
+                    sb_List.AppendLine("            List<" + thisModel.NewColumnType + "> list" + thisModel.NewColumnName + " = null;");
+
+
+                    sb_AllowLoad.AppendLine("            if (query.AllowLoad<" + tableName + ">(c => c." + thisModel.NewColumnName + "))");
+                    sb_AllowLoad.AppendLine("            {");
+                    if (thisModel.ColumnType == "Guid")
+                    {
+                        sb_AllowLoad.AppendLine("                var listID_" + thisModel.NewColumnName + " = " + tableName + "s.Select(c => c." + thisModel.NewColumnName + "ID).Distinct().ToList();");
+                    }
+                    else
+                    {
+                        sb_AllowLoad.AppendLine("                var listID_" + thisModel.NewColumnName + " = " + tableName + "s.Select(c => c." + thisModel.NewColumnName + "ID ?? Guid.Empty).Distinct().ToList();");
+                    }
+                    sb_AllowLoad.AppendLine("                list" + thisModel.NewColumnName + " = " + thisModel.NewColumnType + "Service.Get" + thisModel.NewColumnType + "List(listID_" + thisModel.NewColumnName + ");");
+                    sb_AllowLoad.AppendLine("            }");
+
+
+                    sb_SetData.AppendLine("                if (!list" + thisModel.NewColumnName + ".IsNullOrEmpty())");
+                    sb_SetData.AppendLine("                {");
+                    sb_SetData.AppendLine("                    item.Set" + thisModel.NewColumnName + "(list" + thisModel.NewColumnName + ".FirstOrDefault(c => c.SysNo == item." + thisModel.NewColumnName + "ID));");
+                    sb_SetData.AppendLine("                }");
+
+                }
+            }
         }
 
     }

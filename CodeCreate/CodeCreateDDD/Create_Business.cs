@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeCreate.Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -75,6 +76,15 @@ namespace CodeCreate
 
             #endregion Model
 
+            StringBuilder sb2 = new StringBuilder();
+            var listModel = CommonCode.GetTableModel(tableName);
+            if (listModel != null)
+            {
+                foreach (var item in listModel)
+                {
+                    SetSB(sb2, item, tableName);
+                }
+            }
 
             StringBuilder sb_body = new StringBuilder();
 
@@ -94,11 +104,13 @@ namespace CodeCreate
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("using System.Collections.Generic;");
             sb_body.AppendLine("using System.Linq;");
-            sb_body.AppendLine("using BigDataAnalysis.DTO.Bcl.Cmd;");
-            sb_body.AppendLine("using BigDataAnalysis.Enum;");
-            sb_body.AppendLine("using BigDataAnalysis.Domain.Bcl.Service;");
-            sb_body.AppendLine("using BigDataAnalysis.Tools;");
-            sb_body.AppendLine("using BigDataAnalysis.Tools.Helper;");
+            sb_body.AppendLine("using " + str_nameSpace + ".DTO.Bcl.Cmd;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Enum;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Bcl.Service;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Tools;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Tools.Helper;");
+            sb_body.AppendLine("using " + str_nameSpace + ".DTO.Data.Query;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Model;");
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".Business." + tablePrefix + "");
             sb_body.AppendLine("{");
@@ -343,9 +355,14 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("            #endregion");
 
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            #region 数据加载");
 
+
+            sb_body.AppendLine(sb2.ToString());
+            sb_body.AppendLine("            #endregion");
+            sb_body.AppendLine("");
             sb_body.AppendLine("            query.Desc<" + tableName + "Query>(c => c.CreateDate);");
-
             sb_body.AppendLine("            return query;");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
@@ -364,5 +381,21 @@ namespace CodeCreate
             CommonCode.Save(file_Model + "/" + tableName + "Business.cs", sb_body.ToString());
         }
 
+        private static void SetSB(StringBuilder sb, TableModel tableModel,string tableName)
+        {
+            if (tableModel.List != null)
+            {
+                foreach (var thisModel in tableModel.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName)))
+                {
+                    sb.AppendLine("");
+                    sb.AppendLine("            if (filter.IsLoad" + thisModel.NewColumnName + ")");
+                    sb.AppendLine("            {");
+                    sb.AppendLine("                query.SetLoadPropertys<" + tableName + ">(true, c => c." + thisModel.NewColumnName + ");");
+                    sb.AppendLine("            }");
+                }
+            }
+        }
+
     }
+
 }

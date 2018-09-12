@@ -33,6 +33,7 @@ namespace CodeCreate
             sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Query;");
             sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Cmd;");
             sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Query.Filter;");
+
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".Service." + tablePrefix + "");
             sb_body.AppendLine("{");
@@ -90,7 +91,7 @@ namespace CodeCreate
             sb_body.AppendLine("        #region 获取列表");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 获取" + tableDesc+"列表");
+            sb_body.AppendLine("        /// 获取" + tableDesc + "列表");
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"filter\">查询条件</param>");
             sb_body.AppendLine("        /// <returns></returns>");
@@ -104,7 +105,7 @@ namespace CodeCreate
             sb_body.AppendLine("        #region 获取分页");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 获取" + tableDesc+ "分页");
+            sb_body.AppendLine("        /// 获取" + tableDesc + "分页");
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"filter\">查询条件</param>");
             sb_body.AppendLine("        /// <returns></returns>");

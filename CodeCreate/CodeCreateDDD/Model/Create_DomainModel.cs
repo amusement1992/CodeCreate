@@ -76,6 +76,7 @@ namespace CodeCreate
 
             StringBuilder sb_instance = new StringBuilder();
             StringBuilder sb_instanceMethod = new StringBuilder();
+            StringBuilder sb_SetLazyMember = new StringBuilder();
             StringBuilder sb_attribute = new StringBuilder();
 
             var listModel = CommonCode.GetTableModel(tableName);
@@ -84,7 +85,7 @@ namespace CodeCreate
                 foreach (var item in listModel)
                 {
                     SetSB(sb, item);
-                    SetInstance(tableName, sb_instance, sb_instanceMethod, item);
+                    SetInstance(tableName, sb_instance, sb_instanceMethod, sb_SetLazyMember, item);
                     SetAttribute(sb_attribute, item);
                 }
             }
@@ -111,6 +112,11 @@ namespace CodeCreate
             sb_body.AppendLine("using " + str_nameSpace + ".Query.Contract;");
             sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Model;");
             sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Service;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Repository;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Query;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Repository;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Query.Data;");
+
 
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".Domain." + tablePrefix + ".Model");
@@ -147,6 +153,14 @@ namespace CodeCreate
             sb_body.AppendLine(sb_instanceMethod.ToString());
             sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        #region 设置LazyMember");
+            sb_body.AppendLine("");
+            sb_body.AppendLine(sb_SetLazyMember.ToString());
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        #endregion");
+
+
             sb_body.AppendLine("");
             sb_body.AppendLine("        #region	属性");
             sb_body.AppendLine("");
@@ -369,7 +383,7 @@ namespace CodeCreate
             }
         }
 
-        private static void SetInstance(string tableName, StringBuilder sb_instance, StringBuilder sb_instanceMethod, TableModel tableModel)
+        private static void SetInstance(string tableName, StringBuilder sb_instance, StringBuilder sb_instanceMethod, StringBuilder sb_SetLazyMember, TableModel tableModel)
         {
             if (tableModel.List != null)
             {
@@ -387,6 +401,10 @@ namespace CodeCreate
                     {
                         sb_instanceMethod.AppendLine("        " + thisModel.NewColumnType + " Load" + thisModel.NewColumnName + "()");
                         sb_instanceMethod.AppendLine("        {");
+                        sb_instanceMethod.AppendLine("            if (!AllowLazyLoad(d => d." + thisModel.NewColumnName + "))");
+                        sb_instanceMethod.AppendLine("            {");
+                        sb_instanceMethod.AppendLine("                return _" + thisModel.NewColumnName + ".CurrentValue;");
+                        sb_instanceMethod.AppendLine("            }");
                         sb_instanceMethod.AppendLine("            return " + thisModel.NewColumnType + "Service.Get" + thisModel.NewColumnType + "(" + thisModel.ColumnName + ");");
                         sb_instanceMethod.AppendLine("        }");
                     }
@@ -394,9 +412,23 @@ namespace CodeCreate
                     {
                         sb_instanceMethod.AppendLine("        " + thisModel.NewColumnType + " Load" + thisModel.NewColumnName + "()");
                         sb_instanceMethod.AppendLine("        {");
+                        sb_instanceMethod.AppendLine("            if (!AllowLazyLoad(d => d." + thisModel.NewColumnName + "))");
+                        sb_instanceMethod.AppendLine("            {");
+                        sb_instanceMethod.AppendLine("                return _" + thisModel.NewColumnName + ".CurrentValue;");
+                        sb_instanceMethod.AppendLine("            }");
                         sb_instanceMethod.AppendLine("            return " + tableName + "Service.Get" + thisModel.NewColumnName + "(SysNo);");
                         sb_instanceMethod.AppendLine("        }");
                     }
+
+
+                    sb_SetLazyMember.AppendLine("        /// <summary>");
+                    sb_SetLazyMember.AppendLine("        /// 设置LazyMember：" + thisModel.NewColumnComment);
+                    sb_SetLazyMember.AppendLine("        /// </summary>");
+                    sb_SetLazyMember.AppendLine("        public void Set" + thisModel.NewColumnName + "(" + thisModel.NewColumnType + " value, bool init = true)");
+                    sb_SetLazyMember.AppendLine("        {");
+                    sb_SetLazyMember.AppendLine("            _" + thisModel.NewColumnName + ".SetValue(value, init);");
+                    sb_SetLazyMember.AppendLine("        }");
+                    sb_SetLazyMember.AppendLine("");
 
                 }
             }

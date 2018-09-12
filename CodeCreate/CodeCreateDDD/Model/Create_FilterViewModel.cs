@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeCreate.Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -22,7 +23,20 @@ namespace CodeCreate
             string primaryKey = "";
 
             StringBuilder sb = new StringBuilder();
+            StringBuilder sb_ext = new StringBuilder();
             StringBuilder sb_search = new StringBuilder();
+            
+            SetData(tableName, sb_ext);
+
+            StringBuilder sb_load = new StringBuilder();
+            var listModel = CommonCode.GetTableModel(tableName);
+            if (listModel != null)
+            {
+                foreach (var item in listModel)
+                {
+                    SetLoad(sb_load, item);
+                }
+            }
 
             #region Model
 
@@ -90,8 +104,6 @@ namespace CodeCreate
             sb_body.AppendLine("    {");
             sb_body.AppendLine("");
 
-
-            SetData(tableName, sb);
             sb_body.Append(sb.ToString());
 
             sb_body.AppendLine("");
@@ -100,6 +112,15 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("        #endregion Search");
             sb_body.AppendLine("");
+            sb_body.AppendLine("        #region 数据加载");
+            sb_body.AppendLine("");
+            sb_body.AppendLine(sb_load.ToString());
+            sb_body.AppendLine("        #endregion");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        #region 扩展");
+            sb_body.AppendLine("");
+            sb_body.AppendLine(sb_ext.ToString());
+            sb_body.AppendLine("        #endregion");
 
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");
@@ -113,7 +134,7 @@ namespace CodeCreate
         }
 
 
-        private static void SetData(string tableName, StringBuilder sb)
+        private static void SetData(string tableName, StringBuilder sb_ext)
         {
             var listModel = CommonCode.GetTableModel(tableName);
             if (listModel != null)
@@ -125,14 +146,29 @@ namespace CodeCreate
 
                         foreach (var thisModel in item.List.Where(d => d.ListFilterVM != null))
                         {
-                            sb.AppendLine("");
-                            sb.AppendLine(@"        /// <summary>");
-                            sb.AppendLine(@"        /// 扩展：" + thisModel.ListFilterVM[2]);
-                            sb.AppendLine(@"        /// </summary>");
-                            sb.AppendLine("        public " + thisModel.ListFilterVM[0] + " " + thisModel.ListFilterVM[1] + " { get; set; }");
+                            sb_ext.AppendLine(@"        /// <summary>");
+                            sb_ext.AppendLine(@"        /// 扩展：" + thisModel.ListFilterVM[2]);
+                            sb_ext.AppendLine(@"        /// </summary>");
+                            sb_ext.AppendLine("        public " + thisModel.ListFilterVM[0] + " " + thisModel.ListFilterVM[1] + " { get; set; }");
+                            sb_ext.AppendLine("");
 
                         }
                     }
+                }
+            }
+        }
+
+        private static void SetLoad(StringBuilder sb_load, TableModel tableModel)
+        {
+            if (tableModel.List != null)
+            {
+                foreach (var thisModel in tableModel.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName)))
+                {
+                    sb_load.AppendLine("        /// <summary>");
+                    sb_load.AppendLine("        /// 是否加载" + thisModel.NewColumnComment);
+                    sb_load.AppendLine("        /// </summary>");
+                    sb_load.AppendLine("        public bool IsLoad" + thisModel.NewColumnName + " { get; set; }");
+                    sb_load.AppendLine("");
                 }
             }
         }

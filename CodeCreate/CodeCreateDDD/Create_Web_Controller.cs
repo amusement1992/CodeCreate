@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeCreate.Model;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -23,6 +24,15 @@ namespace CodeCreate
 
             StringBuilder sb = new StringBuilder();
 
+            StringBuilder sb_load = new StringBuilder();
+            var listModel = CommonCode.GetTableModel(tableName);
+            if (listModel != null)
+            {
+                foreach (var item in listModel)
+                {
+                    SetLoad(sb_load, item);
+                }
+            }
 
             StringBuilder sb_body = new StringBuilder();
             sb_body.AppendLine("using Lee.Web.Mvc;");
@@ -84,6 +94,7 @@ namespace CodeCreate
             sb_body.AppendLine("        {");
             sb_body.AppendLine("");
             sb_body.AppendLine("            filter.PageSize = filter.rows;");
+            sb_body.AppendLine(sb_load.ToString());
             sb_body.AppendLine("");
             sb_body.AppendLine("            var pager = " + tableName + "Service.Get" + tableName + "Paging(filter.MapTo<" + tableName + "FilterDto>()).Convert<" + tableName + "Dto, " + tableName + "ViewModel>();");
             sb_body.AppendLine("            object objResult = new");
@@ -192,6 +203,18 @@ namespace CodeCreate
                 Directory.CreateDirectory(file_Model);
             }
             CommonCode.Save(file_Model + "/" + tableName + "Controller.cs", sb_body.ToString());
+        }
+
+
+        private static void SetLoad(StringBuilder sb_load, TableModel tableModel)
+        {
+            if (tableModel.List != null)
+            {
+                foreach (var thisModel in tableModel.List.Where(d => !string.IsNullOrEmpty(d.NewColumnName)))
+                {
+                    sb_load.AppendLine("            filter.IsLoad" + thisModel.NewColumnName + " = true;");
+                }
+            }
         }
 
     }
