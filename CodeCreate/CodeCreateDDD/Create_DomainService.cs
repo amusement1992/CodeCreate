@@ -280,7 +280,7 @@ namespace CodeCreate
             sb_body.AppendLine("        /// <param name=\"" + tableName + "s\">数据</param>");
             sb_body.AppendLine("        /// <param name=\"query\">筛选条件</param>");
             sb_body.AppendLine("        /// <returns></returns>");
-            sb_body.AppendLine("        static List<" + tableName + "> LoadOtherObjectData(IEnumerable<" + tableName + "> " + tableName + "s, IQuery query)");
+            sb_body.AppendLine("        private static List<" + tableName + "> LoadOtherObjectData(IEnumerable<" + tableName + "> " + tableName + "s, IQuery query)");
             sb_body.AppendLine("        {");
             sb_body.AppendLine("            if (" + tableName + "s.IsNullOrEmpty())");
             sb_body.AppendLine("            {");

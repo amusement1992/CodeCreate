@@ -20,11 +20,13 @@ namespace CodeCreate
 
             bool isPrimeKey = false;
             string primaryKey = "";
+            int index = 0;
 
             StringBuilder sb = new StringBuilder();
             StringBuilder sb2 = new StringBuilder();
             StringBuilder sb3 = new StringBuilder();
             StringBuilder sb4 = new StringBuilder();
+            StringBuilder sb5 = new StringBuilder();
 
 
             #region Model
@@ -58,6 +60,7 @@ namespace CodeCreate
                     "SysNo",
                     "OutsideCode",
                     "ShopID",
+                    "StatisticalDate",
 
                     "Remark",
                     "CreateDate",
@@ -90,13 +93,16 @@ namespace CodeCreate
 
                     sb3.AppendLine("            Map(m => m." + columnName + ").Name(\"" + columnComment + "\");");
 
+                    sb5.AppendLine("                ExcelHelper.SetCellValue(sheet, thisRow, " + index + ", item." + columnName + ", cellStyle);");
+
+                    ++index;
+
                 }
 
                 sb.AppendLine("			{");
                 sb.AppendLine("				\"ColumnName\": \"" + columnName + "\",");
                 sb.AppendLine("				\"ColumnDesc\": \"" + columnComment + "\"");
                 sb.AppendLine("			},");
-
 
             }
 
@@ -152,6 +158,8 @@ namespace CodeCreate
             CommonCode.Save(file_Model + "/CSVHeaderMap_" + tableName + ".cs", sb_body3.ToString());
 
             CommonCode.Save(file_Model + "/DT_" + tableName + ".txt", sb4.ToString());
+
+            CommonCode.Save(file_Model + "/Export_" + tableName + ".txt", sb5.ToString());
         }
 
     }

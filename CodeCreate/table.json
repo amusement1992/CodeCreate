@@ -873,6 +873,10 @@
       {
         "ListFilterVM": [ "string", "ShopName", "店铺名称" ],
         "ListFilterDto": [ "string", "ShopName", "店铺名称" ]
+      },
+      {
+        "ListFilterVM": [ "DateTime?", "SuccessTime_End", "拼单成功时间——结束" ],
+        "ListFilterDto": [ "DateTime?", "SuccessTime_End", "拼单成功时间——结束" ]
       }
     ]
   },
