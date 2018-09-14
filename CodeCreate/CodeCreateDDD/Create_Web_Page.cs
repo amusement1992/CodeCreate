@@ -26,6 +26,9 @@ namespace CodeCreate
             StringBuilder sb_EditDiv = new StringBuilder();
             StringBuilder sb_Formatter = new StringBuilder();
 
+
+            var listModel = CommonCode.GetTableModel(tableName);
+
             #region Model
 
             //遍历每个字段
@@ -96,7 +99,7 @@ namespace CodeCreate
                     else if (columnType == "DateTime")
                     {
                         sb_Table_Th.AppendLine("                <th data-options=\"field:'" + columnName + "',width:120,align:'center',formatter:fmDate\">" + columnComment + "</th>");
-                        
+
                         sb_GetEditData.AppendLine("            " + columnName + ": $(\"." + columnName + "\").textbox(\"getText\"),");
                         sb_SetEditData.AppendLine("        $(\"." + columnName + "\").textbox(\"setText\", fmDate(row." + columnName + "));");
 
@@ -112,11 +115,13 @@ namespace CodeCreate
 
                         if (columnName.Contains("ID"))
                         {
+                            string textField = GetTextField(listModel, columnName);
+
                             sb_GetEditData.AppendLine("            " + columnName + ": $(\"." + columnName + "\").combobox(\"getValue\"),");
                             sb_SetEditData.AppendLine("        $(\"." + columnName + "\").combobox(\"select\", row." + columnName + ");");
 
                             sb_EditDiv.AppendLine("            <div class=\"layer_form_div\">");
-                            sb_EditDiv.AppendLine("                <input class=\"easyui-combobox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',editable:false,valueField:'SysNo',textField:'" + columnName.Replace("ID", "Name") + "',method:'get',url:'/Data/Get" + columnName.Replace("ID", "") + "List',panelHeight:200\" style=\"width: 300px;\" />");
+                            sb_EditDiv.AppendLine("                <input class=\"easyui-combobox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',editable:false,valueField:'SysNo',textField:'" + textField + "',method:'get',url:'/Data/Get" + columnName.Replace("ID", "") + "List',panelHeight:200\" style=\"width: 300px;\" />");
                             sb_EditDiv.AppendLine("            </div>");
                             sb_EditDiv.AppendLine("");
                         }
@@ -418,6 +423,30 @@ namespace CodeCreate
                 Directory.CreateDirectory(file_Model);
             }
             CommonCode.Save(file_Model + "/" + tableName + ".cshtml", sb_body.ToString());
+        }
+
+        private static string GetTextField(List<Model.TableModel> listModel, string columnName)
+        {
+            string textField = columnName.Replace("ID", "Name");
+            if (listModel != null)
+            {
+                foreach (var item in listModel)
+                {
+                    if (item.List != null)
+                    {
+
+                        foreach (var thisModel in item.List.Where(d => !string.IsNullOrEmpty(d.MapperName)))
+                        {
+                            if (thisModel.ColumnName == columnName)
+                            {
+                                textField = thisModel.MapperName;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return textField;
         }
     }
 }

@@ -106,7 +106,7 @@ namespace CodeCreate
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// "+ tableDesc + "列表");
+            sb_body.AppendLine("        /// 下拉框："+ tableDesc + "列表");
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"filter\"></param>");
             sb_body.AppendLine("        /// <returns></returns>");

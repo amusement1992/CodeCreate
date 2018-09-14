@@ -351,6 +351,23 @@
 
         "IsMapper": true,
         "MapperName": "CategoryName"
+      },
+      {
+        "ColumnName": "InnerOperationID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "InnerOperation",
+        "NewColumnType": "User",
+        "NewColumnComment": "内部运营人",
+
+        "NewColumnName_Dto": "InnerOperation",
+        "NewColumnType_Dto": "UserDto",
+
+        "NewColumnName_VM": "InnerOperationName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "UserName"
       }
     ]
   },
