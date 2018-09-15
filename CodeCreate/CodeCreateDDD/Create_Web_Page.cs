@@ -422,7 +422,7 @@ namespace CodeCreate
             {
                 Directory.CreateDirectory(file_Model);
             }
-            CommonCode.Save(file_Model + "/" + tableName + ".cshtml", sb_body.ToString());
+            CommonCode.Save2(file_Model + "/" + tableName + ".cshtml", sb_body.ToString());
         }
 
         private static string GetTextField(List<Model.TableModel> listModel, string columnName)

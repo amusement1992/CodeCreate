@@ -903,5 +903,19 @@
     "ExcludePropertys": [],
     "List": [
     ]
+  },
+  {
+    "TableName": "User",
+    "TableDesc": "用户",
+    "ExcludePropertys": [],
+    "List": [
+    ]
+  },
+  {
+    "TableName": "PlatformCategory",
+    "TableDesc": "平台大类",
+    "ExcludePropertys": [],
+    "List": [
+    ]
   }
 ]

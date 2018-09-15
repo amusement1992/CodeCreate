@@ -99,7 +99,7 @@ namespace CodeCreate
             }
 
             string file_Model = "C:\\Code\\" + str_nameSpace + "." + type + "";
-            CommonCode.Save2(file_Model + "/" + str_nameSpace + "." + type + ".csproj", sb2.ToString());
+            CommonCode.Save(file_Model + "/" + str_nameSpace + "." + type + ".csproj", sb2.ToString());
         }
 
         private static void SaveData(string tablePrefix, string pref, string tableName, string suffix, StringBuilder sb2)

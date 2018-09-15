@@ -137,7 +137,7 @@ namespace CodeCreate
             sb_body.AppendLine("            if (model != null && (vm.SysNo == Guid.Empty || model.SysNo != vm.SysNo))");
             sb_body.AppendLine("            {");
             sb_body.AppendLine("                var result2 = Result<" + tableName + "ViewModel>.ErrorResult(\"" + tableDesc + "名称已存在！\");");
-            sb_body.AppendLine("                return Json(result2)");
+            sb_body.AppendLine("                return Json(result2);");
             sb_body.AppendLine("            }");
             sb_body.AppendLine("");
             sb_body.AppendLine("            #endregion 验证是否存在");
