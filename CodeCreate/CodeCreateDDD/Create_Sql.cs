@@ -42,6 +42,7 @@ namespace CodeCreate
 
             sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, "Edit" + tableName, "添加、修改" + tableDesc, tableDesc));
             sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, "Delete" + tableName, "删除" + tableDesc, tableDesc));
+            sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, "Get" + tableName + "List", tableDesc + "下拉框", tableDesc));
 
             //权限
             sb_body.AppendLine(GetSql_Sys_AuthorityGroup(tableDesc, 10, "基础配置"));
@@ -53,6 +54,7 @@ namespace CodeCreate
             //添加关联
             sb_body.AppendLine(GetSql_Sys_AuthorityBindOperation(tableDesc + "列表"));
             sb_body.AppendLine(GetSql_Sys_AuthorityBindOperation(tableDesc + "列表数据", tableDesc + "列表"));
+            //sb_body.AppendLine(GetSql_Sys_AuthorityBindOperation(tableDesc + "下拉框", tableDesc + "列表"));
 
             sb_body.AppendLine(GetSql_Sys_AuthorityBindOperation("添加、修改" + tableDesc));
             sb_body.AppendLine(GetSql_Sys_AuthorityBindOperation("删除" + tableDesc));
@@ -63,7 +65,7 @@ namespace CodeCreate
 
             //授权
             sb_body.AppendLine(GetSql_Sys_AuthorityOperationGroup(desc, 10, "基础配置"));
-            sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, tableName,  desc, desc));
+            sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, tableName, desc, desc));
 
             //权限
             sb_body.AppendLine(GetSql_Sys_AuthorityGroup(desc, 10, "基础配置"));

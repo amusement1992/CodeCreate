@@ -139,7 +139,7 @@ namespace CodeCreate
                 Directory.CreateDirectory(file_Model);
             }
 
-            CommonCode.Save(file_Model + "/AutoMapMapper.cs", sb.ToString());
+            CommonCode.Save2(file_Model + "/AutoMapMapper.cs", sb.ToString());
         }
 
         public static void SaveDBConfig(string str_SetObjectName, string str_SetPrimaryKey)

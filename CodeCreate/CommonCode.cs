@@ -21,7 +21,7 @@ namespace CodeCreate
         {
             FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
             fs.SetLength(0);
-            var gb2312 = Encoding.GetEncoding("UTF-8");
+            var gb2312 = Encoding.GetEncoding("GB2312");
 
             byte[] buffer = gb2312.GetBytes(fileContent);
 
@@ -40,7 +40,7 @@ namespace CodeCreate
         {
             FileStream fs = new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
             fs.SetLength(0);
-            var gb2312 = Encoding.GetEncoding("gb2312");
+            var gb2312 = Encoding.GetEncoding("UTF-8");
 
             byte[] buffer = gb2312.GetBytes(fileContent);
 

@@ -148,7 +148,25 @@
     "TableName": "Platform",
     "TableDesc": "平台",
     "ExcludePropertys": [],
-    "List": []
+    "List": [
+      {
+        "ColumnName": "PlatformCategoryID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "PlatformCategory",
+        "NewColumnType": "Platform",
+        "NewColumnComment": "平台大类",
+
+        "NewColumnName_Dto": "PlatformCategory",
+        "NewColumnType_Dto": "PlatformDto",
+
+        "NewColumnName_VM": "PlatformCategoryName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "PlatformName"
+      }
+    ]
   },
   {
     "TableName": "Company",
