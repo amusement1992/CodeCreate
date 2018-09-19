@@ -64,6 +64,24 @@
     "ExcludePropertys": [ "BrandCode" ],
     "List": [
 
+      {
+        "ColumnName": "BrandCategoryID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "BrandCategory",
+        "NewColumnType": "BrandCategory",
+        "NewColumnComment": "品牌分类",
+
+        "NewColumnName_Dto": "BrandCategory",
+        "NewColumnType_Dto": "BrandCategoryDto",
+
+        "NewColumnName_VM": "BrandCategoryName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "BrandCategoryName"
+      }
+
     ]
   },
   {
@@ -154,17 +172,17 @@
         "ColumnType": "Guid?",
 
         "NewColumnName": "PlatformCategory",
-        "NewColumnType": "Platform",
-        "NewColumnComment": "平台大类",
+        "NewColumnType": "PlatformCategory",
+        "NewColumnComment": "平台分类",
 
         "NewColumnName_Dto": "PlatformCategory",
-        "NewColumnType_Dto": "PlatformDto",
+        "NewColumnType_Dto": "PlatformCategoryDto",
 
         "NewColumnName_VM": "PlatformCategoryName",
         "NewColumnType_VM": "string",
 
         "IsMapper": true,
-        "MapperName": "PlatformName"
+        "MapperName": "PlatformCategoryName"
       }
     ]
   },
@@ -337,6 +355,24 @@
         "MapperName": "PlatformName"
       },
       {
+        "ColumnName": "PlatformCategoryID",
+        "ColumnType": "Guid",
+
+        "NewColumnName": "PlatformCategory",
+        "NewColumnType": "PlatformCategory",
+        "NewColumnComment": "平台分类",
+
+        "NewColumnName_Dto": "PlatformCategory",
+        "NewColumnType_Dto": "PlatformCategoryDto",
+
+        "NewColumnName_VM": "PlatformCategoryName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "PlatformCategoryName"
+
+      },
+      {
         "ColumnName": "CompanyID",
         "ColumnType": "Guid?",
 
@@ -386,6 +422,40 @@
 
         "IsMapper": true,
         "MapperName": "UserName"
+      },
+      {
+        "ColumnName": "ActualOperationID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "ActualOperation",
+        "NewColumnType": "Customer",
+        "NewColumnComment": "实际运营人",
+
+        "NewColumnName_Dto": "ActualOperation",
+        "NewColumnType_Dto": "CustomerDto",
+
+        "NewColumnName_VM": "ActualOperationName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "CustomerName"
+      },
+      {
+        "ColumnName": "DataSourceID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "DataSource",
+        "NewColumnType": "DataSource",
+        "NewColumnComment": "数据来源",
+
+        "NewColumnName_Dto": "DataSource",
+        "NewColumnType_Dto": "DataSourceDto",
+
+        "NewColumnName_VM": "DataSourceName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "DataSourceName"
       }
     ]
   },
@@ -869,6 +939,10 @@
       {
         "ListFilterVM": [ "string", "ShopName", "店铺名称" ],
         "ListFilterDto": [ "string", "ShopName", "店铺名称" ]
+      },
+      {
+        "ListFilterVM": [ "DateTime?", "StatisticalDate_End", "统计日期——结束" ],
+        "ListFilterDto": [ "DateTime?", "StatisticalDate_End", "统计日期——结束" ]
       }
     ]
   },
@@ -931,9 +1005,40 @@
   },
   {
     "TableName": "PlatformCategory",
-    "TableDesc": "平台大类",
+    "TableDesc": "平台分类",
     "ExcludePropertys": [],
     "List": [
+    ]
+  },
+  {
+    "TableName": "BrandCategory",
+    "TableDesc": "品牌分类",
+    "ExcludePropertys": [],
+    "List": [
+      {
+        "ColumnName": "ParentID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "Parent",
+        "NewColumnType": "BrandCategory",
+        "NewColumnComment": "上级分类",
+
+        "NewColumnName_Dto": "Parent",
+        "NewColumnType_Dto": "BrandCategoryDto",
+
+        "NewColumnName_VM": "Parent",
+        "NewColumnType_VM": "BrandCategoryViewModel",
+
+        "IsMapper": true,
+        "MapperName": "BrandCategoryName"
+      },
+
+      {
+        "NewColumnComment": "Child列表",
+
+        "NewColumnName_Dto": "listChild",
+        "NewColumnType_Dto": "List<BrandCategoryDto>"
+      }
     ]
   }
 ]

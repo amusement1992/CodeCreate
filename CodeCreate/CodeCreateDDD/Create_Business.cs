@@ -177,6 +177,7 @@ namespace CodeCreate
             sb_body.AppendLine("");
             sb_body.AppendLine("            try");
             sb_body.AppendLine("            {");
+            sb_body.AppendLine("                saveInfo.List" + tableName + ".Where(d => d.SysNo == Guid.Empty).ToList().ForEach(d => d.SysNo = Guid.NewGuid());");
             sb_body.AppendLine("                var bulk = new SqlBulkTools.BulkOperations();");
             sb_body.AppendLine("");
             sb_body.AppendLine("                using (TransactionScope trans = new TransactionScope())");
@@ -199,7 +200,7 @@ namespace CodeCreate
             sb_body.AppendLine("            catch (Exception ex)");
             sb_body.AppendLine("            {");
             sb_body.AppendLine("                LogHelper.WriteError(ex);");
-            sb_body.AppendLine("                return Result.SuccessResult(\"修改失败！\" + ex.Message);");
+            sb_body.AppendLine("                return Result.ErrorResult(\"修改失败！\" + ex.Message);");
             sb_body.AppendLine("            }");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");

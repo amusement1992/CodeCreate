@@ -57,7 +57,7 @@ namespace CodeCreate
                 nullable = CommonCode.GetNullable(columnType, nullable);
 
                 string required = "true";
-                if (columnName == "Remark")
+                if (columnName == "Remark" || columnName == "SortIndex")
                 {
                     required = "false";
                 }
@@ -111,29 +111,43 @@ namespace CodeCreate
                     }
                     else
                     {
-                        sb_Table_Th.AppendLine("                <th data-options=\"field:'" + columnName + "',width:100,align:'center'\">" + columnComment + "</th>");
-
-                        if (columnName.Contains("ID"))
+                        if (columnName.Substring(columnName.Length - 2, 2) == "ID")
                         {
+                            sb_Table_Th.AppendLine("                <th data-options=\"field:'" + columnName.Replace("ID", "Name") + "',width:100,align:'center'\">" + columnComment.Replace("ID", "") + "</th>");
+
                             string textField = GetTextField(listModel, columnName);
 
                             sb_GetEditData.AppendLine("            " + columnName + ": $(\"." + columnName + "\").combobox(\"getValue\"),");
                             sb_SetEditData.AppendLine("        $(\"." + columnName + "\").combobox(\"select\", row." + columnName + ");");
 
                             sb_EditDiv.AppendLine("            <div class=\"layer_form_div\">");
-                            sb_EditDiv.AppendLine("                <input class=\"easyui-combobox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',editable:false,valueField:'SysNo',textField:'" + textField + "',method:'get',url:'/Data/Get" + columnName.Replace("ID", "") + "List',panelHeight:200\" style=\"width: 300px;\" />");
+                            sb_EditDiv.AppendLine("                <input class=\"easyui-combobox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment.Replace("ID", "") + "',editable:false,valueField:'SysNo',textField:'" + textField + "',method:'get',url:'/Data/Get" + columnName.Replace("ID", "") + "List',panelHeight:200\" style=\"width: 300px;\" />");
                             sb_EditDiv.AppendLine("            </div>");
                             sb_EditDiv.AppendLine("");
                         }
                         else
                         {
+                            sb_Table_Th.AppendLine("                <th data-options=\"field:'" + columnName + "',width:100,align:'center'\">" + columnComment + "</th>");
+
                             sb_GetEditData.AppendLine("            " + columnName + ": $(\"." + columnName + "\").textbox(\"getText\"),");
                             sb_SetEditData.AppendLine("        $(\"." + columnName + "\").textbox(\"setText\", row." + columnName + ");");
 
-                            sb_EditDiv.AppendLine("            <div class=\"layer_form_div\">");
-                            sb_EditDiv.AppendLine("                <input class=\"easyui-textbox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:" + required + ",validType:['length[1," + data_maxLength + "]'],missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
-                            sb_EditDiv.AppendLine("            </div>");
-                            sb_EditDiv.AppendLine("");
+                            if (columnName == "Remark")
+                            {
+                                sb_EditDiv.AppendLine("            <div class=\"layer_form_div\">");
+                                sb_EditDiv.AppendLine("                <input class=\"easyui-textbox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:" + required + ",validType:['length[1," + data_maxLength + "]'],missingMessage:'请输入" + columnComment + "',multiline:true\" style=\"width: 300px;height:100px;\" />");
+                                sb_EditDiv.AppendLine("            </div>");
+                                sb_EditDiv.AppendLine("");
+
+                            }
+                            else
+                            {
+
+                                sb_EditDiv.AppendLine("            <div class=\"layer_form_div\">");
+                                sb_EditDiv.AppendLine("                <input class=\"easyui-textbox " + columnName + "\" name=\"" + columnName + "\" data-options=\"label:'" + columnComment + "',prompt:'请输入" + columnComment + "',required:" + required + ",validType:['length[1," + data_maxLength + "]'],missingMessage:'请输入" + columnComment + "'\" style=\"width: 300px;\" />");
+                                sb_EditDiv.AppendLine("            </div>");
+                                sb_EditDiv.AppendLine("");
+                            }
                         }
 
                     }
@@ -241,7 +255,7 @@ namespace CodeCreate
             sb_body.AppendLine("            loading: true,");
             sb_body.AppendLine("            singleSelect: false,");
             sb_body.AppendLine("            //nowrap:true,");
-            sb_body.AppendLine("            rownumbers: true,");
+            sb_body.AppendLine("            //rownumbers: true,");
             sb_body.AppendLine("            scrollbarSize: 0,");
             sb_body.AppendLine("            toolbar: toolbar,");
             sb_body.AppendLine("            onLoadSuccess: function (data) {");
@@ -297,7 +311,7 @@ namespace CodeCreate
             sb_body.AppendLine("                        },");
             sb_body.AppendLine("                        success: function (data) {");
             sb_body.AppendLine("                            layer.close(loadLayer);");
-            sb_body.AppendLine("                            data = $.parseJSON(data);");
+            //sb_body.AppendLine("                            data = $.parseJSON(data);");
             sb_body.AppendLine("                            if (!data.Success) {");
             sb_body.AppendLine("                                layer.alert(data.Message, { icon: 0, tiem: 1500 });");
             sb_body.AppendLine("                                return;");
@@ -395,11 +409,6 @@ namespace CodeCreate
             sb_body.AppendLine("            </tr>");
             sb_body.AppendLine("        </thead>");
             sb_body.AppendLine("    </table>");
-            sb_body.AppendLine("    <div id=\"menu\" style=\"background: #fff;\">");
-            sb_body.AppendLine("        <div data-options=\"iconCls:'icon iconfont icon-bianji1',name:'edit'\">");
-            sb_body.AppendLine("            <a href=\"###\" class=\"easyui-linkbutton style-purple\">编辑</a>");
-            sb_body.AppendLine("        </div>");
-            sb_body.AppendLine("    </div>");
             sb_body.AppendLine("");
             sb_body.AppendLine("    <div id=\"Layer_" + tableName + "\" style=\"width: 600px;height: 400px;display: none;\">");
             sb_body.AppendLine("        <form class=\"easyui-form\" id=\"Layer_Form_" + tableName + "\" style=\"width: 80%;margin: 20px auto;\">");

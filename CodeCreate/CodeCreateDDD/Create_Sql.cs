@@ -42,7 +42,7 @@ namespace CodeCreate
 
             sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, "Edit" + tableName, "添加、修改" + tableDesc, tableDesc));
             sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, "Delete" + tableName, "删除" + tableDesc, tableDesc));
-            sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, "Get" + tableName + "List", tableDesc + "下拉框", tableDesc));
+            //sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, "Get" + tableName + "List", tableDesc + "下拉框", tableDesc));
 
             //权限
             sb_body.AppendLine(GetSql_Sys_AuthorityGroup(tableDesc, 10, "基础配置"));

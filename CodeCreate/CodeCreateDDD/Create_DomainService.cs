@@ -45,13 +45,12 @@ namespace CodeCreate
             sb_body.AppendLine("using System.Threading.Tasks;");
             sb_body.AppendLine("using Lee.Utility.Extension;");
             sb_body.AppendLine("using Lee.Utility.ExpressionUtil;");
-            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Repository;");
-            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Model;");
-            sb_body.AppendLine("using " + str_nameSpace + ".Query." + tablePrefix + ";");
             sb_body.AppendLine("using " + str_nameSpace + ".Domain.Model;");
             sb_body.AppendLine("using " + str_nameSpace + ".Domain.Service;");
-            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Model;");
-            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Service;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Model;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Repository;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Service;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Query." + tablePrefix + ";");
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".Domain." + tablePrefix + ".Service");
             sb_body.AppendLine("{");

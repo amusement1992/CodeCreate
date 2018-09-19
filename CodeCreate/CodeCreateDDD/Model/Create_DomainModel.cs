@@ -97,25 +97,21 @@ namespace CodeCreate
             StringBuilder sb_body = new StringBuilder();
 
             sb_body.AppendLine("using System;");
-            sb_body.AppendLine("using Lee.Domain.Aggregation;");
-            sb_body.AppendLine("using Lee.Utility;");
-            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Repository;");
-            sb_body.AppendLine("using Lee.Utility.Extension;");
             sb_body.AppendLine("using System.Collections.Generic;");
             sb_body.AppendLine("using System.Linq;");
+            sb_body.AppendLine("using Lee.CQuery;");
+            sb_body.AppendLine("using Lee.Domain.Aggregation;");
+            sb_body.AppendLine("using Lee.Utility;");
+            sb_body.AppendLine("using Lee.Utility.Extension;");
             sb_body.AppendLine("using Lee.Utility.ValueType;");
             sb_body.AppendLine("using " + str_nameSpace + ".Domain.Model;");
             sb_body.AppendLine("using " + str_nameSpace + ".Domain.Service;");
-
-            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Contract.Service;");
-            sb_body.AppendLine("using Lee.CQuery;");
-            sb_body.AppendLine("using " + str_nameSpace + ".Query.Contract;");
-            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Model;");
-            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Service;");
-            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Repository;");
             sb_body.AppendLine("using " + str_nameSpace + ".Query;");
-            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Repository;");
-            sb_body.AppendLine("using " + str_nameSpace + ".Query.Data;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Query." + tablePrefix + ";");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Model;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Repository;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Service;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Repository;");
 
 
             sb_body.AppendLine("");
