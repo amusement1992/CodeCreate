@@ -21,6 +21,7 @@ namespace CodeCreate
 
             bool isPrimeKey = false;
             string primaryKey = "";
+            bool isSortIndex = false;
 
             StringBuilder sb = new StringBuilder();
             StringBuilder sb_search = new StringBuilder();
@@ -64,6 +65,12 @@ namespace CodeCreate
                     sb_search.AppendLine("                query.Like<" + tableName + "Query>(c => c." + columnName + ", filter." + columnName + "_Search);");
                     sb_search.AppendLine("            }");
                 }
+                else if (columnName == "IsDelete")
+                {
+                    sb_search.AppendLine("");
+                    sb_search.AppendLine("            query.Equal<" + tableName + "Query>(c => c." + columnName + ", false);");
+                    sb_search.AppendLine("");
+                }
                 else
                 {
                     sb.AppendLine("            if (filter." + columnName + ".HasValue)");
@@ -71,6 +78,11 @@ namespace CodeCreate
                     sb.AppendLine("                query.Equal<" + tableName + "Query>(c => c." + columnName + ", filter." + columnName + ");");
                     sb.AppendLine("            }");
 
+                }
+
+                if (columnName == "SortIndex")
+                {
+                    isSortIndex = true;
                 }
             }
 
@@ -88,6 +100,16 @@ namespace CodeCreate
 
             StringBuilder sb_body = new StringBuilder();
 
+            sb_body.AppendLine("using System;");
+            sb_body.AppendLine("using System.Collections.Generic;");
+            sb_body.AppendLine("using System.Linq;");
+            sb_body.AppendLine("using System.Data.SqlClient;");
+            sb_body.AppendLine("using System.Transactions;");
+            sb_body.AppendLine("using Lee.Command.UnitOfWork;");
+            sb_body.AppendLine("using Lee.CQuery;");
+            sb_body.AppendLine("using Lee.CQuery.Paging;");
+            sb_body.AppendLine("using Lee.Utility;");
+            sb_body.AppendLine("using Lee.Utility.Extension;");
             sb_body.AppendLine("using " + str_nameSpace + ".BusinessInterface." + tablePrefix + ";");
             sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Model;");
             sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Service;");
@@ -96,23 +118,11 @@ namespace CodeCreate
             sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Query;");
             sb_body.AppendLine("using " + str_nameSpace + ".DTO.Query;");
             sb_body.AppendLine("using " + str_nameSpace + ".Query." + tablePrefix + ";");
-            sb_body.AppendLine("using Lee.Command.UnitOfWork;");
-            sb_body.AppendLine("using Lee.CQuery;");
-            sb_body.AppendLine("using Lee.CQuery.Paging;");
-            sb_body.AppendLine("using Lee.Utility;");
-            sb_body.AppendLine("using Lee.Utility.Extension;");
-            sb_body.AppendLine("using System;");
-            sb_body.AppendLine("using System.Collections.Generic;");
-            sb_body.AppendLine("using System.Linq;");
             sb_body.AppendLine("using " + str_nameSpace + ".DTO.Bcl.Cmd;");
             sb_body.AppendLine("using " + str_nameSpace + ".Enum;");
             sb_body.AppendLine("using " + str_nameSpace + ".Domain.Bcl.Service;");
             sb_body.AppendLine("using " + str_nameSpace + ".Tools;");
             sb_body.AppendLine("using " + str_nameSpace + ".Tools.Helper;");
-            sb_body.AppendLine("using " + str_nameSpace + ".DTO.Data.Query;");
-            sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Model;");
-            sb_body.AppendLine("using System.Data.SqlClient;");
-            sb_body.AppendLine("using System.Transactions;");
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".Business." + tablePrefix + "");
             sb_body.AppendLine("{");
@@ -290,6 +300,11 @@ namespace CodeCreate
             sb_body.AppendLine("        /// <returns>执行结果</returns>");
             sb_body.AppendLine("        public Result Delete" + tableName + "(Delete" + tableName + "CmdDto deleteInfo)");
             sb_body.AppendLine("        {");
+            sb_body.AppendLine("            if (!deleteInfo.IsRealDeleted)");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                return Delete" + tableName + "2(deleteInfo);");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("");
             sb_body.AppendLine("            #region 参数判断");
             sb_body.AppendLine("");
             sb_body.AppendLine("            if (deleteInfo == null || deleteInfo." + tableName + "Ids.IsNullOrEmpty())");
@@ -315,6 +330,58 @@ namespace CodeCreate
             sb_body.AppendLine("            }");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 删除客户（假删除）");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        /// <param name=\"deleteInfo\"></param>");
+            sb_body.AppendLine("        /// <returns></returns>");
+            sb_body.AppendLine("        public Result Delete" + tableName + "2(Delete" + tableName + "CmdDto deleteInfo)");
+            sb_body.AppendLine("        {");
+            sb_body.AppendLine("            #region 参数判断");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            if (deleteInfo == null || deleteInfo." + tableName + "Ids.IsNullOrEmpty())");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                return Result.ErrorResult(\"没有指定要删除的\");");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            #endregion 参数判断");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("            try");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                var List" + tableName + " = deleteInfo." + tableName + "Ids.Select(c => " + tableName + ".Create" + tableName + "(c)).MapTo<List<" + tableName + "CmdDto>>();");
+            sb_body.AppendLine("                List" + tableName + ".ForEach(d => d.UpdateDate = DateTime.Now);");
+            sb_body.AppendLine("                List" + tableName + ".ForEach(d => d.UpdateUserID = deleteInfo.UpdateUserID);");
+            sb_body.AppendLine("                List" + tableName + ".ForEach(d => d.IsDelete = true);");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                var bulk = new SqlBulkTools.BulkOperations();");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                using (TransactionScope trans = new TransactionScope())");
+            sb_body.AppendLine("                {");
+            sb_body.AppendLine("                    using (SqlConnection conn = new SqlConnection(Keys.connectionString))");
+            sb_body.AppendLine("                    {");
+            sb_body.AppendLine("                        bulk.Setup<" + tableName + "CmdDto>()");
+            sb_body.AppendLine("                            .ForCollection(List" + tableName + ")");
+            sb_body.AppendLine("                            .WithTable(\"" + tablePrefix + "_" + tableName + "\")");
+            sb_body.AppendLine("                            .AddColumn(d => d.UpdateDate)");
+            sb_body.AppendLine("                            .AddColumn(d => d.UpdateUserID)");
+            sb_body.AppendLine("                            .AddColumn(d => d.IsDelete)");
+            sb_body.AppendLine("                            .BulkInsertOrUpdate()");
+            sb_body.AppendLine("                            .SetIdentityColumn(x => x.SysNo)");
+            sb_body.AppendLine("                            .MatchTargetOn(x => x.SysNo)");
+            sb_body.AppendLine("                            .Commit(conn);");
+            sb_body.AppendLine("                    }");
+            sb_body.AppendLine("                    trans.Complete();");
+            sb_body.AppendLine("                }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("                return Result.SuccessResult(\"删除成功！\");");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("            catch (Exception ex)");
+            sb_body.AppendLine("            {");
+            sb_body.AppendLine("                LogHelper.WriteError(ex);");
+            sb_body.AppendLine("                return Result.ErrorResult(\"删除失败！\" + ex.Message);");
+            sb_body.AppendLine("            }");
+            sb_body.AppendLine("        }");
+
             sb_body.AppendLine("        #endregion 删除");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #region 历史记录");
@@ -404,6 +471,11 @@ namespace CodeCreate
             sb_body.AppendLine(sb2.ToString());
             sb_body.AppendLine("            #endregion");
             sb_body.AppendLine("");
+
+            if (isSortIndex)
+            {
+                sb_body.AppendLine("            query.Desc<" + tableName + "Query>(c => c.SortIndex);");
+            }
             sb_body.AppendLine("            query.Desc<" + tableName + "Query>(c => c.CreateDate);");
             sb_body.AppendLine("            return query;");
             sb_body.AppendLine("        }");
@@ -423,7 +495,7 @@ namespace CodeCreate
             CommonCode.Save(file_Model + "/" + tableName + "Business.cs", sb_body.ToString());
         }
 
-        private static void SetSB(StringBuilder sb, TableModel tableModel,string tableName)
+        private static void SetSB(StringBuilder sb, TableModel tableModel, string tableName)
         {
             if (tableModel.List != null)
             {

@@ -69,7 +69,6 @@ namespace CodeCreate
 
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("using System.Collections.Generic;");
-            sb_body.AppendLine("using BigDataAnalysis.DTO.Data.Query;");
             sb_body.AppendLine("using BigDataAnalysis.DTO.Query;");
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".DTO." + tablePrefix + ".Query");

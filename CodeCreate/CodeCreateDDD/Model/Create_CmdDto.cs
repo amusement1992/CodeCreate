@@ -67,7 +67,6 @@ namespace CodeCreate
 
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("using System.Collections.Generic;");
-            sb_body.AppendLine("using BigDataAnalysis.DTO.Sys.Cmd;");
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".DTO." + tablePrefix + ".Cmd");
             sb_body.AppendLine("{");
@@ -119,6 +118,12 @@ namespace CodeCreate
             sb_body.AppendLine("        /// 修改人");
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        public Guid UpdateUserID { get; set; }");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("        /// <summary>");
+            sb_body.AppendLine("        /// 是否真正删除");
+            sb_body.AppendLine("        /// </summary>");
+            sb_body.AppendLine("        public bool IsRealDeleted{ get; set; }");
+
 
             StringBuilder sb = new StringBuilder();
             SetDeleteData(tableName, sb);

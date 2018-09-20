@@ -314,6 +314,7 @@ namespace CodeCreate
             sb_body.AppendLine("        public void SetDefaultValue()");
             sb_body.AppendLine("        {");
             sb_body.AppendLine("            CreateDate = DateTime.Now;");
+            sb_body.AppendLine("            IsDelete = false;");
             sb_body.AppendLine("        }");
             sb_body.AppendLine("    }");
             sb_body.AppendLine("}");

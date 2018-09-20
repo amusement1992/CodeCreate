@@ -20,19 +20,19 @@ namespace CodeCreate
 
             StringBuilder sb_body = new StringBuilder();
 
-            sb_body.AppendLine("using Lee.CQuery;");
-            sb_body.AppendLine("using Lee.CQuery.Paging;");
-            sb_body.AppendLine("using " + str_nameSpace + ".ServiceInterface." + tablePrefix + ";");
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("using System.Collections.Generic;");
             sb_body.AppendLine("using System.Linq;");
             sb_body.AppendLine("using System.Text;");
             sb_body.AppendLine("using System.Threading.Tasks;");
+            sb_body.AppendLine("using Lee.CQuery;");
+            sb_body.AppendLine("using Lee.CQuery.Paging;");
             sb_body.AppendLine("using Lee.Utility;");
             sb_body.AppendLine("using " + str_nameSpace + ".BusinessInterface." + tablePrefix + ";");
             sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Query;");
             sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Cmd;");
             sb_body.AppendLine("using " + str_nameSpace + ".DTO." + tablePrefix + ".Query.Filter;");
+            sb_body.AppendLine("using " + str_nameSpace + ".ServiceInterface." + tablePrefix + ";");
 
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".Service." + tablePrefix + "");

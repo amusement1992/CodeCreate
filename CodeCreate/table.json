@@ -189,7 +189,8 @@
   {
     "TableName": "Company",
     "TableDesc": "公司",
-    "ExcludePropertys": [],
+    "ExcludePropertys": [
+    ],
     "List": [
 
       {
@@ -251,6 +252,18 @@
       {
         "ListFilterVM": [ "string", "BrandName", "品牌名称" ],
         "ListFilterDto": [ "string", "BrandName", "品牌名称" ]
+      },
+      {
+        "NewColumnComment": "公司类型列表",
+
+        "NewColumnName_VM": "CompanyTypeList",
+        "NewColumnType_VM": "List<int?>"
+      },
+      {
+        "ListFilterDto": [ "List<int?>", "CompanyTypeList", "公司类型列表" ]
+      },
+      {
+        "ListFilterVM": [ "List<int?>", "CompanyTypeList", "公司类型列表" ]
       }
     ]
   },
@@ -475,7 +488,20 @@
     "TableName": "Customer",
     "TableDesc": "客户",
     "ExcludePropertys": [],
-    "List": []
+    "List": [
+      {
+        "NewColumnComment": "客户类型列表",
+
+        "NewColumnName_VM": "CustomerTypeList",
+        "NewColumnType_VM": "List<int?>"
+      },
+      {
+        "ListFilterDto": [ "List<int?>", "CustomerTypeList", "客户类型列表" ]
+      },
+      {
+        "ListFilterVM": [ "List<int?>", "CustomerTypeList", "客户类型列表" ]
+      }
+    ]
   },
 
 

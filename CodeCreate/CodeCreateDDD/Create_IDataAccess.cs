@@ -20,14 +20,14 @@ namespace CodeCreate
 
             StringBuilder sb_body = new StringBuilder();
 
-            sb_body.AppendLine("using Lee.Command;");
-            sb_body.AppendLine("using " + str_nameSpace + ".Entity." + tablePrefix + ";");
             sb_body.AppendLine("using System;");
             sb_body.AppendLine("using System.Collections.Generic;");
             sb_body.AppendLine("using System.Linq;");
             sb_body.AppendLine("using System.Text;");
             sb_body.AppendLine("using System.Threading.Tasks;");
+            sb_body.AppendLine("using Lee.Command;");
             sb_body.AppendLine("using " + str_nameSpace + ".Entity;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Entity." + tablePrefix + ";");
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".DataAccessInterface." + tablePrefix + "");
             sb_body.AppendLine("{");
