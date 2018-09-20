@@ -186,6 +186,7 @@ namespace CodeCreate
             sb_body.AppendLine("        public JsonResult Delete" + tableName + "(Delete" + tableName + "CmdDto vm)");
             sb_body.AppendLine("        {");
             sb_body.AppendLine("            vm.UpdateUserID = LoginUserId;");
+            sb_body.AppendLine("            vm.IsRealDeleted = false;");
             sb_body.AppendLine("            var result = " + tableName + "Service.Delete" + tableName + "(vm);");
             sb_body.AppendLine("            return Json(result);");
             sb_body.AppendLine("        }");

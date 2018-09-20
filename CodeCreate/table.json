@@ -4,7 +4,8 @@
     "TableDesc": "【名称】",
     "ExcludePropertys": [
       "CreateDate",
-      "CreateUserID"
+      "CreateUserID",
+      "IsDelete"
     ],
     "List": [
       {
