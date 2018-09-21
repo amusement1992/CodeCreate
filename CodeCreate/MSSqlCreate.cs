@@ -185,6 +185,7 @@ namespace CodeCreate
             string str_CreateMap = "";
             string str_SetObjectName = "";
             string str_SetPrimaryKey = "";
+            string str_AddColumn = "";
 
             List<string> listTableName = new List<string>();
 
@@ -328,6 +329,8 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
                     str_SetObjectName += new Create_Config().GetStr_SetObjectName(configModel.str_nameSpace, dt_tables, str_table);
 
                     str_SetPrimaryKey += new Create_Config().GetStr_SetPrimaryKey(configModel.str_nameSpace, dt_tables, str_table);
+
+                    str_AddColumn += new Create_Sql().GetSql_AddColumn(str_table,"IsDelete", "bit not null default(0)","是否删除");
                 }
                 label4.Text = "提示信息：" + (i + 1) + "个文件，全部生成成功！";
             }
@@ -343,6 +346,7 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
             CommonCode.Save(filePath + "/AutoMapMapper CreateMap.txt", str_CreateMap);
             CommonCode.Save(filePath + "/DbConfig SetObjectName.txt", str_SetObjectName);
             CommonCode.Save(filePath + "/DbConfig SetPrimaryKey.txt", str_SetPrimaryKey);
+            CommonCode.Save(filePath + "/AddColumn.txt", str_AddColumn);
 
             if (checkBox3.Checked)
             {

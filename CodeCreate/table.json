@@ -92,7 +92,7 @@
     "List": [
 
       {
-        "ColumnName": "BrandID",
+        "ColumnName": "ParentID",
         "ColumnType": "Guid?",
 
         "NewColumnName": "Parent",
@@ -350,6 +350,7 @@
     "TableName": "Shop",
     "TableDesc": "店铺",
     "ExcludePropertys": [ "ShopCode" ],
+    "IsSetFilter": true,
     "List": [
       {
         "ColumnName": "PlatformID",
@@ -370,7 +371,7 @@
       },
       {
         "ColumnName": "PlatformCategoryID",
-        "ColumnType": "Guid",
+        "ColumnType": "Guid?",
 
         "NewColumnName": "PlatformCategory",
         "NewColumnType": "PlatformCategory",
@@ -470,6 +471,56 @@
 
         "IsMapper": true,
         "MapperName": "DataSourceName"
+      },
+      {
+        "ListFilterDto": [ "string", "PlatformCategoryName", "平台分类名称" ],
+        "ListFilterVM": [ "string", "PlatformCategoryName", "平台分类名称2" ]
+      },
+      {
+        "ListFilterDto": [ "string", "PlatformCategoryName2", "平台分类名称" ],
+        "ListFilterVM": [ "string", "PlatformCategoryName2", "平台分类名称2" ]
+      },
+      {
+        "NewColumnComment": "导入店铺——品牌名称",
+        "NewColumnName_VM": "BrandName",
+        "NewColumnType_VM": "string"
+
+      },
+      {
+        "NewColumnComment": "导入店铺——店铺分类名称",
+        "NewColumnName_VM": "ShopCategoryName",
+        "NewColumnType_VM": "string"
+
+      },
+      {
+        "NewColumnComment": "导入店铺——公司法人",
+        "NewColumnName_VM": "CompanyCustomerName",
+        "NewColumnType_VM": "string"
+
+      },
+      {
+        "NewColumnComment": "导入店铺——公司法人电话",
+        "NewColumnName_VM": "CompanyCustomerTel",
+        "NewColumnType_VM": "string"
+
+      },
+      {
+        "NewColumnComment": "导入店铺——实际运营人",
+        "NewColumnName_VM": "Actual_CustomerName",
+        "NewColumnType_VM": "string"
+
+      },
+      {
+        "NewColumnComment": "导入店铺——实际运营人电话",
+        "NewColumnName_VM": "Actual_CustomerTel",
+        "NewColumnType_VM": "string"
+
+      },
+      {
+        "NewColumnComment": "导入店铺——实际运营人邮箱",
+        "NewColumnName_VM": "Actual_CustomerEmail",
+        "NewColumnType_VM": "string"
+
       }
     ]
   },
@@ -945,6 +996,8 @@
     "TableName": "BusinessStaff",
     "TableDesc": "生意参谋",
     "ExcludePropertys": [],
+    "IsSetFilter": true,
+    "IsSaveHistory": false,
     "List": [
       {
         "ColumnName": "ShopID",
@@ -966,6 +1019,10 @@
       {
         "ListFilterVM": [ "string", "ShopName", "店铺名称" ],
         "ListFilterDto": [ "string", "ShopName", "店铺名称" ]
+      },
+      {
+        "ListFilterVM": [ "DateTime?", "StatisticalDate_Start", "统计日期——开始" ],
+        "ListFilterDto": [ "DateTime?", "StatisticalDate_Start", "统计日期——开始" ]
       },
       {
         "ListFilterVM": [ "DateTime?", "StatisticalDate_End", "统计日期——结束" ],
@@ -979,6 +1036,10 @@
     "ExcludePropertys": [],
     "List": [
       {
+        "ListFilterVM": [ "DateTime?", "CreateDate_Start", "抓取时间——开始" ],
+        "ListFilterDto": [ "DateTime?", "CreateDate_Start", "抓取时间——开始" ]
+      },
+      {
         "ListFilterVM": [ "DateTime?", "CreateDate_End", "抓取时间——结束" ],
         "ListFilterDto": [ "DateTime?", "CreateDate_End", "抓取时间——结束" ]
       }
@@ -988,6 +1049,8 @@
     "TableName": "Pinduoduo",
     "TableDesc": "拼多多",
     "ExcludePropertys": [],
+    "IsSetFilter": true,
+    "IsSaveHistory": false,
     "List": [
       {
         "ColumnName": "ShopID",
@@ -1011,6 +1074,10 @@
         "ListFilterDto": [ "string", "ShopName", "店铺名称" ]
       },
       {
+        "ListFilterVM": [ "DateTime?", "SuccessTime_Start", "拼单成功时间——开始" ],
+        "ListFilterDto": [ "DateTime?", "SuccessTime_Start", "拼单成功时间——结束" ]
+      },
+      {
         "ListFilterVM": [ "DateTime?", "SuccessTime_End", "拼单成功时间——结束" ],
         "ListFilterDto": [ "DateTime?", "SuccessTime_End", "拼单成功时间——结束" ]
       }
@@ -1021,6 +1088,21 @@
     "TableDesc": "上传文件",
     "ExcludePropertys": [],
     "List": [
+      {
+        "NewColumnComment": "店铺ID",
+        "NewColumnName_VM": "ShopID",
+        "NewColumnType_VM": "Guid?"
+      },
+      {
+        "NewColumnComment": "店铺",
+        "NewColumnName_VM": "ShopName",
+        "NewColumnType_VM": "string"
+      },
+      {
+        "NewColumnComment": "索引",
+        "NewColumnName_VM": "Index",
+        "NewColumnType_VM": "int"
+      }
     ]
   },
   {

@@ -88,6 +88,9 @@ namespace CodeCreate
 
             #endregion Model
 
+            bool IsSetFilter = false;
+            bool IsSaveHistory = true;
+
             StringBuilder sb2 = new StringBuilder();
             var listModel = CommonCode.GetTableModel(tableName);
             if (listModel != null)
@@ -95,7 +98,21 @@ namespace CodeCreate
                 foreach (var item in listModel)
                 {
                     SetSB(sb2, item, tableName);
+
+                    if (item.IsSetFilter.HasValue)
+                    {
+                        IsSetFilter = item.IsSetFilter.Value;
+                    }
+                    if (item.IsSaveHistory.HasValue)
+                    {
+                        IsSaveHistory = item.IsSaveHistory.Value;
+                    }
                 }
+            }
+
+            var tableModels = CommonCode.GetTableModel(tableName);
+            foreach (var item in tableModels)
+            {
             }
 
             StringBuilder sb_body = new StringBuilder();
@@ -123,6 +140,7 @@ namespace CodeCreate
             sb_body.AppendLine("using " + str_nameSpace + ".Domain.Bcl.Service;");
             sb_body.AppendLine("using " + str_nameSpace + ".Tools;");
             sb_body.AppendLine("using " + str_nameSpace + ".Tools.Helper;");
+            sb_body.AppendLine("using " + str_nameSpace + ".Business.Common;");
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".Business." + tablePrefix + "");
             sb_body.AppendLine("{");
@@ -205,6 +223,16 @@ namespace CodeCreate
             sb_body.AppendLine("                    }");
             sb_body.AppendLine("                    trans.Complete();");
             sb_body.AppendLine("                }");
+            sb_body.AppendLine("");
+
+            if (IsSaveHistory)
+            {
+                sb_body.AppendLine("                using (var businessWork = UnitOfWork.Create())");
+                sb_body.AppendLine("                {");
+                sb_body.AppendLine("                    SaveHistory(saveInfo." + tableName + ", saveInfo." + tableName + ".SysNo);");
+                sb_body.AppendLine("                    var commitResult = businessWork.Commit();");
+                sb_body.AppendLine("                }");
+            }
             sb_body.AppendLine("                return Result.SuccessResult(\"修改成功！\");");
             sb_body.AppendLine("            }");
             sb_body.AppendLine("            catch (Exception ex)");
@@ -365,13 +393,22 @@ namespace CodeCreate
             sb_body.AppendLine("                            .AddColumn(d => d.UpdateDate)");
             sb_body.AppendLine("                            .AddColumn(d => d.UpdateUserID)");
             sb_body.AppendLine("                            .AddColumn(d => d.IsDelete)");
-            sb_body.AppendLine("                            .BulkInsertOrUpdate()");
+            sb_body.AppendLine("                            .BulkUpdate()");
             sb_body.AppendLine("                            .SetIdentityColumn(x => x.SysNo)");
             sb_body.AppendLine("                            .MatchTargetOn(x => x.SysNo)");
             sb_body.AppendLine("                            .Commit(conn);");
             sb_body.AppendLine("                    }");
             sb_body.AppendLine("                    trans.Complete();");
             sb_body.AppendLine("                }");
+            sb_body.AppendLine("");
+            if (IsSaveHistory)
+            {
+                sb_body.AppendLine("                using (var businessWork = UnitOfWork.Create())");
+                sb_body.AppendLine("                {");
+                sb_body.AppendLine("                    SaveDeleteHistory(deleteInfo);");
+                sb_body.AppendLine("                    var commitResult = businessWork.Commit();");
+                sb_body.AppendLine("                }");
+            }
             sb_body.AppendLine("");
             sb_body.AppendLine("                return Result.SuccessResult(\"删除成功！\");");
             sb_body.AppendLine("            }");
@@ -454,8 +491,13 @@ namespace CodeCreate
             sb_body.AppendLine("                query.In<" + tableName + "Query>(c => c.SysNo, filter.SysNos);");
             sb_body.AppendLine("            }");
 
-
             sb_body.AppendLine(sb.ToString());
+            sb_body.AppendLine("");
+
+            if (IsSetFilter)
+            {
+                sb_body.AppendLine("            CommonSetFilter.SetFilter_" + tableName + "(filter, query);");
+            }
 
             sb_body.AppendLine("");
             sb_body.AppendLine("            #region Search");

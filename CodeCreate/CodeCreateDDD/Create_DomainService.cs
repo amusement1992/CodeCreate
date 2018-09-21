@@ -51,6 +51,11 @@ namespace CodeCreate
             sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Repository;");
             sb_body.AppendLine("using " + str_nameSpace + ".Domain." + tablePrefix + ".Service;");
             sb_body.AppendLine("using " + str_nameSpace + ".Query." + tablePrefix + ";");
+            if (tablePrefix != "Data")
+            {
+                sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Model;");
+                sb_body.AppendLine("using " + str_nameSpace + ".Domain.Data.Service;");
+            }
             sb_body.AppendLine("");
             sb_body.AppendLine("namespace " + str_nameSpace + ".Domain." + tablePrefix + ".Service");
             sb_body.AppendLine("{");

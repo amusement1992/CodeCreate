@@ -19,6 +19,16 @@ namespace CodeCreate.Model
         public string TableDesc { get; set; }
 
         /// <summary>
+        /// 是否设置筛选条件
+        /// </summary>
+        public bool? IsSetFilter { get; set; }
+
+        /// <summary>
+        /// 批量更新、批量删除，是否保存历史记录
+        /// </summary>
+        public bool? IsSaveHistory { get; set; }
+
+        /// <summary>
         /// 不包含的属性
         /// </summary>
         public List<string> ExcludePropertys { get; set; }

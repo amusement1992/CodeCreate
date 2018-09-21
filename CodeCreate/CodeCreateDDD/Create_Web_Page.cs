@@ -111,7 +111,7 @@ namespace CodeCreate
                     }
                     else
                     {
-                        if (columnName.Substring(columnName.Length - 2, 2) == "ID")
+                        if (columnName.Length > 3 && columnName.Substring(columnName.Length - 2, 2) == "ID")
                         {
                             sb_Table_Th.AppendLine("                <th data-options=\"field:'" + columnName.Replace("ID", "Name") + "',width:100,align:'center'\">" + columnComment.Replace("ID", "") + "</th>");
 
@@ -225,11 +225,9 @@ namespace CodeCreate
             sb_body.AppendLine("            success: function (data) {");
             sb_body.AppendLine("                layer.close(loadLayer);");
             sb_body.AppendLine("                if (data.Success) {");
-            sb_body.AppendLine("                    for (var i = 0; i < rows.length; i++) {");
-            sb_body.AppendLine("                        var _index = $(gridID).datagrid(\"getRowIndex\", rows[i]);");
-            sb_body.AppendLine("                        $(gridID).datagrid('deleteRow', _index);");
-            sb_body.AppendLine("                    }");
             sb_body.AppendLine("                    layer.close(closeIndex);");
+            sb_body.AppendLine("                    //layer.msg(data.Message, { time: 1000, btn: ['关闭'] });");
+            sb_body.AppendLine("                    $('#dtGrid').datagrid('reload');");
             sb_body.AppendLine("                } else {");
             sb_body.AppendLine("                    layer.alert(data.Message);");
             sb_body.AppendLine("                }");

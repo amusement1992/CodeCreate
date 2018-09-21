@@ -168,6 +168,7 @@ namespace CodeCreate
             sb_body.AppendLine("            list_vm.ForEach(d => d.UpdateDate = DateTime.Now);");
             sb_body.AppendLine("            list_vm.ForEach(d => d.UpdateUserID = LoginUserId);");
             sb_body.AppendLine("            list_vm.Where(d => d.SysNo == Guid.Empty).ToList().ForEach(d => d.CreateUserID = LoginUserId);");
+            sb_body.AppendLine("            list_vm.Where(d => d.SysNo == Guid.Empty).ToList().ForEach(d => d.CreateDate = DateTime.Now);");
             sb_body.AppendLine("");
             sb_body.AppendLine("            Result result = " + tableName + "Service.SaveList" + tableName + "(new Save" + tableName + "CmdDto()");
             sb_body.AppendLine("            {");

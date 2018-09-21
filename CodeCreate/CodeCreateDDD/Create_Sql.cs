@@ -162,5 +162,18 @@ namespace CodeCreate
 
             return sb_body.ToString();
         }
+
+        public string GetSql_AddColumn(string TableName, string ColumnName, string ColumnType, string ColumnComment)
+        {
+            StringBuilder sb_body = new StringBuilder();
+            sb_body.AppendLine("");
+            sb_body.AppendLine("  --添加列");
+            sb_body.AppendLine("");
+            sb_body.AppendLine("  alter table [BigDataAnalysis].[dbo]." + TableName + " add [" + ColumnName + "] " + ColumnType + ";");
+            sb_body.AppendLine("  EXEC sys.sp_addextendedproperty @name=N'MS_Description', @value=N'" + ColumnComment + "' , @level0type=N'SCHEMA',@level0name=N'dbo', @level1type=N'TABLE',@level1name=N'" + TableName + "', @level2type=N'COLUMN',@level2name=N'" + ColumnName + "'");
+
+
+            return sb_body.ToString();
+        }
     }
 }
