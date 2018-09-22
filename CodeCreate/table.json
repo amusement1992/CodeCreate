@@ -1186,5 +1186,46 @@
         "MapperName": "UserName"
       }
     ]
+  },
+  {
+    "TableName": "TeamCustomerRelation",
+    "TableDesc": "战队客户关系",
+    "ExcludePropertys": [],
+    "List": [
+      {
+        "ColumnName": "TeamID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "Team",
+        "NewColumnType": "Team",
+        "NewColumnComment": "战队",
+
+        "NewColumnName_Dto": "Team",
+        "NewColumnType_Dto": "TeamDto",
+
+        "NewColumnName_VM": "TeamName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "TeamName"
+      },
+      {
+        "ColumnName": "CustomerID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "Customer",
+        "NewColumnType": "Customer",
+        "NewColumnComment": "客户",
+
+        "NewColumnName_Dto": "Customer",
+        "NewColumnType_Dto": "CustomerDto",
+
+        "NewColumnName_VM": "CustomerName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "CustomerName"
+      }
+    ]
   }
 ]

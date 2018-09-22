@@ -23,7 +23,6 @@ namespace CodeCreate
             {
                 var item = arr[j];
 
-                sb.AppendLine(item);
                 for (int i = 0; i < listTableName.Count; i++)
                 {
                     string tableName = listTableName[i];
@@ -31,11 +30,12 @@ namespace CodeCreate
                     string tablePrefix = CommonCode.GetTablePrefix(tableName); tableName = CommonCode.GetTableName(tableName);
 
 
-                    if (item.Contains("SystemConfig") && !item.Contains(tableName))
+                    if (item.Contains("#endregion OperationTypeEnum") && !item.Contains(tableName))
                     {
                         SaveData(tableName, sb);
                     }
                 }
+                sb.AppendLine(item);
             }
             string sss = sb.ToString();
             string file_Model = "C:\\Code\\" + str_nameSpace + ".Enum";
@@ -50,9 +50,9 @@ namespace CodeCreate
         {
             string desc = CommonCode.GetTableDesc(tableName);
             sb_body.AppendLine("");
-            sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// " + desc);
-            sb_body.AppendLine("        /// </summary>");
+            //sb_body.AppendLine("        /// <summary>");
+            //sb_body.AppendLine("        /// " + desc);
+            //sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        " + tableName + ",");
 
         }
