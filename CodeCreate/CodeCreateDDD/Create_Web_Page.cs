@@ -71,6 +71,7 @@ namespace CodeCreate
                     "IsDeleted",
                     "CreateUserID",
                     "UpdateUserID",
+                    "IsDelete",
                 };
                 if (!arr.Contains(columnName))
                 {

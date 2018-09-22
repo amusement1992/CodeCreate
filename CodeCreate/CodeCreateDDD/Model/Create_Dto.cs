@@ -97,6 +97,7 @@ namespace CodeCreate
 
         private static void SetData(string tableName, StringBuilder sb)
         {
+            List<string> list = new List<string>();
             var listModel = CommonCode.GetTableModel(tableName);
             if (listModel != null)
             {
@@ -115,11 +116,17 @@ namespace CodeCreate
                             {
                                 thisModel.NewColumnName_Dto = thisModel.NewColumnName;
                             }
-                            sb.AppendLine("");
-                            sb.AppendLine(@"        /// <summary>");
-                            sb.AppendLine(@"        /// 扩展：" + thisModel.NewColumnComment);
-                            sb.AppendLine(@"        /// </summary>");
-                            sb.AppendLine("        public " + thisModel.NewColumnType_Dto + " " + thisModel.NewColumnName_Dto + " { get; set; }");
+                            if (!list.Contains(thisModel.NewColumnName_Dto))
+                            {
+                                sb.AppendLine("");
+                                sb.AppendLine(@"        /// <summary>");
+                                sb.AppendLine(@"        /// 扩展：" + thisModel.NewColumnComment);
+                                sb.AppendLine(@"        /// </summary>");
+                                sb.AppendLine("        public " + thisModel.NewColumnType_Dto + " " + thisModel.NewColumnName_Dto + " { get; set; }");
+
+                                list.Add(thisModel.NewColumnName_Dto);
+
+                            }
 
                         }
                     }

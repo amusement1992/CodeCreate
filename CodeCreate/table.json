@@ -25,6 +25,18 @@
         "IsMapper": true,
         "MapperName": "UserName"
       },
+      {
+        "NewColumnComment": "用户",
+
+        "NewColumnName_Dto": "CreateUser",
+        "NewColumnType_Dto": "UserDto",
+
+        "NewColumnName_VM": "CreateUserRealName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "RealName"
+      },
 
       {
         "ListFilterVM": [ "int", "rows", "行数" ]
@@ -41,8 +53,8 @@
   {
     "TableName": "History",
     "TableDesc": "历史记录",
-    "ExcludePropertys": [
-    ],
+    "IsSaveHistory": false,
+    "ExcludePropertys": [],
     "List": []
   },
   {
@@ -947,6 +959,7 @@
   {
     "TableName": "Msg",
     "TableDesc": "消息通知",
+    "IsSetFilter": true,
     "ExcludePropertys": [
       "MsgName",
       "MsgType",
@@ -1147,6 +1160,30 @@
 
         "NewColumnName_Dto": "listChild",
         "NewColumnType_Dto": "List<BrandCategoryDto>"
+      }
+    ]
+  },
+  {
+    "TableName": "Team",
+    "TableDesc": "战队",
+    "ExcludePropertys": [],
+    "List": [
+      {
+        "ColumnName": "MemberUserID",
+        "ColumnType": "Guid",
+
+        "NewColumnName": "MemberUser",
+        "NewColumnType": "User",
+        "NewColumnComment": "账号",
+
+        "NewColumnName_Dto": "MemberUser",
+        "NewColumnType_Dto": "UserDto",
+
+        "NewColumnName_VM": "MemberUserName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "UserName"
       }
     ]
   }

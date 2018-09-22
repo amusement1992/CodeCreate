@@ -102,7 +102,7 @@ namespace CodeCreate
                         {
                             if (string.IsNullOrEmpty(thisModel.MapperModel))
                             {
-                                thisModel.MapperModel = thisModel.NewColumnName;
+                                thisModel.MapperModel = thisModel.NewColumnName_Dto;
                             }
 
                             sb.AppendLine("                .ForMember(r => r." + thisModel.NewColumnName_VM + ", re => re.MapFrom(rs => rs." + thisModel.MapperModel + "." + thisModel.MapperName + "))");

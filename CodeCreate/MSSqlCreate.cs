@@ -330,7 +330,7 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
 
                     str_SetPrimaryKey += new Create_Config().GetStr_SetPrimaryKey(configModel.str_nameSpace, dt_tables, str_table);
 
-                    str_AddColumn += new Create_Sql().GetSql_AddColumn(str_table,"IsDelete", "bit not null default(0)","是否删除");
+                    str_AddColumn += new Create_Sql().GetSql_AddColumn(str_table, "IsDelete", "bit not null default(0)", "是否删除");
                 }
                 label4.Text = "提示信息：" + (i + 1) + "个文件，全部生成成功！";
             }
@@ -414,6 +414,27 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
             {
                 MessageBox.Show(ex.Message);
             }
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            string sources = "C:\\Code";
+            //string dest = "C:\\Code2";
+            string dest = "E:\\MyWeb\\Web_TFS\\BigDataAnalysis\\BigDataAnalysisDev";
+            List<string> listExcept = new List<string>()
+            {
+                "BigDataAnalysis.Web",
+                "Config",
+                "Controllers",
+                "Json",
+                "Sql",
+
+            };
+
+            //覆盖
+            CommonCode.CopyFile(sources, dest, listExcept);
+
+
         }
     }
 }

@@ -71,12 +71,12 @@ namespace CodeCreate
             sb_body.AppendLine("    /// Controller：" + tableDesc);
             sb_body.AppendLine("    /// </summary>");
 
-            sb_body.AppendLine("    public class " + tableName + "Controller : WebBaseController");
+            sb_body.AppendLine("    public partial class " + tablePrefix + "Controller : WebBaseController");
             sb_body.AppendLine("    {");
             sb_body.AppendLine("        I" + tableName + "Service " + tableName + "Service = ContainerManager.Container.Resolve<I" + tableName + "Service>();");
-            sb_body.AppendLine("        Guid LoginUserId = UserHelper.GetLoginUserId();");
+            sb_body.AppendLine("        //Guid LoginUserId = UserHelper.GetLoginUserId();");
             sb_body.AppendLine("");
-            sb_body.AppendLine("        public " + tableName + "Controller() { }");
+            //sb_body.AppendLine("        public " + tableName + "Controller() { }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        #region " + tableDesc + "管理");
             sb_body.AppendLine("        public ActionResult " + tableName + "()");
@@ -106,7 +106,7 @@ namespace CodeCreate
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 下拉框："+ tableDesc + "列表");
+            sb_body.AppendLine("        /// 下拉框：" + tableDesc + "列表");
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"filter\"></param>");
             sb_body.AppendLine("        /// <returns></returns>");
@@ -120,7 +120,7 @@ namespace CodeCreate
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 添加、修改"+ tableDesc);
+            sb_body.AppendLine("        /// 添加、修改" + tableDesc);
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"user\"></param>");
             sb_body.AppendLine("        /// <param name=\"userRoles\"></param>");
@@ -157,7 +157,7 @@ namespace CodeCreate
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 批量添加、修改"+ tableDesc);
+            sb_body.AppendLine("        /// 批量添加、修改" + tableDesc);
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"user\"></param>");
             sb_body.AppendLine("        /// <param name=\"userRoles\"></param>");
@@ -178,7 +178,7 @@ namespace CodeCreate
             sb_body.AppendLine("        }");
             sb_body.AppendLine("");
             sb_body.AppendLine("        /// <summary>");
-            sb_body.AppendLine("        /// 删除"+ tableDesc);
+            sb_body.AppendLine("        /// 删除" + tableDesc);
             sb_body.AppendLine("        /// </summary>");
             sb_body.AppendLine("        /// <param name=\"user\"></param>");
             sb_body.AppendLine("        /// <param name=\"userRoles\"></param>");
@@ -199,7 +199,7 @@ namespace CodeCreate
 
 
             //string file_Model = "C:\\Code\\" + str_nameSpace + ".Web\\Controllers";
-            string file_Model = "C:\\Code\\Controllers";
+            string file_Model = "C:\\Code\\Controllers\\" + tablePrefix;
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);

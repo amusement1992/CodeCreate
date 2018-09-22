@@ -40,6 +40,7 @@
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.button5 = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -65,7 +66,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.button7 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -92,9 +93,9 @@
             // 
             this.btn_save.BackColor = System.Drawing.Color.Transparent;
             this.btn_save.ForeColor = System.Drawing.Color.Black;
-            this.btn_save.Location = new System.Drawing.Point(641, 382);
+            this.btn_save.Location = new System.Drawing.Point(691, 382);
             this.btn_save.Name = "btn_save";
-            this.btn_save.Size = new System.Drawing.Size(204, 38);
+            this.btn_save.Size = new System.Drawing.Size(154, 38);
             this.btn_save.TabIndex = 4;
             this.btn_save.Text = "生成";
             this.btn_save.UseVisualStyleBackColor = false;
@@ -209,6 +210,16 @@
             this.groupBox1.TabIndex = 11;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "参数设定";
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(58, 346);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(84, 16);
+            this.checkBox3.TabIndex = 8;
+            this.checkBox3.Text = "生成Config";
+            this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // checkBox2
             // 
@@ -436,15 +447,15 @@
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
-            // checkBox3
+            // button7
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(58, 346);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(84, 16);
-            this.checkBox3.TabIndex = 8;
-            this.checkBox3.Text = "生成Config";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.button7.Location = new System.Drawing.Point(641, 383);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(44, 37);
+            this.button7.TabIndex = 15;
+            this.button7.Text = "覆盖";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // MSSqlCreate
             // 
@@ -455,6 +466,7 @@
             this.ClientSize = new System.Drawing.Size(897, 441);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.button6);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.button10);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.button5);
@@ -519,5 +531,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.Button button7;
     }
 }
