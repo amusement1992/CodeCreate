@@ -13,7 +13,7 @@ namespace CodeCreate
     /// </summary>
     public class Create_Web_Controller
     {
-        public void Create(string str_nameSpace, DataTable dt_tables, string tableName, bool isCreate)
+        public void Create(string str_nameSpace, DataTable dt_tables, string tableName )
         {
             string tablePrefix = CommonCode.GetTablePrefix(tableName);
             tableName = CommonCode.GetTableName(tableName);
@@ -199,10 +199,7 @@ namespace CodeCreate
 
 
             string file_Model = "C:\\Code\\" + str_nameSpace + ".Web\\Controllers\\" + tablePrefix;
-            if (!isCreate)
-            {
-                file_Model = "C:\\Code\\Controllers\\" + tablePrefix;
-            }
+          
             if (!Directory.Exists(file_Model))
             {
                 Directory.CreateDirectory(file_Model);

@@ -302,7 +302,7 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
                     new Create_IBusiness().Create(configModel.str_nameSpace, dt_tables, str_table);
                     new Create_DomainModel().Create(configModel.str_nameSpace, dt_tables, str_table);
                     new Create_Web_Page().Create(configModel.str_nameSpace, dt_tables, str_table);
-                    new Create_Web_Controller().Create(configModel.str_nameSpace, dt_tables, str_table,checkBox1.Checked);
+                    new Create_Web_Controller().Create(configModel.str_nameSpace, dt_tables, str_table);
                     new Create_Sql().Create(configModel.str_nameSpace, dt_tables, str_table);
                     new Create_Json().Create(configModel.str_nameSpace, dt_tables, str_table);
 
@@ -428,7 +428,7 @@ where     d.name=" + configModel.MARK + "a order by     a.id,a.colorder";
                 "Json",
                 "Sql",
             };
-            if (!checkBox1.Checked)
+            if (!checkBox4.Checked)
             {
                 listExcept.Add("BigDataAnalysis.Web");
             }

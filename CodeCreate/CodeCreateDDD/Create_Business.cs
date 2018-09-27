@@ -229,7 +229,10 @@ namespace CodeCreate
             {
                 sb_body.AppendLine("                using (var businessWork = UnitOfWork.Create())");
                 sb_body.AppendLine("                {");
-                sb_body.AppendLine("                    SaveHistory(saveInfo." + tableName + ", saveInfo." + tableName + ".SysNo);");
+                sb_body.AppendLine("                    foreach (var item in saveInfo.List" + tableName + ")");
+                sb_body.AppendLine("                    {");
+                sb_body.AppendLine("                        SaveHistory(item, item.SysNo);");
+                sb_body.AppendLine("                    }");
                 sb_body.AppendLine("                    var commitResult = businessWork.Commit();");
                 sb_body.AppendLine("                }");
             }

@@ -493,6 +493,12 @@
         "ListFilterVM": [ "string", "PlatformCategoryName2", "平台分类名称2" ]
       },
       {
+        "NewColumnComment": "品牌列表",
+        "NewColumnName_VM": "ListBrandID",
+        "NewColumnType_VM": "List<Guid?>"
+
+      },
+      {
         "NewColumnComment": "导入店铺——品牌名称",
         "NewColumnName_VM": "BrandName",
         "NewColumnType_VM": "string"
@@ -533,6 +539,36 @@
         "NewColumnName_VM": "Actual_CustomerEmail",
         "NewColumnType_VM": "string"
 
+      },
+      {
+        "NewColumnComment": "导入店铺2——战队负责人",
+        "NewColumnName_VM": "TeamMemberUserName",
+        "NewColumnType_VM": "string"
+
+      },
+      {
+        "NewColumnComment": "导入店铺2——战队名称",
+        "NewColumnName_VM": "TeamName",
+        "NewColumnType_VM": "string"
+
+      },
+      {
+        "NewColumnComment": "导入店铺2——商品id",
+        "NewColumnName_VM": "ProductId",
+        "NewColumnType_VM": "string"
+
+      },
+      {
+        "NewColumnComment": "导入店铺2——商品标题",
+        "NewColumnName_VM": "ProductTitle",
+        "NewColumnType_VM": "string"
+
+      },
+      {
+        "NewColumnComment": "导入店铺2——商品链接",
+        "NewColumnName_VM": "ProductLink",
+        "NewColumnType_VM": "string"
+
       }
     ]
   },
@@ -540,7 +576,35 @@
     "TableName": "Department",
     "TableDesc": "部门",
     "ExcludePropertys": [],
-    "List": []
+    "List": [
+      {
+        "ColumnName": "AdminUserID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "AdminUser",
+        "NewColumnType": "User",
+        "NewColumnComment": "部门管理员",
+
+        "NewColumnName_Dto": "AdminUser",
+        "NewColumnType_Dto": "UserDto",
+
+        "NewColumnName_VM": "AdminUserName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "UserName"
+      },
+      {
+        "NewColumnName_Dto": "AdminUser",
+        "NewColumnComment": "部门管理员",
+        "NewColumnName_VM": "AdminUserRealName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "RealName"
+
+      }
+    ]
   },
   {
     "TableName": "DataSource",
@@ -1174,7 +1238,7 @@
 
         "NewColumnName": "MemberUser",
         "NewColumnType": "User",
-        "NewColumnComment": "账号",
+        "NewColumnComment": "战队成员",
 
         "NewColumnName_Dto": "MemberUser",
         "NewColumnType_Dto": "UserDto",
@@ -1184,6 +1248,32 @@
 
         "IsMapper": true,
         "MapperName": "UserName"
+      },
+      {
+        "NewColumnComment": "战队成员",
+        "NewColumnName_VM": "MemberUserRealName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "RealName"
+
+      },
+      {
+        "ColumnName": "DepartmentID",
+        "ColumnType": "Guid?",
+
+        "NewColumnName": "Department",
+        "NewColumnType": "Department",
+        "NewColumnComment": "部门",
+
+        "NewColumnName_Dto": "Department",
+        "NewColumnType_Dto": "DepartmentDto",
+
+        "NewColumnName_VM": "DepartmentName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "DepartmentName"
       }
     ]
   },
@@ -1191,6 +1281,7 @@
     "TableName": "TeamCustomerRelation",
     "TableDesc": "战队客户关系",
     "ExcludePropertys": [],
+    "IsSetFilter": true,
     "List": [
       {
         "ColumnName": "TeamID",
@@ -1225,6 +1316,81 @@
 
         "IsMapper": true,
         "MapperName": "CustomerName"
+      },
+      {
+        "NewColumnComment": "客户类型ID",
+        "NewColumnName_VM": "CustomerType",
+        "NewColumnType_VM": "string",
+        "IsMapper": true,
+        "MapperName": "CustomerType"
+      },
+      {
+        "NewColumnComment": "客户类型列表",
+        "NewColumnName_VM": "CustomerTypeList",
+        "NewColumnType_VM": "List<int?>",
+        "IsMapper": true,
+        "MapperName": "CustomerTypeList"
+      },
+      {
+        "NewColumnComment": "电话1",
+        "NewColumnName_VM": "Tel1",
+        "NewColumnType_VM": "string",
+        "IsMapper": true,
+        "MapperName": "Tel1"
+      },
+      {
+        "NewColumnComment": "电邮",
+        "NewColumnName_VM": "Email",
+        "NewColumnType_VM": "string",
+        "IsMapper": true,
+        "MapperName": "Email"
+      },
+      {
+        "ListFilterVM": [ "List<Guid>", "TeamIds", "战队ID列表" ]
+      },
+      {
+        "ListFilterDto": [ "List<Guid>", "TeamIds", "战队ID列表" ]
+      }
+    ]
+  },
+  {
+    "TableName": "ShopBrandRelation",
+    "TableDesc": "店铺品牌关系",
+    "ExcludePropertys": [],
+    "List": [
+      {
+        "ColumnName": "ShopID",
+        "ColumnType": "Guid",
+
+        "NewColumnName": "Shop",
+        "NewColumnType": "Shop",
+        "NewColumnComment": "店铺",
+
+        "NewColumnName_Dto": "Shop",
+        "NewColumnType_Dto": "ShopDto",
+
+        "NewColumnName_VM": "ShopName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "ShopName"
+      },
+      {
+        "ColumnName": "BrandID",
+        "ColumnType": "Guid",
+
+        "NewColumnName": "Brand",
+        "NewColumnType": "Brand",
+        "NewColumnComment": "品牌",
+
+        "NewColumnName_Dto": "Brand",
+        "NewColumnType_Dto": "BrandDto",
+
+        "NewColumnName_VM": "BrandName",
+        "NewColumnType_VM": "string",
+
+        "IsMapper": true,
+        "MapperName": "BrandName"
       }
     ]
   }

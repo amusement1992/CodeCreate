@@ -67,6 +67,7 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -180,6 +181,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.checkBox4);
             this.groupBox1.Controls.Add(this.checkBox3);
             this.groupBox1.Controls.Add(this.checkBox2);
             this.groupBox1.Controls.Add(this.checkBox1);
@@ -407,7 +409,7 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(591, 383);
+            this.button10.Location = new System.Drawing.Point(641, 383);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(44, 37);
             this.button10.TabIndex = 15;
@@ -449,13 +451,23 @@
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(641, 383);
+            this.button7.Location = new System.Drawing.Point(591, 383);
             this.button7.Name = "button7";
             this.button7.Size = new System.Drawing.Size(44, 37);
             this.button7.TabIndex = 15;
             this.button7.Text = "覆盖";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(60, 363);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(90, 16);
+            this.checkBox4.TabIndex = 9;
+            this.checkBox4.Text = "是否覆盖Web";
+            this.checkBox4.UseVisualStyleBackColor = true;
             // 
             // MSSqlCreate
             // 
@@ -532,5 +544,6 @@
         private System.Windows.Forms.TextBox textBox3;
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.CheckBox checkBox4;
     }
 }

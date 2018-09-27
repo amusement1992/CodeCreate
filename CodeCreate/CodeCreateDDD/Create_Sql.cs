@@ -34,22 +34,21 @@ namespace CodeCreate
 
         public static void SetData(string tableName, string tablePrefix, string tableDesc, StringBuilder sb_body)
         {
+            sb_body.AppendLine(GetSql_Sys_AuthorityOperationGroup(tableDesc + "管理", 10, "基础配置"));
+            sb_body.AppendLine(GetSql_Sys_AuthorityGroup(tableDesc + "管理", 10, "基础配置"));
 
             //授权
-            sb_body.AppendLine(GetSql_Sys_AuthorityOperationGroup(tableDesc, 10, "基础配置"));
-            sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, tableName, tableDesc + "列表", tableDesc));
-            sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, "Get" + tableName + "Paging", tableDesc + "列表数据", tableDesc));
+            sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, tableName, tableDesc + "列表", tableDesc + "管理"));
+            sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, "Get" + tableName + "Paging", tableDesc + "列表数据", tableDesc + "管理"));
 
-            sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, "Edit" + tableName, "添加、修改" + tableDesc, tableDesc));
-            sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, "Delete" + tableName, "删除" + tableDesc, tableDesc));
-            //sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, "Get" + tableName + "List", tableDesc + "下拉框", tableDesc));
+            sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, "Edit" + tableName, "添加、修改" + tableDesc, tableDesc + "管理"));
+            sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, "Delete" + tableName, "删除" + tableDesc, tableDesc + "管理"));
+            //sb_body.AppendLine(GetSql_Sys_AuthorityOperation(tablePrefix, "Get" + tableName + "List", tableDesc + "下拉框", tableDesc + "管理"));
 
             //权限
-            sb_body.AppendLine(GetSql_Sys_AuthorityGroup(tableDesc, 10, "基础配置"));
-
-            sb_body.AppendLine(GetSql_Sys_Authority(tableDesc + "列表", tableDesc));
-            sb_body.AppendLine(GetSql_Sys_Authority("添加、修改" + tableDesc, tableDesc));
-            sb_body.AppendLine(GetSql_Sys_Authority("删除" + tableDesc, tableDesc));
+            sb_body.AppendLine(GetSql_Sys_Authority(tableDesc + "列表", tableDesc + "管理"));
+            sb_body.AppendLine(GetSql_Sys_Authority("添加、修改" + tableDesc, tableDesc + "管理"));
+            sb_body.AppendLine(GetSql_Sys_Authority("删除" + tableDesc, tableDesc + "管理"));
 
             //添加关联
             sb_body.AppendLine(GetSql_Sys_AuthorityBindOperation(tableDesc + "列表"));
